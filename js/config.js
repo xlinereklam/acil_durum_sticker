@@ -3,16 +3,11 @@
 // SUPABASE BAGLANTISI
 // ======================================================
 
-// Supabase > Project Settings > API bölümünden alınacak
+const SUPABASE_URL =
+    "https://sfowovqyuyscskvpnzqe.supabase.co";
 
-const SUPABASE_URL = "BURAYA_SUPABASE_PROJECT_URL";
-
-const SUPABASE_ANON_KEY = "BURAYA_SUPABASE_ANON_KEY";
-
-
-// ======================================================
-// SUPABASE CLIENT
-// ======================================================
+const SUPABASE_ANON_KEY =
+    "sb_publishable_X-zwXKImckYdlYmb5rA2yg_uz8T9WTD";
 
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
