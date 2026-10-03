@@ -2157,74 +2157,50 @@ function renderQrEvents(){
 
 
 /* =========================================================
-   PLACEHOLDER SECTIONS
+   SECTIONS
 ========================================================= */
 
 function openSection(section){
 
-    activeSection =
-        section;
+    activeSection = section;
 
     setNavigation(section);
 
-
     if(section === "home"){
-
         renderHome();
-
         return;
     }
 
+    if(section === "vehicle"){
+        renderVehicleSection();
+        return;
+    }
 
     const titles = {
-
-        vehicle:"Aracım",
         maintenance:"Bakım Merkezi",
         emergency:"Acil & Kaza",
         profile:"Profil"
-
     };
 
-
     pageTitle.textContent =
-        titles[section] ||
-        "Araç Kartı";
-
+        titles[section] || "Araç Kartı";
 
     let description = "";
 
-
-    if(section === "vehicle"){
-
-        description =
-            "Araç bilgileri, kilometre, iletişim tercihleri ve QR kart yönetimi.";
-
-    }
-
-
     if(section === "maintenance"){
-
         description =
             "Bakım takibi, servis geçmişi, hatırlatmalar ve araç masrafları.";
-
     }
-
 
     if(section === "emergency"){
-
         description =
             "Kaza asistanı, acil durum rehberi ve kaza dosyalarınız.";
-
     }
-
 
     if(section === "profile"){
-
         description =
             "Hesap, iletişim, güvenlik ve uygulama tercihleri.";
-
     }
-
 
     mainContent.innerHTML = `
 
@@ -2240,18 +2216,10 @@ function openSection(section){
                         margin-bottom:8px;
                     "
                 >
-                    ${
-                        escapeHtml(
-                            titles[section]
-                        )
-                    }
+                    ${escapeHtml(titles[section] || "Araç Kartı")}
                 </div>
 
-                ${
-                    escapeHtml(
-                        description
-                    )
-                }
+                ${escapeHtml(description)}
 
                 <br><br>
 
@@ -2265,10 +2233,1073 @@ function openSection(section){
         </section>
 
     `;
+}
+
+
+/* =========================================================
+   ARACIM
+========================================================= */
+
+function renderVehicleSection(){
+
+    pageTitle.textContent = "Aracım";
+
+    const vehicleTitle =
+        getVehicleTitle();
+
+    mainContent.innerHTML = `
+
+        <section class="vehicle-profile-head">
+
+            <div class="vehicle-profile-icon">
+
+                <svg
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                >
+                    <path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5"/>
+                    <path d="M5 13h14a2 2 0 0 1 2 2v3H3v-3a2 2 0 0 1 2-2Z"/>
+                    <circle cx="7" cy="15.5" r="1"/>
+                    <circle cx="17" cy="15.5" r="1"/>
+                    <path d="M5 18v2M19 18v2"/>
+                </svg>
+
+            </div>
+
+
+            <div class="vehicle-profile-main">
+
+                <div class="vehicle-profile-label">
+                    ARACIM
+                </div>
+
+                <div class="vehicle-profile-plate">
+                    ${
+                        escapeHtml(
+                            currentVehicle.plate ||
+                            "PLAKA EKLE"
+                        )
+                    }
+                </div>
+
+                <div class="vehicle-profile-model">
+                    ${escapeHtml(vehicleTitle)}
+                </div>
+
+            </div>
+
+
+            <div class="vehicle-profile-status">
+                <span></span>
+
+                ${
+                    currentSticker.status === "active"
+                    ? "AKTİF"
+                    : escapeHtml(
+                        currentSticker.status.toUpperCase()
+                    )
+                }
+            </div>
+
+        </section>
+
+
+        <!-- ARAÇ BİLGİLERİ -->
+
+        <section class="vehicle-form-section">
+
+            <div class="form-section-title">
+                Araç Bilgileri
+            </div>
+
+            <div class="form-section-description">
+                Aracınızın temel bilgilerini girin.
+                Bu bilgiler Araç Kartı panelinizde kullanılır.
+            </div>
+
+
+            <div class="vehicle-form-card">
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>PLAKA</label>
+
+                        <input
+                            id="vehiclePlate"
+                            type="text"
+                            maxlength="15"
+                            autocomplete="off"
+                            placeholder="34 ABC 123"
+                            value="${
+                                escapeHtml(
+                                    currentVehicle.plate || ""
+                                )
+                            }"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>MARKA</label>
+
+                        <input
+                            id="vehicleBrand"
+                            type="text"
+                            maxlength="50"
+                            autocomplete="off"
+                            placeholder="Örn. Toyota"
+                            value="${
+                                escapeHtml(
+                                    currentVehicle.brand || ""
+                                )
+                            }"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>MODEL</label>
+
+                        <input
+                            id="vehicleModel"
+                            type="text"
+                            maxlength="70"
+                            autocomplete="off"
+                            placeholder="Örn. Corolla"
+                            value="${
+                                escapeHtml(
+                                    currentVehicle.model || ""
+                                )
+                            }"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>MODEL YILI</label>
+
+                        <input
+                            id="vehicleYear"
+                            type="number"
+                            inputmode="numeric"
+                            min="1900"
+                            max="2100"
+                            placeholder="2022"
+                            value="${
+                                currentVehicle.model_year ?? ""
+                            }"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>YAKIT</label>
+
+                        <select id="vehicleFuel">
+
+                            ${selectOption(
+                                "",
+                                "Seçiniz",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "gasoline",
+                                "Benzin",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "diesel",
+                                "Dizel",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "lpg",
+                                "LPG",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "hybrid",
+                                "Hibrit",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "electric",
+                                "Elektrik",
+                                currentVehicle.fuel_type
+                            )}
+
+                            ${selectOption(
+                                "other",
+                                "Diğer",
+                                currentVehicle.fuel_type
+                            )}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>ŞANZIMAN</label>
+
+                        <select id="vehicleTransmission">
+
+                            ${selectOption(
+                                "",
+                                "Seçiniz",
+                                currentVehicle.transmission_type
+                            )}
+
+                            ${selectOption(
+                                "manual",
+                                "Manuel",
+                                currentVehicle.transmission_type
+                            )}
+
+                            ${selectOption(
+                                "automatic",
+                                "Otomatik",
+                                currentVehicle.transmission_type
+                            )}
+
+                            ${selectOption(
+                                "semi_automatic",
+                                "Yarı Otomatik",
+                                currentVehicle.transmission_type
+                            )}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>RENK</label>
+
+                        <input
+                            id="vehicleColor"
+                            type="text"
+                            maxlength="40"
+                            placeholder="Örn. Beyaz"
+                            value="${
+                                escapeHtml(
+                                    currentVehicle.color || ""
+                                )
+                            }"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>GÜNCEL KİLOMETRE</label>
+
+                        <div class="input-suffix">
+
+                            <input
+                                id="vehicleKm"
+                                type="number"
+                                inputmode="numeric"
+                                min="0"
+                                placeholder="92500"
+                                value="${
+                                    currentVehicle.current_km ?? ""
+                                }"
+                            >
+
+                            <span>km</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="primary-save-button"
+                    id="saveVehicleButton"
+                    onclick="saveVehicleInformation()"
+                >
+                    ARAÇ BİLGİLERİNİ KAYDET
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- QR KART -->
+
+        <section class="vehicle-form-section">
+
+            <div class="form-section-title">
+                QR Araç Kartı
+            </div>
+
+            <div class="form-section-description">
+                Aracınızın üzerindeki QR kod üzerinden
+                size nasıl ulaşılacağını belirleyin.
+            </div>
+
+
+            <div class="vehicle-form-card">
+
+                <div class="qr-identity-row">
+
+                    <div>
+
+                        <div class="settings-label">
+                            KART SERİ NUMARASI
+                        </div>
+
+                        <div class="settings-value">
+                            ${
+                                escapeHtml(
+                                    currentSticker.serial_number
+                                )
+                            }
+                        </div>
+
+                    </div>
+
+
+                    <div class="qr-mini-status">
+
+                        <span></span>
+
+                        ${
+                            currentSticker.status === "active"
+                            ? "AKTİF"
+                            : escapeHtml(
+                                currentSticker.status.toUpperCase()
+                            )
+                        }
+
+                    </div>
+
+                </div>
+
+
+                ${settingSwitch(
+                    "publicPhoneToggle",
+                    "Telefon numaramı göster",
+                    "QR kartı okutan kişi gerektiğinde telefon numaranızı görebilir.",
+                    currentVehicle.public_phone_enabled
+                )}
+
+
+                ${settingSwitch(
+                    "whatsappToggle",
+                    "WhatsApp iletişimine izin ver",
+                    "Acil olmayan araç uyarıları size hazır WhatsApp mesajı ile gönderilebilir.",
+                    currentVehicle.whatsapp_enabled
+                )}
+
+
+                <div class="setting-row">
+
+                    <div class="setting-content">
+
+                        <div class="setting-title">
+                            İletişim Durumu
+                        </div>
+
+                        <div class="setting-description">
+                            QR kartınızı geçici olarak
+                            sınırlandırabilirsiniz.
+                        </div>
+
+                    </div>
+
+
+                    <select
+                        id="availabilityStatus"
+                        class="compact-select"
+                    >
+
+                        ${selectOption(
+                            "available",
+                            "Müsait",
+                            currentVehicle.availability_status
+                        )}
+
+                        ${selectOption(
+                            "emergency_only",
+                            "Sadece Acil",
+                            currentVehicle.availability_status
+                        )}
+
+                        ${selectOption(
+                            "unavailable",
+                            "Ulaşılamaz",
+                            currentVehicle.availability_status
+                        )}
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="secondary-save-button"
+                    id="saveContactButton"
+                    onclick="saveVehicleContactSettings()"
+                >
+                    İLETİŞİM AYARLARINI KAYDET
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACİL DURUM KİŞİSİ -->
+
+        <section class="vehicle-form-section">
+
+            <div class="form-section-title">
+                Acil Durum Kişisi
+            </div>
+
+            <div class="form-section-description">
+                İsterseniz aracınız için ikinci bir
+                acil durum kişisi tanımlayabilirsiniz.
+            </div>
+
+
+            <div class="vehicle-form-card">
+
+                ${settingSwitch(
+                    "emergencyContactToggle",
+                    "İkinci acil durum kişisini kullan",
+                    "Acil durumlarda QR ekranında ikinci iletişim seçeneği gösterilir.",
+                    currentVehicle.emergency_contact_enabled
+                )}
+
+
+                <div
+                    id="emergencyContactFields"
+                    class="emergency-contact-fields ${
+                        currentVehicle.emergency_contact_enabled
+                        ? "visible"
+                        : ""
+                    }"
+                >
+
+                    <div class="form-grid">
+
+
+                        <div class="field">
+
+                            <label>
+                                KİŞİNİN ADI
+                            </label>
+
+                            <input
+                                id="secondaryContactName"
+                                type="text"
+                                maxlength="70"
+                                placeholder="Ad Soyad"
+                                value="${
+                                    escapeHtml(
+                                        currentVehicle.secondary_contact_name
+                                        || ""
+                                    )
+                                }"
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label>
+                                TELEFON
+                            </label>
+
+                            <input
+                                id="secondaryContactPhone"
+                                type="tel"
+                                inputmode="tel"
+                                maxlength="20"
+                                placeholder="05XX XXX XX XX"
+                                value="${
+                                    escapeHtml(
+                                        currentVehicle.secondary_contact_phone
+                                        || ""
+                                    )
+                                }"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="secondary-save-button"
+                    id="saveEmergencyButton"
+                    onclick="saveEmergencyContact()"
+                >
+                    ACİL DURUM KİŞİSİNİ KAYDET
+                </button>
+
+            </div>
+
+        </section>
+
+    `;
+
+
+    const emergencyToggle =
+        document.getElementById(
+            "emergencyContactToggle"
+        );
+
+
+    if(emergencyToggle){
+
+        emergencyToggle.addEventListener(
+            "change",
+            toggleEmergencyContactFields
+        );
+
+    }
 
 }
 
 
+/* =========================================================
+   ARACIM - ARAÇ BİLGİLERİNİ KAYDET
+========================================================= */
+
+async function saveVehicleInformation(){
+
+    const button =
+        document.getElementById(
+            "saveVehicleButton"
+        );
+
+
+    const plate =
+        document.getElementById(
+            "vehiclePlate"
+        )
+        .value
+        .trim()
+        .toLocaleUpperCase("tr-TR");
+
+
+    const brand =
+        document.getElementById(
+            "vehicleBrand"
+        )
+        .value
+        .trim();
+
+
+    const model =
+        document.getElementById(
+            "vehicleModel"
+        )
+        .value
+        .trim();
+
+
+    const yearValue =
+        document.getElementById(
+            "vehicleYear"
+        ).value;
+
+
+    const fuel =
+        document.getElementById(
+            "vehicleFuel"
+        ).value;
+
+
+    const transmission =
+        document.getElementById(
+            "vehicleTransmission"
+        ).value;
+
+
+    const color =
+        document.getElementById(
+            "vehicleColor"
+        )
+        .value
+        .trim();
+
+
+    const kmValue =
+        document.getElementById(
+            "vehicleKm"
+        ).value;
+
+
+    const modelYear =
+        yearValue
+        ? Number(yearValue)
+        : null;
+
+
+    const currentKm =
+        kmValue !== ""
+        ? Number(kmValue)
+        : null;
+
+
+    if(
+        modelYear !== null &&
+        (
+            modelYear < 1900 ||
+            modelYear > 2100
+        )
+    ){
+
+        showToast(
+            "Model yılını kontrol edin."
+        );
+
+        return;
+    }
+
+
+    if(
+        currentKm !== null &&
+        currentKm < 0
+    ){
+
+        showToast(
+            "Kilometre değeri geçersiz."
+        );
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "KAYDEDİLİYOR...";
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_profiles")
+        .update({
+
+            plate:
+                plate || null,
+
+            brand:
+                brand || null,
+
+            model:
+                model || null,
+
+            model_year:
+                modelYear,
+
+            fuel_type:
+                fuel || null,
+
+            transmission_type:
+                transmission || null,
+
+            color:
+                color || null,
+
+            current_km:
+                currentKm
+
+        })
+        .eq(
+            "id",
+            currentVehicle.id
+        )
+        .select()
+        .single();
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "ARAÇ BİLGİLERİNİ KAYDET";
+
+
+    if(error){
+
+        console.error(error);
+
+        showToast(
+            "Araç bilgileri kaydedilemedi."
+        );
+
+        return;
+    }
+
+
+    currentVehicle = data;
+
+    updateVehicleInMemory();
+
+
+    showToast(
+        "Araç bilgileri kaydedildi."
+    );
+
+
+    renderVehicleSection();
+
+}
+
+
+/* =========================================================
+   ARACIM - İLETİŞİM AYARLARI
+========================================================= */
+
+async function saveVehicleContactSettings(){
+
+    const button =
+        document.getElementById(
+            "saveContactButton"
+        );
+
+
+    const publicPhone =
+        document.getElementById(
+            "publicPhoneToggle"
+        ).checked;
+
+
+    const whatsapp =
+        document.getElementById(
+            "whatsappToggle"
+        ).checked;
+
+
+    const availability =
+        document.getElementById(
+            "availabilityStatus"
+        ).value;
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "KAYDEDİLİYOR...";
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_profiles")
+        .update({
+
+            public_phone_enabled:
+                publicPhone,
+
+            whatsapp_enabled:
+                whatsapp,
+
+            availability_status:
+                availability
+
+        })
+        .eq(
+            "id",
+            currentVehicle.id
+        )
+        .select()
+        .single();
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "İLETİŞİM AYARLARINI KAYDET";
+
+
+    if(error){
+
+        console.error(error);
+
+        showToast(
+            "İletişim ayarları kaydedilemedi."
+        );
+
+        return;
+    }
+
+
+    currentVehicle = data;
+
+    updateVehicleInMemory();
+
+
+    showToast(
+        "İletişim ayarları kaydedildi."
+    );
+
+}
+
+
+/* =========================================================
+   ARACIM - ACİL DURUM KİŞİSİ
+========================================================= */
+
+function toggleEmergencyContactFields(){
+
+    const enabled =
+        document.getElementById(
+            "emergencyContactToggle"
+        ).checked;
+
+
+    const fields =
+        document.getElementById(
+            "emergencyContactFields"
+        );
+
+
+    fields.classList.toggle(
+        "visible",
+        enabled
+    );
+
+}
+
+
+async function saveEmergencyContact(){
+
+    const button =
+        document.getElementById(
+            "saveEmergencyButton"
+        );
+
+
+    const enabled =
+        document.getElementById(
+            "emergencyContactToggle"
+        ).checked;
+
+
+    const name =
+        document.getElementById(
+            "secondaryContactName"
+        )
+        .value
+        .trim();
+
+
+    const phone =
+        document.getElementById(
+            "secondaryContactPhone"
+        )
+        .value
+        .trim();
+
+
+    if(
+        enabled &&
+        (
+            name.length < 2 ||
+            phone.length < 10
+        )
+    ){
+
+        showToast(
+            "Acil durum kişisinin adını ve telefonunu girin."
+        );
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "KAYDEDİLİYOR...";
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_profiles")
+        .update({
+
+            emergency_contact_enabled:
+                enabled,
+
+            secondary_contact_name:
+                name || null,
+
+            secondary_contact_phone:
+                phone || null
+
+        })
+        .eq(
+            "id",
+            currentVehicle.id
+        )
+        .select()
+        .single();
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "ACİL DURUM KİŞİSİNİ KAYDET";
+
+
+    if(error){
+
+        console.error(error);
+
+        showToast(
+            "Acil durum kişisi kaydedilemedi."
+        );
+
+        return;
+    }
+
+
+    currentVehicle = data;
+
+    updateVehicleInMemory();
+
+
+    showToast(
+        "Acil durum kişisi kaydedildi."
+    );
+
+}
+
+
+/* =========================================================
+   ARACIM - HELPERS
+========================================================= */
+
+function updateVehicleInMemory(){
+
+    const item =
+        vehicles.find(
+            vehicle =>
+                vehicle.profile?.id ===
+                currentVehicle.id
+        );
+
+
+    if(item){
+
+        item.profile =
+            currentVehicle;
+
+    }
+
+}
+
+
+function settingSwitch(
+    id,
+    title,
+    description,
+    checked
+){
+
+    return `
+
+        <div class="setting-row">
+
+            <div class="setting-content">
+
+                <div class="setting-title">
+                    ${escapeHtml(title)}
+                </div>
+
+                <div class="setting-description">
+                    ${escapeHtml(description)}
+                </div>
+
+            </div>
+
+
+            <label class="modern-switch">
+
+                <input
+                    id="${id}"
+                    type="checkbox"
+                    ${checked ? "checked" : ""}
+                >
+
+                <span></span>
+
+            </label>
+
+        </div>
+
+    `;
+
+}
+
+
+function selectOption(
+    value,
+    label,
+    currentValue
+){
+
+    return `
+
+        <option
+            value="${escapeHtml(value)}"
+            ${
+                value === currentValue
+                ? "selected"
+                : ""
+            }
+        >
+            ${escapeHtml(label)}
+        </option>
+
+    `;
+
+}
 /* =========================================================
    NAVIGATION
 ========================================================= */
