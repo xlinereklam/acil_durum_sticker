@@ -1626,6 +1626,532 @@ button{
     }
 
 }
+    /* =========================================================
+   SERVİS GEÇMİŞİ
+========================================================= */
+
+.service-history-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+
+    padding:22px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1c2229,
+            #12161b
+        );
+
+    border:1px solid var(--line);
+}
+
+.service-back-button{
+    width:40px;
+    height:40px;
+
+    flex:0 0 40px;
+
+    border:1px solid var(--line);
+    border-radius:12px;
+
+    background:#242a31;
+    color:white;
+
+    font-size:18px;
+}
+
+.service-history-head-content{
+    min-width:0;
+}
+
+.service-history-title{
+    margin-top:5px;
+
+    font-size:22px;
+    font-weight:800;
+
+    letter-spacing:-.6px;
+}
+
+.service-history-description{
+    max-width:500px;
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:9px;
+    line-height:1.55;
+}
+
+
+/* ÖZET */
+
+.service-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:10px;
+}
+
+.service-summary-card{
+    min-width:0;
+
+    padding:16px;
+
+    border-radius:17px;
+
+    background:var(--surface);
+
+    border:1px solid var(--line);
+}
+
+.service-summary-card > span{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:8px;
+    font-weight:800;
+
+    letter-spacing:.8px;
+}
+
+.service-summary-card strong{
+    display:block;
+
+    margin-top:8px;
+
+    font-size:21px;
+    font-weight:800;
+}
+
+.service-summary-card small{
+    display:block;
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:8px;
+}
+
+.service-summary-date{
+    font-size:13px !important;
+}
+
+.service-summary-money{
+    font-size:15px !important;
+}
+
+
+/* KAYIT LİSTESİ */
+
+.service-history-list{
+    display:grid;
+    gap:10px;
+}
+
+.service-record-card{
+    display:grid;
+    grid-template-columns:105px minmax(0,1fr);
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:var(--surface);
+
+    border:1px solid var(--line);
+}
+
+.service-record-date{
+    padding:17px 13px;
+
+    background:#181d23;
+
+    border-right:1px solid var(--line);
+}
+
+.service-record-date strong{
+    display:block;
+
+    font-size:10px;
+    font-weight:800;
+}
+
+.service-record-date span{
+    display:block;
+
+    margin-top:6px;
+
+    color:var(--muted);
+
+    font-size:8px;
+}
+
+.service-record-content{
+    min-width:0;
+
+    padding:17px;
+}
+
+.service-record-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    gap:15px;
+}
+
+.service-record-title{
+    font-size:13px;
+    font-weight:800;
+}
+
+.service-record-shop{
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:9px;
+}
+
+.service-record-cost{
+    flex-shrink:0;
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.service-record-description{
+    margin-top:12px;
+
+    color:#b1b8c1;
+
+    font-size:9px;
+    line-height:1.55;
+}
+
+.service-record-tags{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:5px;
+
+    margin-top:12px;
+}
+
+.service-record-tags span{
+    padding:5px 8px;
+
+    border-radius:999px;
+
+    background:#252c34;
+
+    color:#bbc2cb;
+
+    font-size:7px;
+    font-weight:700;
+}
+
+.service-record-parts{
+    margin-top:13px;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:#181d23;
+}
+
+.service-record-parts span{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:7px;
+    font-weight:800;
+
+    letter-spacing:.5px;
+}
+
+.service-record-parts div{
+    margin-top:4px;
+
+    color:#c2c7ce;
+
+    font-size:9px;
+    line-height:1.45;
+}
+
+.service-record-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:14px;
+
+    padding-top:11px;
+
+    border-top:1px solid var(--line);
+}
+
+.service-record-footer > div{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:10px;
+}
+
+.service-record-footer span{
+    color:var(--muted);
+
+    font-size:8px;
+}
+
+.service-record-footer button{
+    border:0;
+
+    background:transparent;
+
+    color:#777f89;
+
+    font-size:8px;
+    font-weight:700;
+}
+
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+    .service-record-card{
+        grid-template-columns:1fr;
+    }
+
+    .service-record-date{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+
+        padding:11px 14px;
+
+        border-right:0;
+        border-bottom:1px solid var(--line);
+    }
+
+    .service-record-date span{
+        margin-top:0;
+    }
+
+    .service-summary-card{
+        padding:12px 10px;
+    }
+
+    .service-summary-card strong{
+        font-size:18px;
+    }
+
+    .service-summary-money{
+        font-size:11px !important;
+    }
+
+    .service-summary-date{
+        font-size:10px !important;
+    }
+
+}
+/* =========================================================
+   SERVİS FORMU
+========================================================= */
+
+.maintenance-form-card textarea{
+    width:100%;
+    resize:vertical;
+
+    padding:12px 13px;
+
+    border:1px solid var(--line);
+    border-radius:12px;
+
+    outline:none;
+
+    background:#11161b;
+    color:white;
+
+    font:inherit;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.maintenance-form-card textarea:focus{
+    border-color:rgba(255,255,255,.22);
+}
+
+.service-maintenance-link{
+    margin-top:18px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#13181e;
+
+    border:1px solid var(--line);
+}
+
+.service-maintenance-link-title{
+    font-size:9px;
+    font-weight:800;
+
+    letter-spacing:.7px;
+}
+
+.service-maintenance-link-description{
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:8px;
+    line-height:1.5;
+}
+
+.service-maintenance-options{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:7px;
+
+    margin-top:12px;
+}
+
+.service-check-item{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    gap:7px;
+
+    min-height:36px;
+
+    padding:0 10px;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    background:#20262d;
+
+    border:1px solid var(--line);
+}
+
+.service-check-item input{
+    position:absolute;
+
+    opacity:0;
+    pointer-events:none;
+}
+
+.service-check-box{
+    width:17px;
+    height:17px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:5px;
+
+    background:#11161b;
+
+    color:transparent;
+
+    font-size:9px;
+    font-weight:900;
+
+    border:1px solid #39414b;
+}
+
+.service-check-item input:checked
++ .service-check-box{
+    background:#f1f3f5;
+    color:#111418;
+
+    border-color:#f1f3f5;
+}
+
+.service-check-name{
+    font-size:8px;
+    font-weight:700;
+}
+
+.service-cost-grid{
+    display:grid;
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap:10px;
+
+    align-items:end;
+
+    margin-top:18px;
+}
+
+.service-total-box{
+    min-height:62px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    padding:10px 13px;
+
+    border-radius:12px;
+
+    background:#20262d;
+
+    border:1px solid var(--line);
+}
+
+.service-total-box span{
+    color:var(--muted);
+
+    font-size:7px;
+    font-weight:800;
+
+    letter-spacing:.6px;
+}
+
+.service-total-box strong{
+    margin-top:5px;
+
+    font-size:15px;
+    font-weight:800;
+}
+
+.service-notes-field{
+    margin-top:14px;
+}
+
+@media(max-width:600px){
+
+    .service-cost-grid{
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .service-total-box{
+        grid-column:1 / -1;
+    }
+
+}    
 </style>
 </head>
 
@@ -1758,7 +2284,8 @@ let currentSticker = null;
 let reminders = [];
 let qrEvents = [];
 let maintenanceItems = [];
-let expenses = [];
+let serviceRecords = [];
+    let expenses = [];
 
 let activeSection = "home";
 
@@ -1827,13 +2354,13 @@ async function initialize(){
 
         await Promise.all([
 
-            loadReminders(),
-            loadQrEvents(),
-            loadMaintenanceItems(),
-            loadExpenses()
+    loadReminders(),
+    loadQrEvents(),
+    loadMaintenanceItems(),
+    loadServiceRecords(),
+    loadExpenses()
 
-        ]);
-
+]);
 
         renderHome();
 
@@ -2133,7 +2660,63 @@ async function loadMaintenanceItems(){
 
 }
 
+/* =========================================================
+   SERVICE HISTORY
+========================================================= */
 
+async function loadServiceRecords(){
+
+    if(!currentVehicle) return;
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_service_records")
+        .select(`
+            *,
+            vehicle_service_record_items (
+                id,
+                maintenance_item_id,
+                item_name
+            )
+        `)
+        .eq(
+            "vehicle_profile_id",
+            currentVehicle.id
+        )
+        .order(
+            "service_date",
+            {
+                ascending:false
+            }
+        )
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Servis geçmişi:",
+            error
+        );
+
+        serviceRecords = [];
+
+        return;
+    }
+
+
+    serviceRecords =
+        data || [];
+
+}
 /* =========================================================
    EXPENSES
 ========================================================= */
@@ -4160,7 +4743,7 @@ function renderMaintenanceSection(){
                 </div>
 
                 <button
-                    onclick="comingSoon('Servis geçmişi')"
+                    onclick="renderServiceHistory()"
                 >
                     AÇ
                 </button>
@@ -5232,7 +5815,1174 @@ async function deleteMaintenanceItem(id){
 
 }
 
+/* =========================================================
+   SERVİS GEÇMİŞİ EKRANI
+========================================================= */
 
+function renderServiceHistory(){
+
+    pageTitle.textContent = "Servis Geçmişi";
+
+    const records =
+        [...serviceRecords].sort((a,b) => {
+
+            const dateA =
+                new Date(
+                    (a.service_date || "1900-01-01") +
+                    "T12:00:00"
+                );
+
+            const dateB =
+                new Date(
+                    (b.service_date || "1900-01-01") +
+                    "T12:00:00"
+                );
+
+            return dateB - dateA;
+
+        });
+
+
+    mainContent.innerHTML = `
+
+        <section class="service-history-head">
+
+            <button
+                class="service-back-button"
+                onclick="renderMaintenanceSection()"
+            >
+                ←
+            </button>
+
+            <div class="service-history-head-content">
+
+                <div class="maintenance-eyebrow">
+                    XLINE ARAÇ GEÇMİŞİ
+                </div>
+
+                <div class="service-history-title">
+                    Servis Geçmişi
+                </div>
+
+                <div class="service-history-description">
+                    Aracınıza yapılan bakım ve onarımların
+                    kayıtlarını burada saklayabilirsiniz.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <div class="service-summary-grid">
+
+                <div class="service-summary-card">
+
+                    <span>KAYIT</span>
+
+                    <strong>
+                        ${formatNumber(records.length)}
+                    </strong>
+
+                    <small>
+                        Toplam servis işlemi
+                    </small>
+
+                </div>
+
+
+                <div class="service-summary-card">
+
+                    <span>SON SERVİS</span>
+
+                    <strong class="service-summary-date">
+                        ${
+                            records.length
+                            ? formatTurkishDate(
+                                records[0].service_date
+                            )
+                            : "—"
+                        }
+                    </strong>
+
+                    <small>
+                        Son kayıt tarihi
+                    </small>
+
+                </div>
+
+
+                <div class="service-summary-card">
+
+                    <span>TOPLAM</span>
+
+                    <strong class="service-summary-money">
+                        ${formatServiceMoney(
+                            records.reduce(
+                                (sum,item) =>
+                                    sum +
+                                    Number(
+                                        item.total_cost || 0
+                                    ),
+                                0
+                            )
+                        )}
+                    </strong>
+
+                    <small>
+                        Servis kayıtları
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <div class="section-head">
+
+                <div>
+
+                    <div class="section-title">
+                        Servis Kayıtları
+                    </div>
+
+                    <div class="section-subtitle">
+                        Bakım, onarım ve değişen parçaların geçmişi
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="maintenance-add-button"
+                    onclick="openServiceRecordForm()"
+                >
+                    + SERVİS KAYDI
+                </button>
+
+            </div>
+
+
+            <div id="serviceRecordFormArea"></div>
+
+
+            <div class="service-history-list">
+
+                ${
+                    records.length
+                    ? records
+                        .map(
+                            record =>
+                                renderServiceRecordCard(
+                                    record
+                                )
+                        )
+                        .join("")
+                    : renderServiceHistoryEmpty()
+                }
+
+            </div>
+
+        </section>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SERVİS KAYIT KARTI
+========================================================= */
+
+function renderServiceRecordCard(record){
+
+    const linkedItems =
+        Array.isArray(
+            record.vehicle_service_record_items
+        )
+        ? record.vehicle_service_record_items
+        : [];
+
+
+    const itemNames =
+        linkedItems
+        .map(item => item.item_name)
+        .filter(Boolean);
+
+
+    return `
+
+        <article class="service-record-card">
+
+            <div class="service-record-date">
+
+                <strong>
+                    ${
+                        record.service_date
+                        ? formatTurkishDate(
+                            record.service_date
+                        )
+                        : "Tarih yok"
+                    }
+                </strong>
+
+                <span>
+                    ${
+                        record.service_km !== null &&
+                        record.service_km !== undefined
+                        ? formatNumber(
+                            record.service_km
+                        ) + " km"
+                        : "KM girilmedi"
+                    }
+                </span>
+
+            </div>
+
+
+            <div class="service-record-content">
+
+                <div class="service-record-top">
+
+                    <div>
+
+                        <div class="service-record-title">
+                            ${
+                                escapeHtml(
+                                    record.title ||
+                                    "Servis Kaydı"
+                                )
+                            }
+                        </div>
+
+                        ${
+                            record.service_name
+                            ? `
+                                <div class="service-record-shop">
+                                    ${
+                                        escapeHtml(
+                                            record.service_name
+                                        )
+                                    }
+                                </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <div class="service-record-cost">
+                        ${
+                            formatServiceMoney(
+                                record.total_cost || 0
+                            )
+                        }
+                    </div>
+
+                </div>
+
+
+                ${
+                    record.description
+                    ? `
+                        <div class="service-record-description">
+                            ${
+                                escapeHtml(
+                                    record.description
+                                )
+                            }
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                    itemNames.length
+                    ? `
+                        <div class="service-record-tags">
+
+                            ${
+                                itemNames
+                                .map(
+                                    name => `
+                                        <span>
+                                            ${escapeHtml(name)}
+                                        </span>
+                                    `
+                                )
+                                .join("")
+                            }
+
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                    record.replaced_parts
+                    ? `
+                        <div class="service-record-parts">
+
+                            <span>
+                                DEĞİŞEN PARÇALAR
+                            </span>
+
+                            <div>
+                                ${
+                                    escapeHtml(
+                                        record.replaced_parts
+                                    )
+                                }
+                            </div>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                <div class="service-record-footer">
+
+                    <div>
+
+                        ${
+                            Number(record.parts_cost || 0) > 0
+                            ? `
+                                <span>
+                                    Parça:
+                                    ${formatServiceMoney(
+                                        record.parts_cost
+                                    )}
+                                </span>
+                            `
+                            : ""
+                        }
+
+                        ${
+                            Number(record.labor_cost || 0) > 0
+                            ? `
+                                <span>
+                                    İşçilik:
+                                    ${formatServiceMoney(
+                                        record.labor_cost
+                                    )}
+                                </span>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <button
+                        onclick="deleteServiceRecord('${record.id}')"
+                    >
+                        Sil
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SERVİS GEÇMİŞİ EMPTY STATE
+========================================================= */
+
+function renderServiceHistoryEmpty(){
+
+    return `
+
+        <div class="maintenance-empty">
+
+            <div class="maintenance-empty-icon">
+                ↺
+            </div>
+
+            <div class="maintenance-empty-title">
+                Henüz servis kaydı yok
+            </div>
+
+            <div class="maintenance-empty-text">
+                Aracınıza yapılan bakım ve onarımları
+                kaydederek düzenli bir araç geçmişi
+                oluşturabilirsiniz.
+            </div>
+
+            <button onclick="openServiceRecordForm()">
+                İLK SERVİS KAYDINI EKLE
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SERVİS YARDIMCILARI
+========================================================= */
+
+function formatServiceMoney(value){
+
+    const number =
+        Number(value || 0);
+
+    return (
+        new Intl.NumberFormat(
+            "tr-TR",
+            {
+                maximumFractionDigits:2
+            }
+        ).format(number)
+        +
+        " ₺"
+    );
+
+}
+
+
+/*
+   Form bir sonraki adımda gerçek olacak.
+   Şimdilik butonun hata vermesini önlüyoruz.
+*/
+
+function openServiceRecordForm(){
+
+    const area =
+        document.getElementById(
+            "serviceRecordFormArea"
+        );
+
+    if(!area) return;
+
+
+    const today =
+        formatDateForDatabase(
+            new Date()
+        );
+
+
+    area.innerHTML = `
+
+        <div class="maintenance-form-card">
+
+            <div class="maintenance-form-head">
+
+                <div>
+
+                    <div class="maintenance-form-title">
+                        Yeni Servis Kaydı
+                    </div>
+
+                    <div class="maintenance-form-description">
+                        Aracınıza yapılan bakım, onarım ve
+                        değişen parçaları kaydedin.
+                    </div>
+
+                </div>
+
+                <button
+                    class="maintenance-close"
+                    onclick="closeServiceRecordForm()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="maintenance-form-grid">
+
+                <div class="field">
+
+                    <label>SERVİS TARİHİ</label>
+
+                    <input
+                        id="serviceDate"
+                        type="date"
+                        value="${today}"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>ARAÇ KM</label>
+
+                    <div class="input-suffix">
+
+                        <input
+                            id="serviceKm"
+                            type="number"
+                            inputmode="numeric"
+                            min="0"
+                            value="${
+                                currentVehicle.current_km ?? ""
+                            }"
+                            placeholder="Örn. 92500"
+                        >
+
+                        <span>km</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>SERVİS / USTA</label>
+
+                    <input
+                        id="serviceName"
+                        type="text"
+                        maxlength="120"
+                        placeholder="Örn. ABC Otomotiv"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>İŞLEM TÜRÜ</label>
+
+                    <select id="serviceType">
+
+                        <option value="maintenance">
+                            Periyodik Bakım
+                        </option>
+
+                        <option value="repair">
+                            Onarım
+                        </option>
+
+                        <option value="tire">
+                            Lastik
+                        </option>
+
+                        <option value="battery">
+                            Akü
+                        </option>
+
+                        <option value="inspection">
+                            Kontrol
+                        </option>
+
+                        <option value="other">
+                            Diğer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>BAŞLIK</label>
+
+                    <input
+                        id="serviceTitle"
+                        type="text"
+                        maxlength="150"
+                        placeholder="Örn. 90.000 km bakımı"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>DEĞİŞEN PARÇALAR</label>
+
+                    <input
+                        id="serviceParts"
+                        type="text"
+                        maxlength="1000"
+                        placeholder="Örn. Yağ filtresi, hava filtresi"
+                    >
+
+                </div>
+
+
+                <div class="field maintenance-note-field">
+
+                    <label>YAPILAN İŞLEMLER</label>
+
+                    <textarea
+                        id="serviceDescription"
+                        rows="3"
+                        maxlength="3000"
+                        placeholder="Serviste yapılan işlemleri yazın"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            ${
+                maintenanceItems.length
+                ? `
+
+                    <div class="service-maintenance-link">
+
+                        <div class="service-maintenance-link-title">
+                            BU SERVİSTE YAPILAN BAKIMLAR
+                        </div>
+
+                        <div class="service-maintenance-link-description">
+                            Yapılan bakım kalemlerini seçin.
+                            Seçilen kayıtlar servis geçmişine bağlanacaktır.
+                        </div>
+
+                        <div class="service-maintenance-options">
+
+                            ${
+                                maintenanceItems
+                                .map(item => `
+
+                                    <label class="service-check-item">
+
+                                        <input
+                                            type="checkbox"
+                                            class="service-maintenance-checkbox"
+                                            value="${item.id}"
+                                            data-name="${escapeHtml(
+                                                getMaintenanceName(item)
+                                            )}"
+                                        >
+
+                                        <span class="service-check-box">
+                                            ✓
+                                        </span>
+
+                                        <span class="service-check-name">
+                                            ${escapeHtml(
+                                                getMaintenanceName(item)
+                                            )}
+                                        </span>
+
+                                    </label>
+
+                                `)
+                                .join("")
+                            }
+
+                        </div>
+
+                    </div>
+
+                `
+                : ""
+            }
+
+
+            <div class="service-cost-grid">
+
+                <div class="field">
+
+                    <label>PARÇA MALİYETİ</label>
+
+                    <div class="input-suffix">
+
+                        <input
+                            id="servicePartsCost"
+                            type="number"
+                            inputmode="decimal"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                            oninput="calculateServiceTotal()"
+                        >
+
+                        <span>₺</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>İŞÇİLİK</label>
+
+                    <div class="input-suffix">
+
+                        <input
+                            id="serviceLaborCost"
+                            type="number"
+                            inputmode="decimal"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                            oninput="calculateServiceTotal()"
+                        >
+
+                        <span>₺</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="service-total-box">
+
+                    <span>TOPLAM</span>
+
+                    <strong id="serviceTotalDisplay">
+                        0 ₺
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="field service-notes-field">
+
+                <label>NOT</label>
+
+                <textarea
+                    id="serviceNotes"
+                    rows="2"
+                    maxlength="3000"
+                    placeholder="İsteğe bağlı not"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="primary-save-button"
+                id="saveServiceRecordButton"
+                onclick="saveServiceRecord()"
+            >
+                SERVİS KAYDINI KAYDET
+            </button>
+
+        </div>
+
+    `;
+
+
+    area.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+
+}
+
+
+function closeServiceRecordForm(){
+
+    const area =
+        document.getElementById(
+            "serviceRecordFormArea"
+        );
+
+    if(area){
+        area.innerHTML = "";
+    }
+
+}
+
+
+function calculateServiceTotal(){
+
+    const parts =
+        Number(
+            document.getElementById(
+                "servicePartsCost"
+            )?.value || 0
+        );
+
+
+    const labor =
+        Number(
+            document.getElementById(
+                "serviceLaborCost"
+            )?.value || 0
+        );
+
+
+    const total =
+        parts + labor;
+
+
+    const display =
+        document.getElementById(
+            "serviceTotalDisplay"
+        );
+
+
+    if(display){
+
+        display.textContent =
+            formatServiceMoney(total);
+
+    }
+
+}
+async function saveServiceRecord(){
+
+    const serviceDate =
+        document.getElementById(
+            "serviceDate"
+        ).value;
+
+
+    const serviceKmValue =
+        document.getElementById(
+            "serviceKm"
+        ).value;
+
+
+    const serviceName =
+        document.getElementById(
+            "serviceName"
+        ).value.trim();
+
+
+    const serviceType =
+        document.getElementById(
+            "serviceType"
+        ).value;
+
+
+    const title =
+        document.getElementById(
+            "serviceTitle"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "serviceDescription"
+        ).value.trim();
+
+
+    const replacedParts =
+        document.getElementById(
+            "serviceParts"
+        ).value.trim();
+
+
+    const partsCost =
+        Number(
+            document.getElementById(
+                "servicePartsCost"
+            ).value || 0
+        );
+
+
+    const laborCost =
+        Number(
+            document.getElementById(
+                "serviceLaborCost"
+            ).value || 0
+        );
+
+
+    const notes =
+        document.getElementById(
+            "serviceNotes"
+        ).value.trim();
+
+
+    if(!serviceDate){
+
+        showToast(
+            "Servis tarihini girin."
+        );
+
+        return;
+    }
+
+
+    if(title.length < 2){
+
+        showToast(
+            "Servis kaydı için bir başlık girin."
+        );
+
+        return;
+    }
+
+
+    const serviceKm =
+        serviceKmValue !== ""
+        ? Number(serviceKmValue)
+        : null;
+
+
+    if(
+        serviceKm !== null &&
+        serviceKm < 0
+    ){
+
+        showToast(
+            "Araç kilometresini kontrol edin."
+        );
+
+        return;
+    }
+
+
+    if(
+        partsCost < 0 ||
+        laborCost < 0
+    ){
+
+        showToast(
+            "Maliyet bilgilerini kontrol edin."
+        );
+
+        return;
+    }
+
+
+    const totalCost =
+        partsCost + laborCost;
+
+
+    const selectedItems =
+        Array.from(
+            document.querySelectorAll(
+                ".service-maintenance-checkbox:checked"
+            )
+        );
+
+
+    const button =
+        document.getElementById(
+            "saveServiceRecordButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "KAYDEDİLİYOR...";
+
+
+    const {
+        data:record,
+        error:recordError
+    } =
+        await supabaseClient
+        .from("vehicle_service_records")
+        .insert({
+
+            vehicle_profile_id:
+                currentVehicle.id,
+
+            owner_id:
+                currentUser.id,
+
+            service_date:
+                serviceDate,
+
+            service_km:
+                serviceKm,
+
+            service_name:
+                serviceName || null,
+
+            service_type:
+                serviceType,
+
+            title:
+                title,
+
+            description:
+                description || null,
+
+            replaced_parts:
+                replacedParts || null,
+
+            labor_cost:
+                laborCost,
+
+            parts_cost:
+                partsCost,
+
+            total_cost:
+                totalCost,
+
+            notes:
+                notes || null
+
+        })
+        .select()
+        .single();
+
+
+    if(recordError){
+
+        console.error(
+            recordError
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "SERVİS KAYDINI KAYDET";
+
+        showToast(
+            "Servis kaydı oluşturulamadı."
+        );
+
+        return;
+    }
+
+
+    /*
+       Seçilen bakım kalemlerini
+       servis kaydına bağlıyoruz.
+    */
+
+    if(selectedItems.length){
+
+        const linkRows =
+            selectedItems.map(
+                checkbox => ({
+
+                    service_record_id:
+                        record.id,
+
+                    maintenance_item_id:
+                        checkbox.value,
+
+                    item_name:
+                        checkbox.dataset.name
+
+                })
+            );
+
+
+        const {
+            error:linkError
+        } =
+            await supabaseClient
+            .from(
+                "vehicle_service_record_items"
+            )
+            .insert(linkRows);
+
+
+        if(linkError){
+
+            console.error(
+                "Bakım bağlantıları:",
+                linkError
+            );
+
+        }
+
+    }
+
+
+    /*
+       Girilen kilometre aracın mevcut
+       kilometresinden yüksekse araç KM'sini
+       de güncelliyoruz.
+    */
+
+    if(
+        serviceKm !== null &&
+        (
+            currentVehicle.current_km === null ||
+            currentVehicle.current_km === undefined ||
+            serviceKm >
+            Number(currentVehicle.current_km)
+        )
+    ){
+
+        const {
+            data:updatedVehicle,
+            error:kmError
+        } =
+            await supabaseClient
+            .from("vehicle_profiles")
+            .update({
+                current_km:
+                    serviceKm
+            })
+            .eq(
+                "id",
+                currentVehicle.id
+            )
+            .select()
+            .single();
+
+
+        if(
+            !kmError &&
+            updatedVehicle
+        ){
+
+            currentVehicle =
+                updatedVehicle;
+
+            updateVehicleInMemory(
+                updatedVehicle
+            );
+
+        }
+
+    }
+
+
+    await loadServiceRecords();
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "SERVİS KAYDINI KAYDET";
+
+
+    showToast(
+        "Servis kaydı oluşturuldu."
+    );
+
+
+    renderServiceHistory();
+
+}
+
+/*
+   Silme işlemini de kayıt formuyla birlikte
+   bir sonraki adımda aktif edeceğiz.
+*/
+
+function deleteServiceRecord(id){
+
+    showToast(
+        "Servis kayıt yönetimi hazırlanıyor."
+    );
+
+}
 /* =========================================================
    BAKIM HELPERS
 ========================================================= */
