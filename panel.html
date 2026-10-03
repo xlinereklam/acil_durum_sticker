@@ -122,6 +122,51 @@ input:checked + .slider:before {
     transform:translateX(22px);
 }
 
+
+.push-card {
+    background:#171717;
+    border:1px solid #292929;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:14px;
+}
+
+.push-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+}
+
+.push-title {
+    font-weight:bold;
+    font-size:16px;
+}
+
+.push-button {
+    width:100%;
+    margin-top:15px;
+    background:#f2f2f2;
+    color:#111;
+}
+
+.push-button:disabled {
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.push-ready {
+    color:#79e59c;
+    font-size:12px;
+    margin-top:10px;
+}
+
+.push-warning {
+    color:#e7c46a;
+    font-size:12px;
+    margin-top:10px;
+}
+
 .section-title {
     font-size:18px;
     font-weight:bold;
@@ -267,6 +312,28 @@ button, .call {
         </div>
     </div>
 
+    <div class="push-card">
+        <div class="push-row">
+            <div>
+                <div class="push-title">Telefon Bildirimleri</div>
+                <div class="small">
+                    Araç uyarılarını bu cihazda anlık al.
+                </div>
+            </div>
+            <div id="pushStatus">Kontrol ediliyor...</div>
+        </div>
+
+        <button
+            id="pushButton"
+            class="push-button"
+            onclick="enablePushNotifications()"
+        >
+            BİLDİRİMLERİ AÇ
+        </button>
+
+        <div id="pushInfo" class="small"></div>
+    </div>
+
     <div class="section-title">
         Gelen Bildirimler
     </div>
@@ -295,6 +362,12 @@ button, .call {
 
 let currentSticker = null;
 let currentVehicleProfile = null;
+
+const VAPID_PUBLIC_KEY =
+    "BPU_EJsbQxAL5VIGZfJCLvI6pFfpmforw9x7bLlYbE1R0qdSsZNvIiAUPk3lXruqHPyp8BN9cmv9JegkLMl_InM";
+
+let currentUser = null;
+
 
 const vehicleArea =
     document.getElementById("vehicleArea");
@@ -338,7 +411,10 @@ async function initialize() {
     }
 
 
+    currentUser = session.user;
+
     await loadVehicle(session.user.id);
+    await checkPushStatus();
 }
 
 
@@ -758,6 +834,241 @@ async function blockSender(alertId) {
         "Gönderici engellendi.",
         "success"
     );
+}
+
+
+
+function urlBase64ToUint8Array(base64String) {
+
+    const padding =
+        "=".repeat((4 - base64String.length % 4) % 4);
+
+    const base64 =
+        (base64String + padding)
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
+
+    const rawData = atob(base64);
+
+    return Uint8Array.from(
+        [...rawData].map(char => char.charCodeAt(0))
+    );
+}
+
+
+async function getServiceWorkerRegistration() {
+
+    if (!("serviceWorker" in navigator)) {
+        throw new Error("Bu tarayıcı Service Worker desteklemiyor.");
+    }
+
+    const registration =
+        await navigator.serviceWorker.register("./sw.js");
+
+    await navigator.serviceWorker.ready;
+
+    return registration;
+}
+
+
+async function checkPushStatus() {
+
+    const pushStatus =
+        document.getElementById("pushStatus");
+
+    const pushButton =
+        document.getElementById("pushButton");
+
+    const pushInfo =
+        document.getElementById("pushInfo");
+
+
+    if (
+        !("serviceWorker" in navigator) ||
+        !("PushManager" in window) ||
+        !("Notification" in window)
+    ) {
+        pushStatus.textContent = "Desteklenmiyor";
+        pushButton.disabled = true;
+        pushInfo.className = "push-warning";
+        pushInfo.textContent =
+            "Bu tarayıcı web bildirimlerini desteklemiyor.";
+        return;
+    }
+
+
+    if (Notification.permission === "denied") {
+        pushStatus.textContent = "Kapalı";
+        pushButton.disabled = true;
+        pushInfo.className = "push-warning";
+        pushInfo.textContent =
+            "Bildirim izni tarayıcı ayarlarından engellenmiş.";
+        return;
+    }
+
+
+    try {
+
+        const registration =
+            await getServiceWorkerRegistration();
+
+        const subscription =
+            await registration.pushManager.getSubscription();
+
+
+        if (subscription) {
+
+            pushStatus.textContent = "✓ Hazır";
+            pushButton.textContent = "BİLDİRİMLER AÇIK";
+            pushButton.disabled = true;
+
+            pushInfo.className = "push-ready";
+            pushInfo.textContent =
+                "Bu cihaz araç uyarılarını almaya hazır.";
+
+            await savePushSubscription(subscription);
+
+        } else {
+
+            pushStatus.textContent = "Kapalı";
+            pushButton.textContent = "BİLDİRİMLERİ AÇ";
+            pushButton.disabled = false;
+
+            pushInfo.className = "small";
+            pushInfo.textContent =
+                "Bir kez izin vermen yeterli.";
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        pushStatus.textContent = "Hata";
+        pushInfo.className = "push-warning";
+        pushInfo.textContent =
+            "Bildirim sistemi kontrol edilemedi.";
+    }
+}
+
+
+async function enablePushNotifications() {
+
+    const pushButton =
+        document.getElementById("pushButton");
+
+    const pushInfo =
+        document.getElementById("pushInfo");
+
+    pushButton.disabled = true;
+    pushButton.textContent = "HAZIRLANIYOR...";
+
+
+    try {
+
+        const permission =
+            await Notification.requestPermission();
+
+
+        if (permission !== "granted") {
+
+            pushButton.textContent = "BİLDİRİMLERİ AÇ";
+
+            if (permission !== "denied") {
+                pushButton.disabled = false;
+            }
+
+            pushInfo.className = "push-warning";
+            pushInfo.textContent =
+                "Telefon bildirimi için izin verilmedi.";
+
+            return;
+        }
+
+
+        const registration =
+            await getServiceWorkerRegistration();
+
+
+        let subscription =
+            await registration.pushManager.getSubscription();
+
+
+        if (!subscription) {
+
+            subscription =
+                await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey:
+                        urlBase64ToUint8Array(
+                            VAPID_PUBLIC_KEY
+                        )
+                });
+        }
+
+
+        await savePushSubscription(subscription);
+
+        showMessage(
+            "Bu cihaz telefon bildirimlerine hazır.",
+            "success"
+        );
+
+        await checkPushStatus();
+
+    } catch (error) {
+
+        console.error(error);
+
+        pushButton.disabled = false;
+        pushButton.textContent = "BİLDİRİMLERİ AÇ";
+
+        pushInfo.className = "push-warning";
+        pushInfo.textContent =
+            "Bildirim aboneliği oluşturulamadı.";
+    }
+}
+
+
+async function savePushSubscription(subscription) {
+
+    if (!currentUser) {
+        throw new Error("Oturum bulunamadı.");
+    }
+
+
+    const json = subscription.toJSON();
+
+    if (
+        !json.endpoint ||
+        !json.keys?.p256dh ||
+        !json.keys?.auth
+    ) {
+        throw new Error("Push aboneliği eksik.");
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("push_subscriptions")
+            .upsert(
+                {
+                    user_id: currentUser.id,
+                    endpoint: json.endpoint,
+                    p256dh: json.keys.p256dh,
+                    auth_key: json.keys.auth,
+                    user_agent: navigator.userAgent,
+                    updated_at:
+                        new Date().toISOString()
+                },
+                {
+                    onConflict: "endpoint"
+                }
+            );
+
+
+    if (error) {
+        throw error;
+    }
 }
 
 
