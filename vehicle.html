@@ -439,7 +439,35 @@ const token =
     params.get("t");
 
 let selectedReason = null;
+// =====================================================
+// ANONİM CİHAZ KİMLİĞİ
+// =====================================================
 
+function getDeviceId() {
+
+    const storageKey =
+        "xline_vehicle_device_id";
+
+    let deviceId =
+        localStorage.getItem(
+            storageKey
+        );
+
+    if (!deviceId) {
+
+        deviceId =
+            crypto.randomUUID();
+
+        localStorage.setItem(
+            storageKey,
+            deviceId
+        );
+    }
+
+    return deviceId;
+}
+
+const deviceId = getDeviceId();
 
 const message =
     document.getElementById(
@@ -596,23 +624,25 @@ async function sendAlert() {
 
 
     const { data, error } =
-        await supabaseClient.rpc(
-            "send_vehicle_alert",
-            {
-                p_public_token:
-                    token,
+    await supabaseClient.rpc(
+        "send_vehicle_alert",
+        {
+            p_public_token:
+                token,
 
-                p_alert_type:
-                    selectedReason,
+            p_alert_type:
+                selectedReason,
 
-                p_sender_name:
-                    name,
+            p_sender_name:
+                name,
 
-                p_sender_phone:
-                    phone
-            }
-        );
+            p_sender_phone:
+                phone,
 
+            p_device_id:
+                deviceId
+        }
+    );
 
     if (error) {
 
