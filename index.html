@@ -1,122 +1,307 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
 
-    <meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#0b0b0b">
 
-    <title>XLine Akıllı Etiket</title>
+<title>XLine Akıllı Araç</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0d0d0d;
-            color: #ffffff;
+* {
+    box-sizing: border-box;
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+body {
+    margin: 0;
+    min-height: 100vh;
 
-            padding: 24px;
-        }
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-        .card {
-            width: 100%;
-            max-width: 430px;
+    background:
+        radial-gradient(
+            circle at top,
+            #292929 0%,
+            #0b0b0b 48%
+        );
 
-            background: #171717;
+    color: white;
 
-            border: 1px solid #2b2b2b;
-            border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            padding: 32px 24px;
+    padding: 20px;
+}
 
-            text-align: center;
-        }
+.card {
+    width: 100%;
+    max-width: 430px;
 
-        .brand {
-            font-size: 13px;
-            letter-spacing: 4px;
-            color: #999;
-            margin-bottom: 22px;
-        }
+    background: rgba(23,23,23,.97);
 
-        h1 {
-            margin: 0 0 12px;
-            font-size: 30px;
-        }
+    border: 1px solid #303030;
+    border-radius: 26px;
 
-        .description {
-            color: #bdbdbd;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
+    padding: 32px 24px;
 
-        .status {
-            padding: 16px;
-            border-radius: 14px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
+}
 
-            background: #202020;
+.brand {
+    text-align: center;
 
-            font-size: 14px;
-        }
+    letter-spacing: 5px;
+    font-size: 11px;
 
-        .status.testing {
-            color: #dddddd;
-        }
+    color: #777;
 
-        .status.success {
-            background: #10291b;
-            color: #71e69a;
-        }
+    margin-bottom: 25px;
+}
 
-        .status.error {
-            background: #321616;
-            color: #ff8b8b;
-        }
+.icon {
+    width: 76px;
+    height: 76px;
 
-        .footer {
-            margin-top: 28px;
-            color: #666;
-            font-size: 12px;
-        }
-    </style>
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #242424;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 35px;
+
+    border: 1px solid #383838;
+}
+
+h1 {
+    text-align: center;
+
+    font-size: 27px;
+
+    margin:
+        18px 0
+        8px;
+}
+
+.description {
+    text-align: center;
+
+    color: #999;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    margin-bottom: 28px;
+}
+
+label {
+    display: block;
+
+    color: #999;
+
+    font-size: 12px;
+
+    margin:
+        15px 0
+        6px;
+}
+
+input {
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    border: 1px solid #383838;
+
+    background: #101010;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #777;
+}
+
+.login {
+    width: 100%;
+
+    margin-top: 22px;
+
+    padding: 17px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: #e12626;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.login:disabled {
+    opacity: .5;
+}
+
+.message {
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.message.error {
+    display: block;
+
+    background: #321616;
+
+    color: #ff9696;
+}
+
+.message.success {
+    display: block;
+
+    background: #10291b;
+
+    color: #79e59c;
+}
+
+.security {
+    margin-top: 22px;
+
+    padding: 13px;
+
+    background: #111;
+
+    border-radius: 12px;
+
+    color: #666;
+
+    font-size: 11px;
+
+    text-align: center;
+
+    line-height: 1.5;
+}
+
+.footer {
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 11px;
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="card">
 
     <div class="brand">
-        XLINE
+        XLINE SMART VEHICLE
     </div>
+
+
+    <div class="icon">
+        🚗
+    </div>
+
 
     <h1>
-        Akıllı Etiket Sistemi
+        Araç Panelim
     </h1>
 
+
     <div class="description">
-        Araç Güvenlik Etiketi ve
-        Moto Yaşam Kartı
+        Akıllı araç etiketinizi yönetin,
+        gelen uyarıları görüntüleyin ve
+        telefon bildirimlerinizi açın.
     </div>
 
-    <div
-        id="connectionStatus"
-        class="status testing"
+
+    <label>
+        E-posta
+    </label>
+
+    <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        placeholder="E-posta adresiniz"
     >
-        Sistem bağlantısı kontrol ediliyor...
+
+
+    <label>
+        Şifre
+    </label>
+
+    <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Şifreniz"
+    >
+
+
+    <button
+        id="loginButton"
+        class="login"
+        onclick="login()"
+    >
+        GİRİŞ YAP
+    </button>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div class="security">
+        Araç sahibinin telefon numarası
+        QR kodu okutan kişilerle paylaşılmaz.
     </div>
+
 
     <div class="footer">
         XLine Reklam & Yazılım
@@ -125,79 +310,155 @@
 </div>
 
 
-<!-- SUPABASE JAVASCRIPT KÜTÜPHANESİ -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-<!-- BİZİM SUPABASE AYARLARIMIZ -->
 
 <script src="./js/config.js"></script>
 
 
 <script>
 
-async function testConnection() {
-
-    const status =
-        document.getElementById("connectionStatus");
-
-    try {
-
-        /*
-        Stickers tablosunun içeriğini istemiyoruz.
-        Sadece Supabase ile iletişim kurulabiliyor mu
-        kontrol ediyoruz.
-
-        RLS nedeniyle anonim kullanıcı kayıtları
-        okuyamamalı. Bu beklediğimiz davranış.
-        */
-
-        const { error } =
-            await supabaseClient
-                .from("stickers")
-                .select("id")
-                .limit(1);
+const message =
+    document.getElementById(
+        "message"
+    );
 
 
-        if (error) {
+async function checkSession() {
 
-            /*
-            RLS / permission hatası bağlantının
-            çalışmadığı anlamına gelmez.
-
-            Supabase bize cevap verdiyse bağlantı var.
-            */
-
-            console.log(
-                "Supabase response:",
-                error
-            );
-        }
+    const {
+        data: { session }
+    } =
+        await supabaseClient.auth.getSession();
 
 
-        status.textContent =
-            "✓ Sistem bağlantısı hazır";
+    if (session) {
 
-        status.className =
-            "status success";
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        status.textContent =
-            "Bağlantı kurulamadı";
-
-        status.className =
-            "status error";
+        window.location.replace(
+            "./panel.html"
+        );
     }
 }
 
 
-testConnection();
+async function login() {
+
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById("password")
+            .value;
+
+
+    if (!email || !password) {
+
+        showMessage(
+            "E-posta ve şifrenizi girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "loginButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "GİRİŞ YAPILIYOR...";
+
+
+    const { data, error } =
+        await supabaseClient.auth
+            .signInWithPassword({
+                email: email,
+                password: password
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            "E-posta veya şifre hatalı.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "GİRİŞ YAP";
+
+        return;
+    }
+
+
+    if (!data.session) {
+
+        showMessage(
+            "Oturum oluşturulamadı.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "GİRİŞ YAP";
+
+        return;
+    }
+
+
+    showMessage(
+        "Giriş başarılı.",
+        "success"
+    );
+
+
+    window.location.replace(
+        "./panel.html"
+    );
+}
+
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+}
+
+
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+                login();
+            }
+        }
+    );
+
+
+checkSession();
 
 </script>
 
