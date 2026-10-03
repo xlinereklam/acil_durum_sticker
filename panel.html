@@ -2299,6 +2299,23 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
 @media(min-width:800px){.app{max-width:480px!important}.dashboard-grid{grid-template-columns:1fr!important}}
 
 </style>
+
+<style id="xline-aracim-redesign">
+:root{--xr:#e31b23;--xg:#159a63;--xi:#171a1f;--xm:#777f89}
+.bottom-nav-wrap{position:fixed!important;left:50%!important;transform:translateX(-50%)!important;bottom:9px!important;width:min(760px,calc(100% - 16px))!important;z-index:1000!important;background:transparent!important}
+.bottom-nav{display:grid!important;grid-template-columns:repeat(5,1fr)!important;min-height:78px!important;padding:7px!important;background:rgba(255,255,255,.95)!important;border:1px solid rgba(20,24,30,.08)!important;border-radius:24px!important;box-shadow:0 16px 45px rgba(17,24,39,.16)!important;backdrop-filter:blur(18px)!important}
+.nav-button{min-height:62px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;padding:4px 2px!important;border:0!important;border-radius:17px!important;background:transparent!important;color:#7b828b!important}
+.nav-button.active{background:#fff0f1!important;color:var(--xr)!important}
+.nav-icon{width:27px!important;height:27px!important;display:grid!important;place-items:center!important;font-size:0!important}.nav-icon svg{width:27px!important;height:27px!important;fill:currentColor!important}.nav-label{font-size:13px!important;font-weight:900!important;line-height:1!important;white-space:nowrap!important}.emergency-triangle svg{fill:none!important;stroke:var(--xr)!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.xv-hero{position:relative;min-height:290px;overflow:hidden;margin:4px 0 16px;padding:28px;border:1px solid #eceef0;border-radius:30px;background:radial-gradient(circle at 82% 8%,rgba(227,27,35,.11),transparent 30%),linear-gradient(145deg,#fff,#f4f5f6);box-shadow:0 18px 55px rgba(23,26,31,.08)}.xv-hero-copy{position:relative;z-index:2;max-width:58%}.xv-overline,.xv-section em{color:var(--xr);font-size:11px;font-style:normal;font-weight:900;letter-spacing:1.4px}.xv-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:12px}.xv-plate{display:inline-block;padding:8px 12px;border:2px solid #171a1f;border-radius:9px;background:#fff;color:#111;font-size:24px;font-weight:900;line-height:1}.xv-head h1{margin:10px 0 0!important;color:var(--xi)!important;font-size:28px!important;font-weight:900!important;line-height:1.05!important}.xv-status{display:flex;align-items:center;gap:6px;padding:8px 9px;border-radius:999px;background:#eceef0;color:#747b84;font-size:9px;font-weight:900;white-space:nowrap}.xv-status i{width:7px;height:7px;border-radius:50%;background:#9ba1a8}.xv-status.active{background:#e9f8f0;color:#147b50}.xv-status.active i{background:#18a568}.xv-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}.xv-pills span{padding:8px 10px;border:1px solid #e2e5e8;border-radius:999px;background:rgba(255,255,255,.8);color:#59606a;font-size:11px;font-weight:800}.xv-car{position:absolute;right:-18px;bottom:-4px;width:55%;min-width:360px}.xv-car svg{display:block;width:100%}
+.xv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px}.xv-stats>div{display:grid;grid-template-columns:42px 1fr;column-gap:12px;align-items:center;min-height:86px;padding:15px;border:1px solid #eceef0;border-radius:19px;background:#fff;box-shadow:0 8px 25px rgba(23,26,31,.05)}.xv-stats b{grid-row:1/3;width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#fff0f1;color:var(--xr);font-size:11px}.xv-stats span{color:#8b9199;font-size:11px;font-weight:700}.xv-stats strong{color:#22272d;font-size:15px;font-weight:900}
+.xv-section{margin-bottom:30px}.xv-section>header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:13px}.xv-section h2{margin:5px 0 3px!important;color:var(--xi)!important;font-size:25px!important;font-weight:900!important}.xv-section p{margin:0;color:#7d848d;font-size:13px}.xv-section mark{background:none;color:#e0e3e6;font-size:40px;font-weight:900;line-height:.8}.xv-card,.xv-settings{padding:20px;border:1px solid #e9ebee;border-radius:23px;background:#fff;box-shadow:0 12px 34px rgba(23,26,31,.055)}.xv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.xv-card .field label{display:block;margin:0 0 7px!important;color:#6d747e!important;font-size:11px!important;font-weight:900!important;letter-spacing:.6px!important}.xv-card input,.xv-card select,.xv-setting select{width:100%!important;min-height:52px!important;padding:0 14px!important;border:1px solid #dfe2e6!important;border-radius:14px!important;background:#f8f9fa!important;color:#20242a!important;font-size:15px!important;font-weight:750!important;box-shadow:none!important}.xv-card input:focus,.xv-card select:focus{outline:none!important;border-color:#ee9ca0!important;box-shadow:0 0 0 4px rgba(227,27,35,.07)!important}.xv-save{grid-column:1/-1;min-height:54px;border:0;border-radius:15px;background:linear-gradient(135deg,#e31b23,#bd1017);color:#fff;font-size:15px;font-weight:900;box-shadow:0 12px 24px rgba(227,27,35,.2);cursor:pointer}.xv-save-light{width:100%;margin-top:16px}
+.xv-settings{padding:0;overflow:hidden}.xv-setting{position:relative;min-height:84px;display:flex;align-items:center;gap:13px;padding:15px 18px;border-bottom:1px solid #eef0f2;cursor:pointer}.xv-setting-icon{flex:0 0 42px;width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#f5f6f7;color:#252a30;font-size:11px;font-weight:900}.xv-setting-text{flex:1;min-width:0}.xv-setting-text strong{display:block;color:#22272d;font-size:15px;font-weight:900}.xv-setting-text small{display:block;margin-top:4px;color:#858b93;font-size:11.5px}.xv-setting>input{position:absolute;opacity:0}.xv-setting>i{position:relative;flex:0 0 48px;width:48px;height:28px;border-radius:999px;background:#d9dde1}.xv-setting>i:after{content:"";position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 7px rgba(0,0,0,.18);transition:.2s}.xv-setting>input:checked+i{background:var(--xg)}.xv-setting>input:checked+i:after{transform:translateX(20px)}.xv-setting select{max-width:145px!important;min-height:43px!important;font-size:13px!important}.xv-settings>.xv-save{width:calc(100% - 36px);margin:16px 18px 18px}
+.xv-check{grid-column:1/-1;display:flex;align-items:center;gap:11px;padding:14px;border-radius:16px;background:#fff4f4;cursor:pointer}.xv-check input{position:absolute;opacity:0}.xv-check i{flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border:2px solid #d8dce0;border-radius:9px;background:#fff;color:transparent;font-style:normal;font-weight:900}.xv-check input:checked+i{border-color:var(--xr);background:var(--xr);color:#fff}.xv-check strong{display:block;color:#252a30;font-size:14px}.xv-check small{display:block;margin-top:3px;color:#7f858d;font-size:11px}
+@media(max-width:700px){.bottom-nav{min-height:76px!important}.nav-label{font-size:12.5px!important}.nav-icon,.nav-icon svg{width:25px!important;height:25px!important}.xv-hero{min-height:360px;padding:21px 19px;border-radius:25px}.xv-hero-copy{max-width:100%}.xv-plate{font-size:21px}.xv-head h1{font-size:24px!important}.xv-pills{max-width:78%}.xv-car{right:-34px;bottom:0;width:115%;min-width:0}.xv-stats{grid-template-columns:1fr;gap:8px}.xv-stats>div{min-height:70px;padding:12px 14px}.xv-section h2{font-size:23px!important}.xv-section mark{font-size:34px}.xv-card{padding:16px}.xv-grid{grid-template-columns:1fr}.xv-setting{padding:14px}.xv-setting-text strong{font-size:14px}.xv-setting select{max-width:125px!important}.xv-check{grid-column:auto}.xv-save{grid-column:auto;font-size:16px}}
+@media(max-width:390px){.nav-label{font-size:11.5px!important}.xv-status{font-size:8px}.xv-pills{max-width:88%}}
+</style>
+
 </head>
 
 <body>
@@ -2348,60 +2365,13 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
 
 
 <div class="bottom-nav-wrap">
-
-    <nav class="bottom-nav">
-
-        <button
-            class="nav-button active"
-            data-section="home"
-            onclick="openSection('home')"
-        >
-            <span class="nav-icon">⌂</span>
-            <span class="nav-label">Ana Sayfa</span>
-        </button>
-
-
-        <button
-            class="nav-button"
-            data-section="vehicle"
-            onclick="openSection('vehicle')"
-        >
-            <span class="nav-icon">◇</span>
-            <span class="nav-label">Aracım</span>
-        </button>
-
-
-        <button
-            class="nav-button"
-            data-section="maintenance"
-            onclick="openSection('maintenance')"
-        >
-            <span class="nav-icon">⌁</span>
-            <span class="nav-label">Bakım</span>
-        </button>
-
-
-        <button
-            class="nav-button"
-            data-section="emergency"
-            onclick="openSection('emergency')"
-        >
-            <span class="nav-icon">＋</span>
-            <span class="nav-label">Acil</span>
-        </button>
-
-
-        <button
-            class="nav-button"
-            data-section="profile"
-            onclick="openSection('profile')"
-        >
-            <span class="nav-icon">○</span>
-            <span class="nav-label">Profil</span>
-        </button>
-
-    </nav>
-
+<nav class="bottom-nav">
+<button class="nav-button active" data-section="home" onclick="openSection('home')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8v9.2a1 1 0 0 1-1 1h-5.2v-6.2H9.2V21H4a1 1 0 0 1-1-1z"/></svg></span><span class="nav-label">Ana Sayfa</span></button>
+<button class="nav-button" data-section="vehicle" onclick="openSection('vehicle')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5.1 9.4 6.8 5.8A2.5 2.5 0 0 1 9.1 4.4h5.8a2.5 2.5 0 0 1 2.3 1.4l1.7 3.6 1.3 1.1c.5.4.8 1 .8 1.7v4.3c0 .8-.7 1.5-1.5 1.5H18v1.2c0 .8-.6 1.4-1.4 1.4h-.8c-.8 0-1.4-.6-1.4-1.4V18H9.6v1.2c0 .8-.6 1.4-1.4 1.4h-.8c-.8 0-1.4-.6-1.4-1.4V18H4.5C3.7 18 3 17.3 3 16.5v-4.3c0-.7.3-1.3.8-1.7zM7 9.5h10l-1.2-2.7a1 1 0 0 0-.9-.6H9.1a1 1 0 0 0-.9.6zm.1 5.4a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8m9.8 0a1.4 1.4 0 1 0 0-2.8 1.4 1.4 0 0 0 0 2.8"/></svg></span><span class="nav-label">Aracım</span></button>
+<button class="nav-button" data-section="maintenance" onclick="openSection('maintenance')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14.8 5.2a5.1 5.1 0 0 0-6.1 6.6L3.2 17.3a2.5 2.5 0 1 0 3.5 3.5l5.5-5.5a5.1 5.1 0 0 0 6.6-6.1l-3 3-3.1-.8-.8-3.1z"/></svg></span><span class="nav-label">Bakım</span></button>
+<button class="nav-button nav-emergency" data-section="emergency" onclick="openSection('emergency')"><span class="nav-icon emergency-triangle"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 2.2 18a2 2 0 0 0 1.7 3h16.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0"/><path class="emergency-mark" d="M12 8v5.4M12 17.1v.1"/></svg></span><span class="nav-label">Acil</span></button>
+<button class="nav-button" data-section="profile" onclick="openSection('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></span><span class="nav-label">Profil</span></button>
+</nav>
 </div>
 
 
@@ -3630,561 +3600,82 @@ if(section === "maintenance"){
 function renderVehicleSection(){
 
     pageTitle.textContent = "Aracım";
-
-    const vehicleTitle =
-        getVehicleTitle();
+    const vehicleTitle = getVehicleTitle();
+    const active = currentSticker.status === "active";
+    const availability = currentVehicle.availability_status || "available";
 
     mainContent.innerHTML = `
-
-        <section class="vehicle-profile-head">
-
-            <div class="vehicle-profile-icon">
-
-                <svg
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                >
-                    <path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5"/>
-                    <path d="M5 13h14a2 2 0 0 1 2 2v3H3v-3a2 2 0 0 1 2-2Z"/>
-                    <circle cx="7" cy="15.5" r="1"/>
-                    <circle cx="17" cy="15.5" r="1"/>
-                    <path d="M5 18v2M19 18v2"/>
-                </svg>
-
-            </div>
-
-
-            <div class="vehicle-profile-main">
-
-                <div class="vehicle-profile-label">
-                    ARACIM
-                </div>
-
-                <div class="vehicle-profile-plate">
-                    ${
-                        escapeHtml(
-                            currentVehicle.plate ||
-                            "PLAKA EKLE"
-                        )
-                    }
-                </div>
-
-                <div class="vehicle-profile-model">
-                    ${escapeHtml(vehicleTitle)}
-                </div>
-
-            </div>
-
-
-            <div class="vehicle-profile-status">
-                <span></span>
-
-                ${
-                    currentSticker.status === "active"
-                    ? "AKTİF"
-                    : escapeHtml(
-                        currentSticker.status.toUpperCase()
-                    )
-                }
-            </div>
-
-        </section>
-
-
-        <!-- ARAÇ BİLGİLERİ -->
-
-        <section class="vehicle-form-section">
-
-            <div class="form-section-title">
-                Araç Bilgileri
-            </div>
-
-            <div class="form-section-description">
-                Aracınızın temel bilgilerini girin.
-                Bu bilgiler Araç Kartı panelinizde kullanılır.
-            </div>
-
-
-            <div class="vehicle-form-card">
-
-                <div class="form-grid">
-
-
-                    <div class="field">
-
-                        <label>PLAKA</label>
-
-                        <input
-                            id="vehiclePlate"
-                            type="text"
-                            maxlength="15"
-                            autocomplete="off"
-                            placeholder="34 ABC 123"
-                            value="${
-                                escapeHtml(
-                                    currentVehicle.plate || ""
-                                )
-                            }"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>MARKA</label>
-
-                        <input
-                            id="vehicleBrand"
-                            type="text"
-                            maxlength="50"
-                            autocomplete="off"
-                            placeholder="Örn. Toyota"
-                            value="${
-                                escapeHtml(
-                                    currentVehicle.brand || ""
-                                )
-                            }"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>MODEL</label>
-
-                        <input
-                            id="vehicleModel"
-                            type="text"
-                            maxlength="70"
-                            autocomplete="off"
-                            placeholder="Örn. Corolla"
-                            value="${
-                                escapeHtml(
-                                    currentVehicle.model || ""
-                                )
-                            }"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>MODEL YILI</label>
-
-                        <input
-                            id="vehicleYear"
-                            type="number"
-                            inputmode="numeric"
-                            min="1900"
-                            max="2100"
-                            placeholder="2022"
-                            value="${
-                                currentVehicle.model_year ?? ""
-                            }"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>YAKIT</label>
-
-                        <select id="vehicleFuel">
-
-                            ${selectOption(
-                                "",
-                                "Seçiniz",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "gasoline",
-                                "Benzin",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "diesel",
-                                "Dizel",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "lpg",
-                                "LPG",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "hybrid",
-                                "Hibrit",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "electric",
-                                "Elektrik",
-                                currentVehicle.fuel_type
-                            )}
-
-                            ${selectOption(
-                                "other",
-                                "Diğer",
-                                currentVehicle.fuel_type
-                            )}
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>ŞANZIMAN</label>
-
-                        <select id="vehicleTransmission">
-
-                            ${selectOption(
-                                "",
-                                "Seçiniz",
-                                currentVehicle.transmission_type
-                            )}
-
-                            ${selectOption(
-                                "manual",
-                                "Manuel",
-                                currentVehicle.transmission_type
-                            )}
-
-                            ${selectOption(
-                                "automatic",
-                                "Otomatik",
-                                currentVehicle.transmission_type
-                            )}
-
-                            ${selectOption(
-                                "semi_automatic",
-                                "Yarı Otomatik",
-                                currentVehicle.transmission_type
-                            )}
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>RENK</label>
-
-                        <input
-                            id="vehicleColor"
-                            type="text"
-                            maxlength="40"
-                            placeholder="Örn. Beyaz"
-                            value="${
-                                escapeHtml(
-                                    currentVehicle.color || ""
-                                )
-                            }"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>GÜNCEL KİLOMETRE</label>
-
-                        <div class="input-suffix">
-
-                            <input
-                                id="vehicleKm"
-                                type="number"
-                                inputmode="numeric"
-                                min="0"
-                                placeholder="92500"
-                                value="${
-                                    currentVehicle.current_km ?? ""
-                                }"
-                            >
-
-                            <span>km</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="primary-save-button"
-                    id="saveVehicleButton"
-                    onclick="saveVehicleInformation()"
-                >
-                    ARAÇ BİLGİLERİNİ KAYDET
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- QR KART -->
-
-        <section class="vehicle-form-section">
-
-            <div class="form-section-title">
-                QR Araç Kartı
-            </div>
-
-            <div class="form-section-description">
-                Aracınızın üzerindeki QR kod üzerinden
-                size nasıl ulaşılacağını belirleyin.
-            </div>
-
-
-            <div class="vehicle-form-card">
-
-                <div class="qr-identity-row">
-
+        <section class="xv-hero">
+            <div class="xv-hero-copy">
+                <div class="xv-overline">DİJİTAL ARAÇ PROFİLİ</div>
+                <div class="xv-head">
                     <div>
-
-                        <div class="settings-label">
-                            KART SERİ NUMARASI
-                        </div>
-
-                        <div class="settings-value">
-                            ${
-                                escapeHtml(
-                                    currentSticker.serial_number
-                                )
-                            }
-                        </div>
-
+                        <div class="xv-plate">${escapeHtml(currentVehicle.plate || "PLAKA EKLE")}</div>
+                        <h1>${escapeHtml(vehicleTitle)}</h1>
                     </div>
-
-
-                    <div class="qr-mini-status">
-
-                        <span></span>
-
-                        ${
-                            currentSticker.status === "active"
-                            ? "AKTİF"
-                            : escapeHtml(
-                                currentSticker.status.toUpperCase()
-                            )
-                        }
-
-                    </div>
-
+                    <div class="xv-status ${active ? "active" : ""}"><i></i>${active ? "QR AKTİF" : escapeHtml(currentSticker.status.toUpperCase())}</div>
                 </div>
-
-
-                ${settingSwitch(
-                    "publicPhoneToggle",
-                    "Telefon numaramı göster",
-                    "QR kartı okutan kişi gerektiğinde telefon numaranızı görebilir.",
-                    currentVehicle.public_phone_enabled
-                )}
-
-
-                ${settingSwitch(
-                    "whatsappToggle",
-                    "WhatsApp iletişimine izin ver",
-                    "Acil olmayan araç uyarıları size hazır WhatsApp mesajı ile gönderilebilir.",
-                    currentVehicle.whatsapp_enabled
-                )}
-
-
-                <div class="setting-row">
-
-                    <div class="setting-content">
-
-                        <div class="setting-title">
-                            İletişim Durumu
-                        </div>
-
-                        <div class="setting-description">
-                            QR kartınızı geçici olarak
-                            sınırlandırabilirsiniz.
-                        </div>
-
-                    </div>
-
-
-                    <select
-                        id="availabilityStatus"
-                        class="compact-select"
-                    >
-
-                        ${selectOption(
-                            "available",
-                            "Müsait",
-                            currentVehicle.availability_status
-                        )}
-
-                        ${selectOption(
-                            "emergency_only",
-                            "Sadece Acil",
-                            currentVehicle.availability_status
-                        )}
-
-                        ${selectOption(
-                            "unavailable",
-                            "Ulaşılamaz",
-                            currentVehicle.availability_status
-                        )}
-
-                    </select>
-
+                <div class="xv-pills">
+                    <span>${currentVehicle.model_year || "Model yılı yok"}</span>
+                    <span>${escapeHtml(currentVehicle.fuel_type || "Yakıt seçilmedi")}</span>
+                    <span>${escapeHtml(currentVehicle.transmission_type || "Vites seçilmedi")}</span>
                 </div>
-
-
-                <button
-                    class="secondary-save-button"
-                    id="saveContactButton"
-                    onclick="saveVehicleContactSettings()"
-                >
-                    İLETİŞİM AYARLARINI KAYDET
-                </button>
-
             </div>
-
+            <div class="xv-car">
+                <svg viewBox="0 0 430 190" aria-hidden="true">
+                    <defs><linearGradient id="xvCar" x1="0" x2="1"><stop offset="0" stop-color="#1e2329"/><stop offset=".55" stop-color="#555d65"/><stop offset="1" stop-color="#15191e"/></linearGradient></defs>
+                    <ellipse cx="220" cy="158" rx="165" ry="15" fill="rgba(0,0,0,.12)"/>
+                    <path d="M72 121c10-22 29-31 57-35l36-39c9-10 21-15 35-15h75c16 0 29 6 39 18l31 37c30 5 45 16 50 34l3 18H53l4-10c3-5 8-7 15-8Z" fill="url(#xvCar)"/>
+                    <path d="m154 86 31-33c5-6 12-9 21-9h31v42Zm94 0V44h22c10 0 18 4 24 11l27 31Z" fill="#dfe5e9"/>
+                    <path d="M82 111h40" stroke="#e31b23" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="127" cy="139" r="27" fill="#15191e"/><circle cx="127" cy="139" r="13" fill="#9299a0"/>
+                    <circle cx="323" cy="139" r="27" fill="#15191e"/><circle cx="323" cy="139" r="13" fill="#9299a0"/>
+                </svg>
+            </div>
         </section>
 
-
-        <!-- ACİL DURUM KİŞİSİ -->
-
-        <section class="vehicle-form-section">
-
-            <div class="form-section-title">
-                Acil Durum Kişisi
-            </div>
-
-            <div class="form-section-description">
-                İsterseniz aracınız için ikinci bir
-                acil durum kişisi tanımlayabilirsiniz.
-            </div>
-
-
-            <div class="vehicle-form-card">
-
-                ${settingSwitch(
-                    "emergencyContactToggle",
-                    "İkinci acil durum kişisini kullan",
-                    "Acil durumlarda QR ekranında ikinci iletişim seçeneği gösterilir.",
-                    currentVehicle.emergency_contact_enabled
-                )}
-
-
-                <div
-                    id="emergencyContactFields"
-                    class="emergency-contact-fields ${
-                        currentVehicle.emergency_contact_enabled
-                        ? "visible"
-                        : ""
-                    }"
-                >
-
-                    <div class="form-grid">
-
-
-                        <div class="field">
-
-                            <label>
-                                KİŞİNİN ADI
-                            </label>
-
-                            <input
-                                id="secondaryContactName"
-                                type="text"
-                                maxlength="70"
-                                placeholder="Ad Soyad"
-                                value="${
-                                    escapeHtml(
-                                        currentVehicle.secondary_contact_name
-                                        || ""
-                                    )
-                                }"
-                            >
-
-                        </div>
-
-
-                        <div class="field">
-
-                            <label>
-                                TELEFON
-                            </label>
-
-                            <input
-                                id="secondaryContactPhone"
-                                type="tel"
-                                inputmode="tel"
-                                maxlength="20"
-                                placeholder="05XX XXX XX XX"
-                                value="${
-                                    escapeHtml(
-                                        currentVehicle.secondary_contact_phone
-                                        || ""
-                                    )
-                                }"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="secondary-save-button"
-                    id="saveEmergencyButton"
-                    onclick="saveEmergencyContact()"
-                >
-                    ACİL DURUM KİŞİSİNİ KAYDET
-                </button>
-
-            </div>
-
+        <section class="xv-stats">
+            <div><b>KM</b><span>Güncel kilometre</span><strong>${currentVehicle.current_km != null ? Number(currentVehicle.current_km).toLocaleString("tr-TR")+" km" : "—"}</strong></div>
+            <div><b>QR</b><span>Araç kartı</span><strong>${active ? "Aktif" : "Pasif"}</strong></div>
+            <div><b>●</b><span>Ulaşılabilirlik</span><strong>${availability === "available" ? "Uygun" : availability === "emergency_only" ? "Sadece acil" : "Uygun değil"}</strong></div>
         </section>
 
+        <section class="xv-section">
+            <header><div><em>ARAÇ KİMLİĞİ</em><h2>Araç Bilgileri</h2><p>Aracını tanımlayan temel bilgiler.</p></div><mark>01</mark></header>
+            <div class="xv-card xv-grid">
+                <div class="field"><label>PLAKA</label><input id="vehiclePlate" type="text" maxlength="15" value="${escapeHtml(currentVehicle.plate || "")}" placeholder="34 ABC 123"></div>
+                <div class="field"><label>MARKA</label><input id="vehicleBrand" type="text" maxlength="50" value="${escapeHtml(currentVehicle.brand || "")}" placeholder="Toyota"></div>
+                <div class="field"><label>MODEL</label><input id="vehicleModel" type="text" maxlength="70" value="${escapeHtml(currentVehicle.model || "")}" placeholder="Corolla"></div>
+                <div class="field"><label>MODEL YILI</label><input id="vehicleYear" type="number" min="1950" max="2100" value="${currentVehicle.model_year || ""}" placeholder="2024"></div>
+                <div class="field"><label>YAKIT</label><select id="vehicleFuel"><option value="">Seçiniz</option><option value="gasoline" ${currentVehicle.fuel_type==="gasoline"?"selected":""}>Benzin</option><option value="diesel" ${currentVehicle.fuel_type==="diesel"?"selected":""}>Dizel</option><option value="lpg" ${currentVehicle.fuel_type==="lpg"?"selected":""}>LPG</option><option value="hybrid" ${currentVehicle.fuel_type==="hybrid"?"selected":""}>Hibrit</option><option value="electric" ${currentVehicle.fuel_type==="electric"?"selected":""}>Elektrik</option></select></div>
+                <div class="field"><label>VİTES</label><select id="vehicleTransmission"><option value="">Seçiniz</option><option value="manual" ${currentVehicle.transmission_type==="manual"?"selected":""}>Manuel</option><option value="automatic" ${currentVehicle.transmission_type==="automatic"?"selected":""}>Otomatik</option><option value="semi_automatic" ${currentVehicle.transmission_type==="semi_automatic"?"selected":""}>Yarı Otomatik</option></select></div>
+                <div class="field"><label>RENK</label><input id="vehicleColor" type="text" maxlength="40" value="${escapeHtml(currentVehicle.color || "")}" placeholder="Beyaz"></div>
+                <div class="field"><label>GÜNCEL KM</label><input id="vehicleKm" type="number" min="0" value="${currentVehicle.current_km ?? ""}" placeholder="125000"></div>
+                <button id="saveVehicleButton" class="xv-save" onclick="saveVehicleInformation()">Araç Bilgilerini Kaydet</button>
+            </div>
+        </section>
+
+        <section class="xv-section">
+            <header><div><em>QR İLETİŞİMİ</em><h2>İletişim Ayarları</h2><p>QR kodu okutan kişinin sana nasıl ulaşacağını belirle.</p></div><mark>02</mark></header>
+            <div class="xv-settings">
+                <label class="xv-setting"><span class="xv-setting-icon">☎</span><span class="xv-setting-text"><strong>Telefon numaramı göster</strong><small>QR ekranında telefon numaran görüntülenebilir.</small></span><input id="publicPhoneEnabled" type="checkbox" ${currentVehicle.public_phone_enabled ? "checked" : ""}><i></i></label>
+                <label class="xv-setting"><span class="xv-setting-icon">WA</span><span class="xv-setting-text"><strong>WhatsApp iletişimi</strong><small>Acil olmayan bildirimler WhatsApp üzerinden gönderilebilir.</small></span><input id="whatsappEnabled" type="checkbox" ${currentVehicle.whatsapp_enabled ? "checked" : ""}><i></i></label>
+                <div class="xv-setting"><span class="xv-setting-icon">●</span><span class="xv-setting-text"><strong>Ulaşılabilirlik</strong><small>QR ekranındaki iletişim durumunu seç.</small></span><select id="availabilityStatus"><option value="available" ${availability==="available"?"selected":""}>Uygun</option><option value="emergency_only" ${availability==="emergency_only"?"selected":""}>Sadece acil</option><option value="unavailable" ${availability==="unavailable"?"selected":""}>Uygun değil</option></select></div>
+                <button class="xv-save xv-save-light" onclick="saveVehicleContactSettings()">İletişim Ayarlarını Kaydet</button>
+            </div>
+        </section>
+
+        <section class="xv-section">
+            <header><div><em>GÜVENLİK</em><h2>Acil Durum Kişisi</h2><p>Gerekli olduğunda ulaşılabilecek ikinci kişi.</p></div><mark>03</mark></header>
+            <div class="xv-card xv-grid">
+                <div class="field"><label>AD SOYAD</label><input id="secondaryContactName" type="text" maxlength="80" value="${escapeHtml(currentVehicle.secondary_contact_name || "")}" placeholder="Acil durumda aranacak kişi"></div>
+                <div class="field"><label>TELEFON</label><input id="secondaryContactPhone" type="tel" maxlength="20" value="${escapeHtml(currentVehicle.secondary_contact_phone || "")}" placeholder="05XX XXX XX XX"></div>
+                <label class="xv-check"><input id="emergencyContactEnabled" type="checkbox" ${currentVehicle.emergency_contact_enabled ? "checked" : ""}><i>✓</i><span><strong>Acil durum kişisini aktif et</strong><small>Yalnızca acil durum senaryolarında kullanılır.</small></span></label>
+            </div>
+        </section>
     `;
-
-
-    const emergencyToggle =
-        document.getElementById(
-            "emergencyContactToggle"
-        );
-
-
-    if(emergencyToggle){
-
-        emergencyToggle.addEventListener(
-            "change",
-            toggleEmergencyContactFields
-        );
-
-    }
-
 }
 
-
-/* =========================================================
-   ARACIM - ARAÇ BİLGİLERİNİ KAYDET
-========================================================= */
 
 async function saveVehicleInformation(){
 
