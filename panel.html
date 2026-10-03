@@ -2,357 +2,1086 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b0b0b">
 
-<title>Araç Panelim | XLine</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#0d1014">
+
+<title>XLine Araç Kartı</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
 <style>
-* { box-sizing:border-box; }
 
-body {
+:root{
+    --bg:#0d1014;
+    --surface:#15191f;
+    --surface-2:#1b2027;
+    --surface-3:#222831;
+
+    --line:rgba(255,255,255,.075);
+
+    --text:#f7f8fa;
+    --muted:#8f98a6;
+    --muted-2:#69727e;
+
+    --green:#55d98b;
+    --green-bg:rgba(85,217,139,.10);
+
+    --orange:#f5b94c;
+    --orange-bg:rgba(245,185,76,.10);
+
+    --red:#ff5d63;
+    --red-bg:rgba(255,93,99,.10);
+
+    --blue:#6ea8ff;
+    --blue-bg:rgba(110,168,255,.10);
+
+    --radius-xl:26px;
+    --radius-lg:20px;
+    --radius-md:16px;
+
+    --shadow:
+        0 18px 50px rgba(0,0,0,.18);
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    background:var(--bg);
+}
+
+body{
     margin:0;
     min-height:100vh;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#0b0b0b;
-    color:#fff;
-    padding:18px;
+
+    font-family:
+        "Manrope",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(255,255,255,.035),
+            transparent 28%
+        ),
+        var(--bg);
+
+    color:var(--text);
+
+    padding-bottom:
+        calc(92px + env(safe-area-inset-bottom));
 }
 
-.container {
-    max-width:500px;
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    width:100%;
+    max-width:1180px;
     margin:auto;
+    padding:0 18px 35px;
 }
 
-.header {
-    padding:18px 4px 25px;
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar{
+    height:82px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:20px;
 }
 
-.brand {
+.brand-small{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:3.4px;
+    color:var(--muted-2);
+}
+
+.page-title{
+    margin-top:4px;
+
+    font-size:21px;
+    font-weight:800;
+    letter-spacing:-.6px;
+}
+
+.profile-button{
+    width:44px;
+    height:44px;
+
+    border-radius:50%;
+    border:1px solid var(--line);
+
+    background:var(--surface);
+
+    color:white;
+
+    display:grid;
+    place-items:center;
+
+    font-size:15px;
+    font-weight:800;
+}
+
+
+/* =========================
+   GENERIC
+========================= */
+
+.section{
+    margin-top:27px;
+}
+
+.section-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:15px;
+
+    margin:0 2px 13px;
+}
+
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:-.35px;
+}
+
+.section-subtitle{
+    margin-top:3px;
+
     font-size:11px;
-    letter-spacing:4px;
-    color:#777;
+    color:var(--muted);
 }
 
-h1 {
-    margin:8px 0 0;
-    font-size:28px;
+.section-link{
+    border:0;
+    background:none;
+    color:var(--muted);
+
+    font-size:11px;
+    font-weight:700;
+
+    padding:5px;
 }
 
-.card {
-    background:#171717;
-    border:1px solid #292929;
-    border-radius:20px;
-    padding:20px;
-    margin-bottom:14px;
+.card{
+    background:var(--surface);
+    border:1px solid var(--line);
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow);
 }
 
-.vehicle-top {
+
+/* =========================
+   VEHICLE HERO
+========================= */
+
+.vehicle-hero{
+    position:relative;
+    overflow:hidden;
+
+    min-height:250px;
+
+    padding:25px;
+
+    border-radius:var(--radius-xl);
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c2128 0%,
+            #12161b 62%,
+            #181d23 100%
+        );
+
+    border:1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.28);
+}
+
+.vehicle-hero:after{
+    content:"";
+
+    position:absolute;
+    width:230px;
+    height:230px;
+
+    right:-75px;
+    bottom:-100px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.08),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+.vehicle-top{
+    position:relative;
+    z-index:2;
+
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:flex-start;
     gap:15px;
 }
 
-.serial {
-    font-size:21px;
-    font-weight:bold;
+.vehicle-label{
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:800;
+    color:var(--muted);
 }
 
-.status {
-    font-size:11px;
-    padding:7px 10px;
-    border-radius:20px;
-    background:#11331e;
-    color:#77e49b;
+.plate{
+    margin-top:8px;
+
+    font-size:30px;
+    line-height:1;
+
+    font-weight:800;
+    letter-spacing:-1.2px;
 }
 
-.small {
-    color:#888;
-    font-size:12px;
-    margin-top:6px;
+.vehicle-model{
+    margin-top:10px;
+
+    color:#c1c7d0;
+
+    font-size:14px;
+    font-weight:600;
 }
 
-.control {
+.qr-status{
+    flex-shrink:0;
+
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-top:20px;
-    padding-top:18px;
-    border-top:1px solid #292929;
+    gap:7px;
+
+    padding:8px 11px;
+
+    border-radius:999px;
+
+    background:var(--green-bg);
+
+    color:var(--green);
+
+    font-size:10px;
+    font-weight:800;
 }
 
-.switch {
-    position:relative;
-    width:52px;
-    height:30px;
-}
+.status-dot{
+    width:7px;
+    height:7px;
 
-.switch input {
-    opacity:0;
-    width:0;
-    height:0;
-}
-
-.slider {
-    position:absolute;
-    inset:0;
-    background:#444;
-    border-radius:30px;
-    cursor:pointer;
-}
-
-.slider:before {
-    content:"";
-    position:absolute;
-    width:22px;
-    height:22px;
-    left:4px;
-    top:4px;
-    background:white;
     border-radius:50%;
-    transition:.2s;
+
+    background:currentColor;
+
+    box-shadow:
+        0 0 0 4px rgba(85,217,139,.08);
 }
 
-input:checked + .slider {
-    background:#25a557;
-}
+.vehicle-bottom{
+    position:absolute;
 
-input:checked + .slider:before {
-    transform:translateX(22px);
-}
+    left:25px;
+    right:25px;
+    bottom:24px;
 
+    z-index:2;
 
-.push-card {
-    background:#171717;
-    border:1px solid #292929;
-    border-radius:20px;
-    padding:20px;
-    margin-bottom:14px;
-}
-
-.push-row {
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    gap:14px;
+    align-items:flex-end;
+
+    gap:20px;
 }
 
-.push-title {
-    font-weight:bold;
-    font-size:16px;
+.km-label{
+    font-size:10px;
+    color:var(--muted);
+    font-weight:700;
 }
 
-.push-button {
-    width:100%;
-    margin-top:15px;
-    background:#f2f2f2;
-    color:#111;
+.km{
+    margin-top:4px;
+
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:-.6px;
 }
 
-.push-button:disabled {
-    opacity:.55;
-    cursor:not-allowed;
+.serial{
+    text-align:right;
+
+    font-size:10px;
+    line-height:1.7;
+
+    color:var(--muted);
 }
 
-.push-ready {
-    color:#79e59c;
-    font-size:12px;
-    margin-top:10px;
+.serial strong{
+    display:block;
+
+    color:#dce0e5;
+
+    font-size:11px;
 }
 
-.push-warning {
-    color:#e7c46a;
-    font-size:12px;
-    margin-top:10px;
-}
 
-.section-title {
-    font-size:18px;
-    font-weight:bold;
-    margin:25px 3px 12px;
-}
+/* =========================
+   STATS
+========================= */
 
-.alert {
-    background:#171717;
-    border:1px solid #292929;
-    border-radius:18px;
-    padding:17px;
-    margin-bottom:12px;
-}
+.stats{
+    margin-top:12px;
 
-.alert.new {
-    border-color:#8c2a2a;
-}
-
-.alert-head {
-    display:flex;
-    justify-content:space-between;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
 }
 
-.alert-title {
-    font-weight:bold;
+.stat-card{
+    min-height:110px;
+
+    padding:16px 14px;
+
+    background:var(--surface);
+
+    border:1px solid var(--line);
+    border-radius:18px;
+}
+
+.stat-icon{
+    width:31px;
+    height:31px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:10px;
+
+    background:var(--surface-3);
+
+    color:#c8ced6;
+
+    margin-bottom:15px;
+}
+
+.stat-value{
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:-.4px;
+}
+
+.stat-label{
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:9px;
+    font-weight:700;
+    line-height:1.4;
+}
+
+
+/* =========================
+   REMINDERS
+========================= */
+
+.reminder-list{
+    display:grid;
+    gap:9px;
+}
+
+.reminder{
+    padding:16px;
+
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+
+    background:var(--surface);
+
+    border:1px solid var(--line);
+    border-radius:17px;
+}
+
+.reminder-icon{
+    width:42px;
+    height:42px;
+
+    flex:0 0 42px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:13px;
+
+    background:var(--surface-3);
+
+    color:#d9dee5;
+}
+
+.reminder-content{
+    min-width:0;
+    flex:1;
+}
+
+.reminder-title{
+    font-size:13px;
+    font-weight:750;
+}
+
+.reminder-detail{
+    margin-top:3px;
+
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+.reminder-state{
+    font-size:10px;
+    font-weight:800;
+
+    text-align:right;
+}
+
+.state-red{ color:var(--red); }
+.state-orange{ color:var(--orange); }
+.state-green{ color:var(--green); }
+
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+}
+
+.quick{
+    min-height:92px;
+
+    padding:13px 7px;
+
+    border:1px solid var(--line);
+    border-radius:17px;
+
+    background:var(--surface);
+
+    color:var(--text);
+
+    text-align:center;
+}
+
+.quick-icon{
+    width:36px;
+    height:36px;
+
+    margin:0 auto 10px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:12px;
+
+    background:var(--surface-3);
+
     font-size:16px;
 }
 
-.time {
-    color:#777;
-    font-size:11px;
+.quick-title{
+    font-size:9px;
+    line-height:1.35;
+
+    font-weight:750;
+}
+
+
+/* =========================
+   QR EVENTS
+========================= */
+
+.event-list{
+    overflow:hidden;
+}
+
+.event{
+    display:flex;
+    gap:13px;
+
+    padding:16px;
+
+    border-bottom:1px solid var(--line);
+}
+
+.event:last-child{
+    border-bottom:0;
+}
+
+.event-icon{
+    width:38px;
+    height:38px;
+
+    flex:0 0 38px;
+
+    border-radius:12px;
+
+    display:grid;
+    place-items:center;
+
+    background:var(--surface-3);
+}
+
+.event-main{
+    min-width:0;
+    flex:1;
+}
+
+.event-title{
+    font-size:12px;
+    font-weight:750;
+}
+
+.event-detail{
+    margin-top:3px;
+
+    color:var(--muted);
+
+    font-size:10px;
+}
+
+.event-time{
+    color:var(--muted-2);
+
+    font-size:9px;
+
     white-space:nowrap;
 }
 
-.sender {
-    margin-top:14px;
-    background:#101010;
-    border-radius:12px;
-    padding:12px;
+
+/* =========================
+   GUIDE
+========================= */
+
+.guide-scroll{
+    display:flex;
+    gap:10px;
+
+    overflow-x:auto;
+
+    padding:1px 1px 7px;
+
+    scrollbar-width:none;
 }
 
-.sender-name {
-    font-weight:bold;
+.guide-scroll::-webkit-scrollbar{
+    display:none;
 }
 
-.phone {
-    color:#aaa;
+.guide{
+    min-width:137px;
+    min-height:120px;
+
+    padding:16px;
+
+    border:1px solid var(--line);
+    border-radius:18px;
+
+    background:var(--surface);
+
+    color:white;
+
+    text-align:left;
+}
+
+.guide-icon{
+    font-size:20px;
+}
+
+.guide-title{
+    margin-top:19px;
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.guide-text{
     margin-top:4px;
-    font-size:14px;
+
+    font-size:9px;
+    line-height:1.45;
+
+    color:var(--muted);
 }
 
-.actions {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-top:12px;
+
+/* =========================
+   EMERGENCY
+========================= */
+
+.emergency-card{
+    margin-top:28px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,93,99,.20);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,93,99,.13),
+            rgba(255,93,99,.045)
+        );
 }
 
-button, .call {
+.emergency-label{
+    color:var(--red);
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:1.5px;
+}
+
+.emergency-title{
+    margin-top:7px;
+
+    font-size:20px;
+    font-weight:800;
+
+    letter-spacing:-.5px;
+}
+
+.emergency-text{
+    margin-top:5px;
+
+    max-width:500px;
+
+    color:#b4bbc5;
+
+    font-size:11px;
+    line-height:1.6;
+}
+
+.emergency-button{
+    width:100%;
+
+    margin-top:16px;
+
+    min-height:50px;
+
     border:0;
-    border-radius:11px;
-    padding:12px 8px;
-    font-size:13px;
-    font-weight:bold;
-    cursor:pointer;
-    text-decoration:none;
-    text-align:center;
+    border-radius:14px;
+
+    background:var(--red);
+    color:white;
+
+    font-size:12px;
+    font-weight:800;
+
+    letter-spacing:.3px;
 }
 
-.call {
-    background:#258b4c;
+
+/* =========================
+   EMPTY / LOADING
+========================= */
+
+.empty{
+    padding:25px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:11px;
+}
+
+.loading{
+    min-height:300px;
+
+    display:grid;
+    place-items:center;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.loader{
+    width:28px;
+    height:28px;
+
+    margin:0 auto 13px;
+
+    border-radius:50%;
+
+    border:2px solid rgba(255,255,255,.1);
+    border-top-color:white;
+
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{ transform:rotate(360deg); }
+}
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav-wrap{
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    z-index:100;
+
+    padding:
+        8px 12px
+        calc(8px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav{
+    max-width:600px;
+
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    padding:7px;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+
+    background:rgba(20,24,29,.94);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.4);
+}
+
+.nav-button{
+    min-height:51px;
+
+    border:0;
+    border-radius:15px;
+
+    background:transparent;
+    color:var(--muted);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    gap:4px;
+}
+
+.nav-button.active{
+    background:rgba(255,255,255,.06);
     color:white;
 }
 
-.ack {
-    background:#eee;
+.nav-icon{
+    font-size:16px;
+    line-height:1;
+}
+
+.nav-label{
+    font-size:8px;
+    font-weight:750;
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+
+    left:50%;
+    bottom:95px;
+
+    z-index:200;
+
+    transform:
+        translate(-50%,20px);
+
+    max-width:calc(100% - 35px);
+
+    padding:12px 16px;
+
+    border-radius:14px;
+
+    background:#f5f6f7;
     color:#111;
-}
 
-.block {
-    grid-column:1 / -1;
-    background:#321616;
-    color:#ff9292;
-}
-
-.empty {
-    text-align:center;
-    color:#777;
-    padding:35px 10px;
-}
-
-.message {
-    display:none;
-    padding:13px;
-    border-radius:12px;
-    margin-bottom:15px;
-    font-size:13px;
-}
-
-.message.error {
-    display:block;
-    background:#321616;
-    color:#ff9999;
-}
-
-.message.success {
-    display:block;
-    background:#10291b;
-    color:#79e59c;
-}
-
-.logout {
-    width:100%;
-    background:#222;
-    color:#aaa;
-    margin:20px 0;
-}
-
-.footer {
-    text-align:center;
-    color:#444;
     font-size:11px;
-    padding:15px;
+    font-weight:700;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.25s;
 }
+
+.toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media(min-width:800px){
+
+    .app{
+        padding-left:28px;
+        padding-right:28px;
+    }
+
+    .dashboard-grid{
+        display:grid;
+
+        grid-template-columns:
+            minmax(0,1.2fr)
+            minmax(330px,.8fr);
+
+        gap:18px;
+        align-items:start;
+    }
+
+    .vehicle-hero{
+        min-height:300px;
+    }
+
+    .stats{
+        gap:12px;
+    }
+
+    .stat-card{
+        min-height:125px;
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:380px){
+
+    .app{
+        padding-left:13px;
+        padding-right:13px;
+    }
+
+    .plate{
+        font-size:25px;
+    }
+
+    .vehicle-hero{
+        padding:20px;
+    }
+
+    .vehicle-bottom{
+        left:20px;
+        right:20px;
+        bottom:20px;
+    }
+
+    .stats{
+        gap:7px;
+    }
+
+    .stat-card{
+        padding:13px 10px;
+    }
+
+    .stat-value{
+        font-size:15px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-    <div class="header">
-        <div class="brand">XLINE SMART VEHICLE</div>
-        <h1>Araç Panelim</h1>
-    </div>
+    <header class="topbar">
 
-    <div id="message" class="message"></div>
-
-    <div id="vehicleArea">
-        <div class="card">
-            Yükleniyor...
-        </div>
-    </div>
-
-    <div class="push-card">
-        <div class="push-row">
-            <div>
-                <div class="push-title">Telefon Bildirimleri</div>
-                <div class="small">
-                    Araç uyarılarını bu cihazda anlık al.
-                </div>
+        <div>
+            <div class="brand-small">
+                XLINE ARAÇ KARTI
             </div>
-            <div id="pushStatus">Kontrol ediliyor...</div>
+
+            <div
+                class="page-title"
+                id="pageTitle"
+            >
+                Araç Merkezim
+            </div>
         </div>
 
         <button
-            id="pushButton"
-            class="push-button"
-            onclick="enablePushNotifications()"
+            class="profile-button"
+            id="profileButton"
+            onclick="openSection('profile')"
         >
-            BİLDİRİMLERİ AÇ
+            XL
         </button>
 
-        <div id="pushInfo" class="small"></div>
-    </div>
+    </header>
 
-    <div class="section-title">
-        Gelen Bildirimler
-    </div>
 
-    <div id="alerts">
-        <div class="card empty">
-            Bildirimler yükleniyor...
+    <main id="mainContent">
+
+        <div class="loading">
+
+            <div>
+                <div class="loader"></div>
+                Araç bilgileriniz hazırlanıyor...
+            </div>
+
         </div>
-    </div>
 
-    <button class="logout" onclick="logout()">
-        HESAPTAN ÇIKIŞ YAP
-    </button>
-
-    <div class="footer">
-        XLine Reklam & Yazılım
-    </div>
+    </main>
 
 </div>
+
+
+<div class="bottom-nav-wrap">
+
+    <nav class="bottom-nav">
+
+        <button
+            class="nav-button active"
+            data-section="home"
+            onclick="openSection('home')"
+        >
+            <span class="nav-icon">⌂</span>
+            <span class="nav-label">Ana Sayfa</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="vehicle"
+            onclick="openSection('vehicle')"
+        >
+            <span class="nav-icon">◇</span>
+            <span class="nav-label">Aracım</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="maintenance"
+            onclick="openSection('maintenance')"
+        >
+            <span class="nav-icon">⌁</span>
+            <span class="nav-label">Bakım</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="emergency"
+            onclick="openSection('emergency')"
+        >
+            <span class="nav-icon">＋</span>
+            <span class="nav-label">Acil</span>
+        </button>
+
+
+        <button
+            class="nav-button"
+            data-section="profile"
+            onclick="openSection('profile')"
+        >
+            <span class="nav-icon">○</span>
+            <span class="nav-label">Profil</span>
+        </button>
+
+    </nav>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -360,741 +1089,1936 @@ button, .call {
 
 <script>
 
-let currentSticker = null;
-let currentVehicleProfile = null;
-
-const VAPID_PUBLIC_KEY =
-    "BPU_EJsbQxAL5VIGZfJCLvI6pFfpmforw9x7bLlYbE1R0qdSsZNvIiAUPk3lXruqHPyp8BN9cmv9JegkLMl_InM";
+/* =========================================================
+   STATE
+========================================================= */
 
 let currentUser = null;
 
+let vehicles = [];
 
-const vehicleArea =
-    document.getElementById("vehicleArea");
+let currentVehicle = null;
+let currentSticker = null;
 
-const alertsArea =
-    document.getElementById("alerts");
+let reminders = [];
+let qrEvents = [];
+let maintenanceItems = [];
+let expenses = [];
 
-const message =
-    document.getElementById("message");
+let activeSection = "home";
 
 
-const alertNames = {
-    blocking: "🚧 Geçişi Engelliyor",
-    window_open: "🪟 Cam Açık Kalmış",
-    lights_on: "💡 Farlar Açık Kalmış",
-    vehicle_problem: "⚠️ Araçla İlgili Sorun",
-    emergency: "🆘 Acil Durum"
-};
+/* =========================================================
+   DOM
+========================================================= */
 
+const mainContent =
+    document.getElementById("mainContent");
 
-function showMessage(text, type) {
-    message.textContent = text;
-    message.className = "message " + type;
+const pageTitle =
+    document.getElementById("pageTitle");
 
-    setTimeout(() => {
-        message.className = "message";
-    }, 3500);
-}
+const profileButton =
+    document.getElementById("profileButton");
 
+const toast =
+    document.getElementById("toast");
 
-async function initialize() {
 
-    const {
-        data: { session }
-    } = await supabaseClient.auth.getSession();
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
+async function initialize(){
 
-    if (!session) {
-        window.location.href = "./index.html";
-        return;
-    }
+    try{
 
+        const {
+            data:{ session },
+            error
+        } =
+            await supabaseClient.auth.getSession();
 
-    currentUser = session.user;
 
-    await loadVehicle(session.user.id);
-    await checkPushStatus();
-}
+        if(
+            error ||
+            !session
+        ){
 
-
-async function loadVehicle(userId) {
-
-    const { data: stickers, error } =
-        await supabaseClient
-            .from("stickers")
-            .select(`
-                id,
-                serial_number,
-                status,
-                type
-            `)
-            .eq("owner_id", userId)
-            .eq("type", "vehicle")
-            .limit(1);
-
-
-    if (error) {
-        console.error(error);
-
-        vehicleArea.innerHTML = `
-            <div class="card">
-                Araç etiketi yüklenemedi.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    if (!stickers || stickers.length === 0) {
-
-        vehicleArea.innerHTML = `
-            <div class="card">
-                Hesabınıza bağlı araç etiketi bulunamadı.
-            </div>
-        `;
-
-        alertsArea.innerHTML = "";
-
-        return;
-    }
-
-
-    currentSticker = stickers[0];
-
-
-    const { data: profiles, error: profileError } =
-        await supabaseClient
-            .from("vehicle_profiles")
-            .select(`
-                id,
-                notifications_enabled,
-                vehicle_name,
-                plate
-            `)
-            .eq("sticker_id", currentSticker.id)
-            .limit(1);
-
-
-    if (
-        profileError ||
-        !profiles ||
-        profiles.length === 0
-    ) {
-
-        console.error(profileError);
-
-        vehicleArea.innerHTML = `
-            <div class="card">
-                Araç profili bulunamadı.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    currentVehicleProfile = profiles[0];
-
-    renderVehicle();
-
-    await loadAlerts();
-}
-
-
-function renderVehicle() {
-
-    const checked =
-        currentVehicleProfile.notifications_enabled
-            ? "checked"
-            : "";
-
-
-    vehicleArea.innerHTML = `
-
-        <div class="card">
-
-            <div class="vehicle-top">
-
-                <div>
-                    <div class="serial">
-                        ${escapeHtml(currentSticker.serial_number)}
-                    </div>
-
-                    <div class="small">
-                        Araç Güvenlik Etiketi
-                    </div>
-                </div>
-
-                <div class="status">
-                    AKTİF
-                </div>
-
-            </div>
-
-
-            <div class="control">
-
-                <div>
-                    <strong>
-                        Bildirim Sistemi
-                    </strong>
-
-                    <div class="small">
-                        QR üzerinden uyarı al
-                    </div>
-                </div>
-
-
-                <label class="switch">
-
-                    <input
-                        id="notificationToggle"
-                        type="checkbox"
-                        ${checked}
-                        onchange="toggleNotifications(this)"
-                    >
-
-                    <span class="slider"></span>
-
-                </label>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-async function toggleNotifications(input) {
-
-    input.disabled = true;
-
-    const { data, error } =
-        await supabaseClient.rpc(
-            "set_vehicle_notifications",
-            {
-                p_sticker_id:
-                    currentSticker.id,
-
-                p_enabled:
-                    input.checked
-            }
-        );
-
-
-    if (error || !data?.success) {
-
-        console.error(error);
-
-        input.checked = !input.checked;
-
-        showMessage(
-            "Ayar değiştirilemedi.",
-            "error"
-        );
-
-    } else {
-
-        currentVehicleProfile.notifications_enabled =
-            input.checked;
-
-        showMessage(
-            input.checked
-                ? "Bildirim sistemi açıldı."
-                : "Bildirim sistemi durduruldu.",
-            "success"
-        );
-    }
-
-
-    input.disabled = false;
-}
-
-
-async function loadAlerts() {
-
-    const { data, error } =
-        await supabaseClient
-            .from("vehicle_alerts")
-            .select(`
-                id,
-                alert_type,
-                sender_name,
-                sender_phone,
-                sender_verified,
-                seen_at,
-                acknowledged_at,
-                created_at
-            `)
-            .eq(
-                "vehicle_profile_id",
-                currentVehicleProfile.id
-            )
-            .order(
-                "created_at",
-                { ascending:false }
-            )
-            .limit(50);
-
-
-    if (error) {
-
-        console.error(error);
-
-        alertsArea.innerHTML = `
-            <div class="card empty">
-                Bildirimler yüklenemedi.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    if (!data || data.length === 0) {
-
-        alertsArea.innerHTML = `
-            <div class="card empty">
-                Henüz bildirim yok.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    alertsArea.innerHTML =
-        data.map(renderAlert).join("");
-}
-
-
-function renderAlert(alert) {
-
-    const title =
-        alertNames[alert.alert_type]
-        || "Araç Bildirimi";
-
-
-    const date =
-        new Date(alert.created_at)
-            .toLocaleString("tr-TR");
-
-
-    const acknowledged =
-        alert.acknowledged_at !== null;
-
-
-    return `
-
-        <div
-            class="alert ${acknowledged ? "" : "new"}"
-            id="alert-${alert.id}"
-        >
-
-            <div class="alert-head">
-
-                <div class="alert-title">
-                    ${title}
-                </div>
-
-                <div class="time">
-                    ${date}
-                </div>
-
-            </div>
-
-
-            <div class="sender">
-
-                <div class="sender-name">
-                    ${escapeHtml(alert.sender_name)}
-                </div>
-
-                <div class="phone">
-                    ${escapeHtml(alert.sender_phone)}
-                </div>
-
-                <div class="small">
-                    ${
-                        alert.sender_verified
-                        ? "✓ Doğrulanmış gönderici"
-                        : "Telefon henüz doğrulanmamış"
-                    }
-                </div>
-
-            </div>
-
-
-            <div class="actions">
-
-                <a
-                    class="call"
-                    href="tel:${encodeURIComponent(alert.sender_phone)}"
-                >
-                    📞 ARA
-                </a>
-
-
-                <button
-                    class="ack"
-                    onclick="acknowledgeAlert(
-                        '${alert.id}'
-                    )"
-                >
-                    ✓ İLGİLENİYORUM
-                </button>
-
-
-                <button
-                    class="block"
-                    onclick="blockSender(
-                        '${alert.id}'
-                    )"
-                >
-                    GÖNDERENİ ENGELLE
-                </button>
-
-            </div>
-
-        </div>
-    `;
-}
-
-
-async function acknowledgeAlert(alertId) {
-
-    const { data, error } =
-        await supabaseClient.rpc(
-            "acknowledge_vehicle_alert",
-            {
-                p_alert_id: alertId
-            }
-        );
-
-
-    if (error || !data?.success) {
-
-        console.error(error);
-
-        showMessage(
-            "Bildirim güncellenemedi.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    showMessage(
-        "Bildirim ilgileniliyor olarak işaretlendi.",
-        "success"
-    );
-
-
-    await loadAlerts();
-}
-
-
-async function blockSender(alertId) {
-
-    if (
-        !confirm(
-            "Bu telefon numarasından gelecek yeni bildirimleri engellemek istiyor musunuz?"
-        )
-    ) {
-        return;
-    }
-
-
-    const { data, error } =
-        await supabaseClient.rpc(
-            "block_vehicle_sender",
-            {
-                p_alert_id: alertId
-            }
-        );
-
-
-    if (error || !data?.success) {
-
-        console.error(error);
-
-        showMessage(
-            "Gönderici engellenemedi.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    showMessage(
-        "Gönderici engellendi.",
-        "success"
-    );
-}
-
-
-
-function urlBase64ToUint8Array(base64String) {
-
-    const padding =
-        "=".repeat((4 - base64String.length % 4) % 4);
-
-    const base64 =
-        (base64String + padding)
-            .replace(/-/g, "+")
-            .replace(/_/g, "/");
-
-    const rawData = atob(base64);
-
-    return Uint8Array.from(
-        [...rawData].map(char => char.charCodeAt(0))
-    );
-}
-
-
-async function getServiceWorkerRegistration() {
-
-    if (!("serviceWorker" in navigator)) {
-        throw new Error("Bu tarayıcı Service Worker desteklemiyor.");
-    }
-
-    const registration =
-        await navigator.serviceWorker.register("./sw.js");
-
-    await navigator.serviceWorker.ready;
-
-    return registration;
-}
-
-
-async function checkPushStatus() {
-
-    const pushStatus =
-        document.getElementById("pushStatus");
-
-    const pushButton =
-        document.getElementById("pushButton");
-
-    const pushInfo =
-        document.getElementById("pushInfo");
-
-
-    if (
-        !("serviceWorker" in navigator) ||
-        !("PushManager" in window) ||
-        !("Notification" in window)
-    ) {
-        pushStatus.textContent = "Desteklenmiyor";
-        pushButton.disabled = true;
-        pushInfo.className = "push-warning";
-        pushInfo.textContent =
-            "Bu tarayıcı web bildirimlerini desteklemiyor.";
-        return;
-    }
-
-
-    if (Notification.permission === "denied") {
-        pushStatus.textContent = "Kapalı";
-        pushButton.disabled = true;
-        pushInfo.className = "push-warning";
-        pushInfo.textContent =
-            "Bildirim izni tarayıcı ayarlarından engellenmiş.";
-        return;
-    }
-
-
-    try {
-
-        const registration =
-            await getServiceWorkerRegistration();
-
-        const subscription =
-            await registration.pushManager.getSubscription();
-
-
-        if (subscription) {
-
-            pushStatus.textContent = "✓ Hazır";
-            pushButton.textContent = "BİLDİRİMLER AÇIK";
-            pushButton.disabled = true;
-
-            pushInfo.className = "push-ready";
-            pushInfo.textContent =
-                "Bu cihaz araç uyarılarını almaya hazır.";
-
-            await savePushSubscription(subscription);
-
-        } else {
-
-            pushStatus.textContent = "Kapalı";
-            pushButton.textContent = "BİLDİRİMLERİ AÇ";
-            pushButton.disabled = false;
-
-            pushInfo.className = "small";
-            pushInfo.textContent =
-                "Bir kez izin vermen yeterli.";
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        pushStatus.textContent = "Hata";
-        pushInfo.className = "push-warning";
-        pushInfo.textContent =
-            "Bildirim sistemi kontrol edilemedi.";
-    }
-}
-
-
-async function enablePushNotifications() {
-
-    const pushButton =
-        document.getElementById("pushButton");
-
-    const pushInfo =
-        document.getElementById("pushInfo");
-
-    pushButton.disabled = true;
-    pushButton.textContent = "HAZIRLANIYOR...";
-
-
-    try {
-
-        const permission =
-            await Notification.requestPermission();
-
-
-        if (permission !== "granted") {
-
-            pushButton.textContent = "BİLDİRİMLERİ AÇ";
-
-            if (permission !== "denied") {
-                pushButton.disabled = false;
-            }
-
-            pushInfo.className = "push-warning";
-            pushInfo.textContent =
-                "Telefon bildirimi için izin verilmedi.";
+            window.location.href =
+                "./index.html";
 
             return;
         }
 
 
-        const registration =
-            await getServiceWorkerRegistration();
+        currentUser =
+            session.user;
 
 
-        let subscription =
-            await registration.pushManager.getSubscription();
+        setProfileInitial();
 
 
-        if (!subscription) {
+        await loadVehicles();
 
-            subscription =
-                await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey:
-                        urlBase64ToUint8Array(
-                            VAPID_PUBLIC_KEY
-                        )
-                });
+
+        if(!currentVehicle){
+
+            renderNoVehicle();
+
+            return;
         }
 
 
-        await savePushSubscription(subscription);
+        await Promise.all([
 
-        showMessage(
-            "Bu cihaz telefon bildirimlerine hazır.",
-            "success"
-        );
+            loadReminders(),
+            loadQrEvents(),
+            loadMaintenanceItems(),
+            loadExpenses()
 
-        await checkPushStatus();
+        ]);
 
-    } catch (error) {
+
+        renderHome();
+
+
+    }catch(error){
 
         console.error(error);
 
-        pushButton.disabled = false;
-        pushButton.textContent = "BİLDİRİMLERİ AÇ";
+        mainContent.innerHTML = `
+            <div class="card empty">
+                Panel yüklenirken bir sorun oluştu.
+                <br><br>
+                Sayfayı yenileyerek tekrar deneyin.
+            </div>
+        `;
 
-        pushInfo.className = "push-warning";
-        pushInfo.textContent =
-            "Bildirim aboneliği oluşturulamadı.";
     }
+
 }
 
 
-async function savePushSubscription(subscription) {
+/* =========================================================
+   PROFILE INITIAL
+========================================================= */
 
-    if (!currentUser) {
-        throw new Error("Oturum bulunamadı.");
-    }
+function setProfileInitial(){
+
+    const email =
+        currentUser?.email || "";
+
+    const first =
+        email
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+    profileButton.textContent =
+        first || "XL";
+
+}
 
 
-    const json = subscription.toJSON();
+/* =========================================================
+   VEHICLES
+========================================================= */
 
-    if (
-        !json.endpoint ||
-        !json.keys?.p256dh ||
-        !json.keys?.auth
-    ) {
-        throw new Error("Push aboneliği eksik.");
-    }
+async function loadVehicles(){
 
-
-    const { error } =
+    const {
+        data:stickers,
+        error:stickerError
+    } =
         await supabaseClient
-            .from("push_subscriptions")
-            .upsert(
-                {
-                    user_id: currentUser.id,
-                    endpoint: json.endpoint,
-                    p256dh: json.keys.p256dh,
-                    auth_key: json.keys.auth,
-                    user_agent: navigator.userAgent,
-                    updated_at:
-                        new Date().toISOString()
-                },
-                {
-                    onConflict: "endpoint"
+        .from("stickers")
+        .select(`
+            id,
+            serial_number,
+            status,
+            type,
+            activated_at
+        `)
+        .eq(
+            "owner_id",
+            currentUser.id
+        )
+        .eq(
+            "type",
+            "vehicle"
+        )
+        .order(
+            "activated_at",
+            { ascending:false }
+        );
+
+
+    if(stickerError){
+        throw stickerError;
+    }
+
+
+    if(
+        !stickers ||
+        stickers.length === 0
+    ){
+
+        vehicles = [];
+        currentVehicle = null;
+
+        return;
+    }
+
+
+    const stickerIds =
+        stickers.map(item => item.id);
+
+
+    const {
+        data:profiles,
+        error:profileError
+    } =
+        await supabaseClient
+        .from("vehicle_profiles")
+        .select("*")
+        .in(
+            "sticker_id",
+            stickerIds
+        );
+
+
+    if(profileError){
+        throw profileError;
+    }
+
+
+    vehicles =
+        stickers.map(sticker => {
+
+            const profile =
+                profiles?.find(
+                    item =>
+                        item.sticker_id ===
+                        sticker.id
+                );
+
+            return {
+                sticker,
+                profile:profile || null
+            };
+
+        });
+
+
+    const firstComplete =
+        vehicles.find(
+            item => item.profile
+        );
+
+
+    if(firstComplete){
+
+        currentSticker =
+            firstComplete.sticker;
+
+        currentVehicle =
+            firstComplete.profile;
+
+    }
+
+}
+
+
+/* =========================================================
+   REMINDERS
+========================================================= */
+
+async function loadReminders(){
+
+    if(!currentVehicle) return;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_reminders")
+        .select("*")
+        .eq(
+            "vehicle_profile_id",
+            currentVehicle.id
+        )
+        .eq(
+            "status",
+            "active"
+        )
+        .order(
+            "due_date",
+            { ascending:true }
+        );
+
+
+    if(error){
+
+        console.error(
+            "Hatırlatmalar:",
+            error
+        );
+
+        reminders = [];
+
+        return;
+    }
+
+
+    reminders =
+        data || [];
+
+}
+
+
+/* =========================================================
+   QR EVENTS
+========================================================= */
+
+async function loadQrEvents(){
+
+    if(!currentVehicle) return;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_qr_events")
+        .select(`
+            id,
+            event_type,
+            action_type,
+            sender_name,
+            sender_message,
+            seen_at,
+            resolved_at,
+            created_at
+        `)
+        .eq(
+            "vehicle_profile_id",
+            currentVehicle.id
+        )
+        .order(
+            "created_at",
+            { ascending:false }
+        )
+        .limit(5);
+
+
+    if(error){
+
+        console.error(
+            "QR olayları:",
+            error
+        );
+
+        qrEvents = [];
+
+        return;
+    }
+
+
+    qrEvents =
+        data || [];
+
+}
+
+
+/* =========================================================
+   MAINTENANCE
+========================================================= */
+
+async function loadMaintenanceItems(){
+
+    if(!currentVehicle) return;
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_maintenance_items")
+        .select("*")
+        .eq(
+            "vehicle_profile_id",
+            currentVehicle.id
+        )
+        .eq(
+            "active",
+            true
+        );
+
+
+    if(error){
+
+        console.error(
+            "Bakım:",
+            error
+        );
+
+        maintenanceItems = [];
+
+        return;
+    }
+
+
+    maintenanceItems =
+        data || [];
+
+}
+
+
+/* =========================================================
+   EXPENSES
+========================================================= */
+
+async function loadExpenses(){
+
+    if(!currentVehicle) return;
+
+
+    const now =
+        new Date();
+
+    const startOfYear =
+        new Date(
+            now.getFullYear(),
+            0,
+            1
+        );
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("vehicle_expenses")
+        .select(`
+            id,
+            amount,
+            category,
+            expense_date
+        `)
+        .eq(
+            "vehicle_profile_id",
+            currentVehicle.id
+        )
+        .gte(
+            "expense_date",
+            formatDateForDatabase(
+                startOfYear
+            )
+        );
+
+
+    if(error){
+
+        console.error(
+            "Masraflar:",
+            error
+        );
+
+        expenses = [];
+
+        return;
+    }
+
+
+    expenses =
+        data || [];
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+    activeSection = "home";
+
+    setNavigation("home");
+
+    pageTitle.textContent =
+        "Araç Merkezim";
+
+
+    const vehicleTitle =
+        getVehicleTitle();
+
+
+    const currentKm =
+        currentVehicle.current_km;
+
+
+    const maintenanceDistance =
+        getNearestMaintenanceKm();
+
+
+    const inspectionDays =
+        getInspectionDays();
+
+
+    const monthExpense =
+        getCurrentMonthExpense();
+
+
+    mainContent.innerHTML = `
+
+        <div class="dashboard-grid">
+
+            <div>
+
+                <!-- VEHICLE HERO -->
+
+                <section class="vehicle-hero">
+
+                    <div class="vehicle-top">
+
+                        <div>
+
+                            <div class="vehicle-label">
+                                ARACIM
+                            </div>
+
+                            <div class="plate">
+                                ${
+                                    escapeHtml(
+                                        currentVehicle.plate
+                                        || "PLAKA EKLE"
+                                    )
+                                }
+                            </div>
+
+                            <div class="vehicle-model">
+                                ${
+                                    escapeHtml(
+                                        vehicleTitle
+                                    )
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div class="qr-status">
+
+                            <span class="status-dot"></span>
+
+                            ${
+                                currentSticker.status ===
+                                "active"
+                                ? "QR AKTİF"
+                                : escapeHtml(
+                                    currentSticker.status
+                                        .toUpperCase()
+                                )
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="vehicle-bottom">
+
+                        <div>
+
+                            <div class="km-label">
+                                GÜNCEL KİLOMETRE
+                            </div>
+
+                            <div class="km">
+                                ${
+                                    currentKm !== null &&
+                                    currentKm !== undefined
+                                    ? formatNumber(
+                                        currentKm
+                                      ) + " km"
+                                    : "—"
+                                }
+                            </div>
+
+                        </div>
+
+
+                        <div class="serial">
+
+                            ARAÇ KARTI
+
+                            <strong>
+                                ${
+                                    escapeHtml(
+                                        currentSticker
+                                            .serial_number
+                                    )
+                                }
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ↗
+                        </div>
+
+                        <div class="stat-value">
+                            ${
+                                maintenanceDistance !== null
+                                ? formatNumber(
+                                    maintenanceDistance
+                                  ) + " km"
+                                : "—"
+                            }
+                        </div>
+
+                        <div class="stat-label">
+                            BAKIMA KALAN
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ◷
+                        </div>
+
+                        <div class="stat-value">
+                            ${
+                                inspectionDays !== null
+                                ? formatDayValue(
+                                    inspectionDays
+                                  )
+                                : "—"
+                            }
+                        </div>
+
+                        <div class="stat-label">
+                            MUAYENE
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ₺
+                        </div>
+
+                        <div class="stat-value">
+                            ${
+                                formatCurrencyShort(
+                                    monthExpense
+                                )
+                            }
+                        </div>
+
+                        <div class="stat-label">
+                            BU AY GİDER
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <section class="section">
+
+                    <div class="section-head">
+
+                        <div>
+
+                            <div class="section-title">
+                                Hızlı İşlemler
+                            </div>
+
+                            <div class="section-subtitle">
+                                Aracınızı tek noktadan yönetin
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-grid">
+
+                        <button
+                            class="quick"
+                            onclick="comingSoon('Bakım ekleme')"
+                        >
+
+                            <div class="quick-icon">
+                                +
+                            </div>
+
+                            <div class="quick-title">
+                                Bakım<br>Ekle
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="quick"
+                            onclick="comingSoon('Masraf ekleme')"
+                        >
+
+                            <div class="quick-icon">
+                                ₺
+                            </div>
+
+                            <div class="quick-title">
+                                Masraf<br>Ekle
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="quick"
+                            onclick="comingSoon('Hatırlatma ekleme')"
+                        >
+
+                            <div class="quick-icon">
+                                ◷
+                            </div>
+
+                            <div class="quick-title">
+                                Hatırlatma<br>Ekle
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="quick"
+                            onclick="comingSoon('QR kart yönetimi')"
+                        >
+
+                            <div class="quick-icon">
+                                ⌗
+                            </div>
+
+                            <div class="quick-title">
+                                QR<br>Kartım
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- REMINDERS -->
+
+                <section class="section">
+
+                    <div class="section-head">
+
+                        <div>
+
+                            <div class="section-title">
+                                Yaklaşan İşlemler
+                            </div>
+
+                            <div class="section-subtitle">
+                                Takip etmeniz gereken araç işlemleri
+                            </div>
+
+                        </div>
+
+                        <button
+                            class="section-link"
+                            onclick="openSection('maintenance')"
+                        >
+                            Tümü
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="reminder-list"
+                        id="reminderList"
+                    >
+
+                        ${
+                            renderReminderList()
+                        }
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <div>
+
+                <!-- QR EVENTS -->
+
+                <section class="section">
+
+                    <div class="section-head">
+
+                        <div>
+
+                            <div class="section-title">
+                                QR Hareketleri
+                            </div>
+
+                            <div class="section-subtitle">
+                                Aracınız için yapılan son işlemler
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card event-list">
+
+                        ${
+                            renderQrEvents()
+                        }
+
+                    </div>
+
+                </section>
+
+
+                <!-- GUIDE -->
+
+                <section class="section">
+
+                    <div class="section-head">
+
+                        <div>
+
+                            <div class="section-title">
+                                Araç Rehberi
+                            </div>
+
+                            <div class="section-subtitle">
+                                Gerektiğinde hızlıca ne yapacağınızı bilin
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="guide-scroll">
+
+                        ${guideCard(
+                            "♨",
+                            "Hararet",
+                            "Hararet yükseldiğinde ilk yapılacaklar"
+                        )}
+
+                        ${guideCard(
+                            "!",
+                            "Yağ Lambası",
+                            "Yağ uyarısını görürseniz ne yapmalısınız?"
+                        )}
+
+                        ${guideCard(
+                            "▣",
+                            "Akü",
+                            "Araç çalışmadığında temel kontroller"
+                        )}
+
+                        ${guideCard(
+                            "◉",
+                            "Lastik",
+                            "Lastik problemi yaşandığında güvenli adımlar"
+                        )}
+
+                    </div>
+
+                </section>
+
+
+                <!-- EMERGENCY -->
+
+                <section class="emergency-card">
+
+                    <div class="emergency-label">
+                        ACİL DURUM
+                    </div>
+
+                    <div class="emergency-title">
+                        Kaza mı yaptınız?
+                    </div>
+
+                    <div class="emergency-text">
+                        Güvenliği sağlayın ve kaza
+                        sürecinde yapmanız gerekenleri
+                        adım adım takip edin.
+                    </div>
+
+                    <button
+                        class="emergency-button"
+                        onclick="openSection('emergency')"
+                    >
+                        KAZA ASİSTANINI BAŞLAT
+                    </button>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   REMINDER RENDER
+========================================================= */
+
+function renderReminderList(){
+
+    if(reminders.length === 0){
+
+        return `
+            <div class="card empty">
+                Aktif hatırlatma bulunmuyor.
+                <br><br>
+                Bakım, muayene ve sigorta
+                tarihlerinizi eklediğinizde burada
+                görüntülenecek.
+            </div>
+        `;
+
+    }
+
+
+    return reminders
+        .slice(0,4)
+        .map(reminder => {
+
+            const info =
+                getReminderInfo(reminder);
+
+            return `
+
+                <div class="reminder">
+
+                    <div class="reminder-icon">
+                        ${info.icon}
+                    </div>
+
+                    <div class="reminder-content">
+
+                        <div class="reminder-title">
+                            ${
+                                escapeHtml(
+                                    reminder.title
+                                )
+                            }
+                        </div>
+
+                        <div class="reminder-detail">
+                            ${
+                                escapeHtml(
+                                    info.detail
+                                )
+                            }
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="
+                            reminder-state
+                            ${info.className}
+                        "
+                    >
+                        ${
+                            escapeHtml(
+                                info.state
+                            )
+                        }
+                    </div>
+
+                </div>
+
+            `;
+
+        })
+        .join("");
+
+}
+
+
+/* =========================================================
+   QR EVENTS RENDER
+========================================================= */
+
+function renderQrEvents(){
+
+    if(qrEvents.length === 0){
+
+        return `
+            <div class="empty">
+                Henüz QR hareketi bulunmuyor.
+            </div>
+        `;
+
+    }
+
+
+    return qrEvents
+        .map(event => {
+
+            const meta =
+                getQrEventMeta(
+                    event.event_type
+                );
+
+            return `
+
+                <div class="event">
+
+                    <div class="event-icon">
+                        ${meta.icon}
+                    </div>
+
+                    <div class="event-main">
+
+                        <div class="event-title">
+                            ${
+                                escapeHtml(
+                                    meta.title
+                                )
+                            }
+                        </div>
+
+                        <div class="event-detail">
+                            ${
+                                escapeHtml(
+                                    getActionName(
+                                        event.action_type
+                                    )
+                                )
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="event-time">
+                        ${
+                            formatRelativeDate(
+                                event.created_at
+                            )
+                        }
+                    </div>
+
+                </div>
+
+            `;
+
+        })
+        .join("");
+
+}
+
+
+/* =========================================================
+   PLACEHOLDER SECTIONS
+========================================================= */
+
+function openSection(section){
+
+    activeSection =
+        section;
+
+    setNavigation(section);
+
+
+    if(section === "home"){
+
+        renderHome();
+
+        return;
+    }
+
+
+    const titles = {
+
+        vehicle:"Aracım",
+        maintenance:"Bakım Merkezi",
+        emergency:"Acil & Kaza",
+        profile:"Profil"
+
+    };
+
+
+    pageTitle.textContent =
+        titles[section] ||
+        "Araç Kartı";
+
+
+    let description = "";
+
+
+    if(section === "vehicle"){
+
+        description =
+            "Araç bilgileri, kilometre, iletişim tercihleri ve QR kart yönetimi.";
+
+    }
+
+
+    if(section === "maintenance"){
+
+        description =
+            "Bakım takibi, servis geçmişi, hatırlatmalar ve araç masrafları.";
+
+    }
+
+
+    if(section === "emergency"){
+
+        description =
+            "Kaza asistanı, acil durum rehberi ve kaza dosyalarınız.";
+
+    }
+
+
+    if(section === "profile"){
+
+        description =
+            "Hesap, iletişim, güvenlik ve uygulama tercihleri.";
+
+    }
+
+
+    mainContent.innerHTML = `
+
+        <section class="section">
+
+            <div class="card empty">
+
+                <div
+                    style="
+                        color:white;
+                        font-size:20px;
+                        font-weight:800;
+                        margin-bottom:8px;
+                    "
+                >
+                    ${
+                        escapeHtml(
+                            titles[section]
+                        )
+                    }
+                </div>
+
+                ${
+                    escapeHtml(
+                        description
+                    )
                 }
+
+                <br><br>
+
+                <span style="color:#69727e;">
+                    Bu bölüm sıradaki adımda
+                    aktif hale getirilecek.
+                </span>
+
+            </div>
+
+        </section>
+
+    `;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function setNavigation(section){
+
+    document
+        .querySelectorAll(".nav-button")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.section ===
+                section
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   REMINDER LOGIC
+========================================================= */
+
+function getReminderInfo(reminder){
+
+    const now =
+        new Date();
+
+    let state =
+        "Takipte";
+
+    let detail =
+        reminder.description ||
+        "Hatırlatma";
+
+    let className =
+        "state-green";
+
+    let icon =
+        "◷";
+
+
+    if(reminder.due_date){
+
+        const due =
+            new Date(
+                reminder.due_date +
+                "T12:00:00"
+            );
+
+        const diff =
+            Math.ceil(
+                (
+                    due.getTime() -
+                    now.getTime()
+                ) /
+                86400000
             );
 
 
-    if (error) {
-        throw error;
+        if(diff < 0){
+
+            state =
+                Math.abs(diff) +
+                " gün geçti";
+
+            className =
+                "state-red";
+
+        }else if(diff === 0){
+
+            state =
+                "Bugün";
+
+            className =
+                "state-red";
+
+        }else{
+
+            state =
+                diff +
+                " gün";
+
+            className =
+                diff <= 7
+                ? "state-red"
+                : diff <= 30
+                ? "state-orange"
+                : "state-green";
+
+        }
+
+
+        detail =
+            formatTurkishDate(
+                reminder.due_date
+            );
+
     }
+
+
+    if(
+        reminder.due_km !== null &&
+        reminder.due_km !== undefined &&
+        currentVehicle.current_km !== null &&
+        currentVehicle.current_km !== undefined
+    ){
+
+        const km =
+            reminder.due_km -
+            currentVehicle.current_km;
+
+
+        if(!reminder.due_date){
+
+            state =
+                km <= 0
+                ? "Zamanı geldi"
+                : formatNumber(km) +
+                  " km";
+
+            className =
+                km <= 0
+                ? "state-red"
+                : km <=
+                  (
+                    reminder.remind_km_before ||
+                    1000
+                  )
+                ? "state-orange"
+                : "state-green";
+
+            detail =
+                formatNumber(
+                    reminder.due_km
+                ) +
+                " km hedef";
+
+        }
+
+    }
+
+
+    const icons = {
+
+        inspection:"◇",
+        traffic_insurance:"▣",
+        casco:"◆",
+        maintenance:"⌁",
+        tire:"◉",
+        battery:"▤",
+        tax:"₺",
+        custom:"◷"
+
+    };
+
+
+    icon =
+        icons[
+            reminder.reminder_type
+        ] || "◷";
+
+
+    return {
+        state,
+        detail,
+        className,
+        icon
+    };
+
 }
 
 
-async function logout() {
+/* =========================================================
+   STATS LOGIC
+========================================================= */
 
-    await supabaseClient.auth.signOut();
+function getNearestMaintenanceKm(){
 
-    window.location.href =
-        "./index.html";
+    if(
+        currentVehicle.current_km === null ||
+        currentVehicle.current_km === undefined
+    ){
+        return null;
+    }
+
+
+    const targets =
+        maintenanceItems
+        .filter(
+            item =>
+                item.next_service_km !== null &&
+                item.next_service_km !== undefined
+        )
+        .map(
+            item =>
+                item.next_service_km -
+                currentVehicle.current_km
+        );
+
+
+    if(targets.length === 0){
+        return null;
+    }
+
+
+    return Math.max(
+        0,
+        Math.min(...targets)
+    );
+
 }
 
 
-function escapeHtml(value) {
+function getInspectionDays(){
 
-    if (value === null || value === undefined) {
+    if(!currentVehicle.inspection_date){
+        return null;
+    }
+
+
+    const now =
+        new Date();
+
+    const due =
+        new Date(
+            currentVehicle.inspection_date +
+            "T12:00:00"
+        );
+
+
+    return Math.ceil(
+        (
+            due.getTime() -
+            now.getTime()
+        ) /
+        86400000
+    );
+
+}
+
+
+function getCurrentMonthExpense(){
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        now.getMonth();
+
+
+    return expenses.reduce(
+        (total,item) => {
+
+            const date =
+                new Date(
+                    item.expense_date +
+                    "T12:00:00"
+                );
+
+
+            if(
+                date.getFullYear() === year &&
+                date.getMonth() === month
+            ){
+
+                return total +
+                    Number(
+                        item.amount || 0
+                    );
+
+            }
+
+
+            return total;
+
+        },
+        0
+    );
+
+}
+
+
+/* =========================================================
+   GUIDE
+========================================================= */
+
+function guideCard(
+    icon,
+    title,
+    text
+){
+
+    return `
+
+        <button
+            class="guide"
+            onclick="comingSoon('${escapeJs(title)} rehberi')"
+        >
+
+            <div class="guide-icon">
+                ${icon}
+            </div>
+
+            <div class="guide-title">
+                ${escapeHtml(title)}
+            </div>
+
+            <div class="guide-text">
+                ${escapeHtml(text)}
+            </div>
+
+        </button>
+
+    `;
+
+}
+
+
+/* =========================================================
+   QR META
+========================================================= */
+
+function getQrEventMeta(type){
+
+    const map = {
+
+        emergency:{
+            icon:"!",
+            title:"Acil Durum"
+        },
+
+        collision:{
+            icon:"◆",
+            title:"Araca Çarpma"
+        },
+
+        fire_smoke:{
+            icon:"♨",
+            title:"Duman / Yangın"
+        },
+
+        blocking:{
+            icon:"↔",
+            title:"Geçiş Engelleniyor"
+        },
+
+        lights_on:{
+            icon:"✦",
+            title:"Farlar Açık"
+        },
+
+        window_open:{
+            icon:"□",
+            title:"Cam Açık"
+        },
+
+        door_open:{
+            icon:"◇",
+            title:"Kapı / Bagaj Açık"
+        },
+
+        key_left:{
+            icon:"⌁",
+            title:"Anahtar Araçta"
+        },
+
+        alarm:{
+            icon:"!",
+            title:"Araç Alarmı"
+        },
+
+        tire_problem:{
+            icon:"◉",
+            title:"Lastik Sorunu"
+        },
+
+        fluid_leak:{
+            icon:"⌄",
+            title:"Sıvı Sızıntısı"
+        },
+
+        plate_problem:{
+            icon:"▭",
+            title:"Plaka Sorunu"
+        },
+
+        vehicle_problem:{
+            icon:"!",
+            title:"Araçla İlgili Sorun"
+        },
+
+        other:{
+            icon:"•••",
+            title:"Diğer Bildirim"
+        }
+
+    };
+
+
+    return map[type] || {
+        icon:"!",
+        title:"Araç Bildirimi"
+    };
+
+}
+
+
+function getActionName(type){
+
+    const map = {
+
+        call_owner:
+            "Araç sahibi arandı",
+
+        call_emergency:
+            "Acil yardım araması",
+
+        whatsapp:
+            "WhatsApp iletişimi",
+
+        view_contact:
+            "İletişim bilgileri görüntülendi"
+
+    };
+
+
+    return map[type] ||
+        "QR işlemi";
+
+}
+
+
+/* =========================================================
+   VEHICLE TITLE
+========================================================= */
+
+function getVehicleTitle(){
+
+    const values = [
+
+        currentVehicle.brand,
+        currentVehicle.model,
+        currentVehicle.model_year
+
+    ].filter(Boolean);
+
+
+    if(values.length){
+        return values.join(" • ");
+    }
+
+
+    return (
+        currentVehicle.vehicle_name ||
+        "Araç bilgilerini tamamlayın"
+    );
+
+}
+
+
+/* =========================================================
+   NO VEHICLE
+========================================================= */
+
+function renderNoVehicle(){
+
+    pageTitle.textContent =
+        "Araç Merkezim";
+
+
+    mainContent.innerHTML = `
+
+        <div class="card empty">
+
+            <div
+                style="
+                    color:white;
+                    font-size:19px;
+                    font-weight:800;
+                    margin-bottom:8px;
+                "
+            >
+                Aktif Araç Kartı Bulunamadı
+            </div>
+
+            Hesabınıza bağlı bir XLine
+            Araç Kartı bulunmuyor.
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function formatNumber(value){
+
+    return Number(value)
+        .toLocaleString("tr-TR");
+
+}
+
+
+function formatCurrencyShort(value){
+
+    const number =
+        Number(value || 0);
+
+
+    if(number >= 1000000){
+
+        return (
+            "₺" +
+            (
+                number /
+                1000000
+            ).toFixed(1) +
+            "M"
+        );
+
+    }
+
+
+    if(number >= 10000){
+
+        return (
+            "₺" +
+            Math.round(
+                number / 1000
+            ) +
+            "B"
+        );
+
+    }
+
+
+    return (
+        "₺" +
+        Math.round(number)
+            .toLocaleString("tr-TR")
+    );
+
+}
+
+
+function formatDayValue(days){
+
+    if(days < 0){
+
+        return (
+            Math.abs(days) +
+            " gün geçti"
+        );
+
+    }
+
+
+    if(days === 0){
+        return "Bugün";
+    }
+
+
+    return days + " gün";
+
+}
+
+
+function formatTurkishDate(value){
+
+    if(!value) return "";
+
+
+    return new Date(
+        value + "T12:00:00"
+    ).toLocaleDateString(
+        "tr-TR",
+        {
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+function formatRelativeDate(value){
+
+    const date =
+        new Date(value);
+
+    const now =
+        new Date();
+
+    const diff =
+        now.getTime() -
+        date.getTime();
+
+    const minutes =
+        Math.floor(
+            diff / 60000
+        );
+
+
+    if(minutes < 1){
+        return "Şimdi";
+    }
+
+
+    if(minutes < 60){
+        return minutes + " dk";
+    }
+
+
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
+
+
+    if(hours < 24){
+        return hours + " sa";
+    }
+
+
+    const days =
+        Math.floor(
+            hours / 24
+        );
+
+
+    if(days < 7){
+        return days + " gün";
+    }
+
+
+    return date.toLocaleDateString(
+        "tr-TR",
+        {
+            day:"numeric",
+            month:"short"
+        }
+    );
+
+}
+
+
+function formatDateForDatabase(date){
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2,"0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2,"0");
+
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+function comingSoon(name){
+
+    showToast(
+        name +
+        " sıradaki adımda aktif olacak."
+    );
+
+}
+
+
+function showToast(text){
+
+    toast.textContent =
+        text;
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+
+    window.toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+function escapeHtml(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
         return "";
     }
 
+
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
 }
 
+
+function escapeJs(value){
+
+    return String(value)
+        .replaceAll("\\","\\\\")
+        .replaceAll("'","\\'");
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
 
 initialize();
 
