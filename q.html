@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta name="theme-color" content="#0b0b0b">
+
+    <title>XLine Akıllı Etiket</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top, #242424 0%, #0b0b0b 45%);
+            color: white;
+            padding: 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .card {
+            background: rgba(24,24,24,.96);
+            border: 1px solid #303030;
+            border-radius: 26px;
+            padding: 30px 22px;
+            text-align: center;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,.45);
+        }
+
+        .xline {
+            font-size: 12px;
+            letter-spacing: 5px;
+            color: #888;
+            margin-bottom: 28px;
+        }
+
+        .icon {
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 34px;
+
+            background: #222;
+            border: 1px solid #383838;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: 27px;
+        }
+
+        .serial {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .text {
+            color: #bcbcbc;
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+            padding: 17px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: white;
+            color: black;
+        }
+
+        .vehicle {
+            background: #d52020;
+            color: white;
+        }
+
+        .moto {
+            background: #e5a900;
+            color: #111;
+        }
+
+        .error {
+            color: #ff7777;
+        }
+
+        .loading {
+            color: #aaa;
+        }
+
+        .footer {
+            text-align: center;
+            color: #555;
+            font-size: 11px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card" id="app">
+
+        <div class="xline">
+            XLINE
+        </div>
+
+        <div class="icon">
+            ⏳
+        </div>
+
+        <h1>
+            Etiket Kontrol Ediliyor
+        </h1>
+
+        <div class="text loading">
+            Lütfen bekleyin...
+        </div>
+
+    </div>
+
+    <div class="footer">
+        XLine Reklam & Yazılım
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="./js/config.js"></script>
+
+
+<script>
+
+const app = document.getElementById("app");
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const token =
+    params.get("t");
+
+
+function showError(message) {
+
+    app.innerHTML = `
+        <div class="xline">
+            XLINE
+        </div>
+
+        <div class="icon">
+            !
+        </div>
+
+        <h1>
+            Etiket Bulunamadı
+        </h1>
+
+        <div class="text error">
+            ${message}
+        </div>
+    `;
+}
+
+
+async function resolveSticker() {
+
+    if (!token) {
+
+        showError(
+            "Geçerli bir QR etiketi algılanamadı."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "resolve_sticker",
+                {
+                    p_public_token: token
+                }
+            );
+
+
+        if (error) {
+
+            console.error(error);
+
+            showError(
+                "Etiket doğrulanırken bir hata oluştu."
+            );
+
+            return;
+        }
+
+
+        if (!data || !data.success) {
+
+            showError(
+                "Bu QR kod XLine sisteminde kayıtlı değil."
+            );
+
+            return;
+        }
+
+
+        renderSticker(data);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Sunucu bağlantısı kurulamadı."
+        );
+    }
+}
+
+
+function renderSticker(data) {
+
+    /*
+    =============================================
+    STOKTA / HENÜZ AKTİFLEŞTİRİLMEMİŞ
+    =============================================
+    */
+
+    if (data.status === "stock") {
+
+        const productName =
+            data.type === "vehicle"
+            ? "Araç Güvenlik Etiketi"
+            : "Moto Yaşam Kartı";
+
+
+        const icon =
+            data.type === "vehicle"
+            ? "🚗"
+            : "🏍️";
+
+
+        app.innerHTML = `
+
+            <div class="xline">
+                XLINE
+            </div>
+
+            <div class="icon">
+                ${icon}
+            </div>
+
+            <h1>
+                ${productName}
+            </h1>
+
+            <div class="serial">
+                ${data.serial_number}
+            </div>
+
+            <div class="text">
+                Bu etiket henüz
+                aktifleştirilmemiştir.
+                Etiketi satın aldıysanız
+                aktivasyon işlemini başlatabilirsiniz.
+            </div>
+
+            <button
+                class="primary"
+                onclick="startActivation()"
+            >
+                ETİKETİ AKTİFLEŞTİR
+            </button>
+        `;
+
+        return;
+    }
+
+
+    /*
+    =============================================
+    DURAKLATILMIŞ
+    =============================================
+    */
+
+    if (data.status === "paused") {
+
+        app.innerHTML = `
+
+            <div class="xline">
+                XLINE
+            </div>
+
+            <div class="icon">
+                ⏸
+            </div>
+
+            <h1>
+                Etiket Kullanım Dışı
+            </h1>
+
+            <div class="serial">
+                ${data.serial_number}
+            </div>
+
+            <div class="text">
+                Etiket sahibi sistemi
+                geçici olarak durdurmuştur.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    /*
+    =============================================
+    İPTAL EDİLMİŞ
+    =============================================
+    */
+
+    if (data.status === "revoked") {
+
+        app.innerHTML = `
+
+            <div class="xline">
+                XLINE
+            </div>
+
+            <div class="icon">
+                ×
+            </div>
+
+            <h1>
+                Etiket Geçersiz
+            </h1>
+
+            <div class="text">
+                Bu etiket artık kullanımda değildir.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    /*
+    =============================================
+    AKTİF ETİKET
+    =============================================
+    */
+
+    if (data.status === "active") {
+
+        if (data.type === "vehicle") {
+
+            window.location.replace(
+                "./vehicle.html?t=" +
+                encodeURIComponent(token)
+            );
+
+            return;
+        }
+
+
+        if (data.type === "moto") {
+
+            window.location.replace(
+                "./moto.html?t=" +
+                encodeURIComponent(token)
+            );
+
+            return;
+        }
+    }
+
+
+    showError(
+        "Etiket durumu tanımlanamadı."
+    );
+}
+
+
+function startActivation() {
+
+    window.location.href =
+        "./activate.html?t=" +
+        encodeURIComponent(token);
+}
+
+
+resolveSticker();
+
+</script>
+
+</body>
+</html>
