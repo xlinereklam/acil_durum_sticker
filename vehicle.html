@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<meta name="theme-color" content="#101010">
+
+<title>Araç Sahibine Ulaş | XLine</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #292929 0%,
+            #0b0b0b 48%
+        );
+
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 430px;
+    margin: 20px auto;
+}
+
+.card {
+    background: rgba(23,23,23,.97);
+    border: 1px solid #303030;
+    border-radius: 26px;
+    padding: 27px 20px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
+}
+
+.brand {
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 11px;
+    color: #777;
+    margin-bottom: 24px;
+}
+
+.icon {
+    width: 76px;
+    height: 76px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #242424;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 36px;
+
+    border: 1px solid #383838;
+}
+
+h1 {
+    text-align: center;
+    font-size: 27px;
+    margin: 18px 0 8px;
+}
+
+.serial {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.description {
+    text-align: center;
+    color: #b7b7b7;
+    line-height: 1.55;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.reason {
+    width: 100%;
+
+    padding: 16px 15px;
+
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+
+    border: 1px solid #343434;
+
+    background: #202020;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition: .15s;
+}
+
+.reason:active {
+    transform: scale(.98);
+}
+
+.reason.selected {
+    border-color: #e32b2b;
+    background: #301717;
+}
+
+.form {
+    display: none;
+
+    margin-top: 22px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #292929;
+}
+
+.form.visible {
+    display: block;
+}
+
+label {
+    display: block;
+
+    color: #999;
+
+    font-size: 12px;
+
+    margin: 14px 0 6px;
+}
+
+input {
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    border: 1px solid #383838;
+
+    background: #101010;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #777;
+}
+
+.send {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 17px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: #e12626;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.send:disabled {
+    opacity: .5;
+}
+
+.message {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+.message.success {
+    display: block;
+    background: #10291b;
+    color: #7ee5a0;
+}
+
+.message.error {
+    display: block;
+    background: #321616;
+    color: #ff9696;
+}
+
+.privacy {
+    margin-top: 20px;
+
+    padding: 14px;
+
+    background: #121212;
+
+    border-radius: 13px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+.footer {
+    margin-top: 18px;
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 11px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+    <div class="brand">
+        XLINE SMART VEHICLE
+    </div>
+
+    <div class="icon">
+        🚗
+    </div>
+
+    <h1>
+        Araç Sahibine Ulaş
+    </h1>
+
+    <div
+        id="serial"
+        class="serial"
+    >
+        Etiket kontrol ediliyor...
+    </div>
+
+    <div class="description">
+        Araç sahibiyle iletişim kurmanız
+        gerekiyorsa aşağıdaki durumlardan
+        uygun olanı seçin.
+        Araç sahibinin telefon numarası
+        gizli tutulur.
+    </div>
+
+
+    <button
+        class="reason"
+        onclick="selectReason(
+            'blocking',
+            this
+        )"
+    >
+        🚧 Geçişi Engelliyor
+    </button>
+
+
+    <button
+        class="reason"
+        onclick="selectReason(
+            'window_open',
+            this
+        )"
+    >
+        🪟 Cam Açık Kalmış
+    </button>
+
+
+    <button
+        class="reason"
+        onclick="selectReason(
+            'lights_on',
+            this
+        )"
+    >
+        💡 Farlar Açık Kalmış
+    </button>
+
+
+    <button
+        class="reason"
+        onclick="selectReason(
+            'vehicle_problem',
+            this
+        )"
+    >
+        ⚠️ Araçla İlgili Bir Sorun Var
+    </button>
+
+
+    <button
+        class="reason"
+        onclick="selectReason(
+            'emergency',
+            this
+        )"
+    >
+        🆘 Acil Durum
+    </button>
+
+
+    <div
+        id="senderForm"
+        class="form"
+    >
+
+        <label>
+            Adınız
+        </label>
+
+        <input
+            id="senderName"
+            type="text"
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Adınız"
+        >
+
+
+        <label>
+            Telefon Numaranız
+        </label>
+
+        <input
+            id="senderPhone"
+            type="tel"
+            maxlength="16"
+            autocomplete="tel"
+            inputmode="tel"
+            placeholder="05XXXXXXXXX"
+        >
+
+
+        <button
+            id="sendButton"
+            class="send"
+            onclick="sendAlert()"
+        >
+            ARAÇ SAHİBİNE BİLDİR
+        </button>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div class="privacy">
+        Araç sahibinin iletişim bilgileri
+        paylaşılmaz. Gönderdiğiniz ad ve
+        telefon bilgisi, araç sahibinin
+        bildirimin kaynağını doğrulayabilmesi
+        için kendisine iletilir.
+    </div>
+
+</div>
+
+
+<div class="footer">
+    XLine Reklam & Yazılım
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="./js/config.js"></script>
+
+
+<script>
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const token =
+    params.get("t");
+
+let selectedReason = null;
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+async function initialize() {
+
+    if (!token) {
+
+        showMessage(
+            "Geçerli araç etiketi bulunamadı.",
+            "error"
+        );
+
+        disableInterface();
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "resolve_sticker",
+            {
+                p_public_token: token
+            }
+        );
+
+
+    if (
+        error ||
+        !data ||
+        !data.success ||
+        data.type !== "vehicle" ||
+        data.status !== "active"
+    ) {
+
+        showMessage(
+            "Bu araç etiketi aktif değil.",
+            "error"
+        );
+
+        disableInterface();
+
+        return;
+    }
+
+
+    document.getElementById(
+        "serial"
+    ).textContent =
+        data.serial_number;
+}
+
+
+function selectReason(
+    reason,
+    element
+) {
+
+    selectedReason = reason;
+
+
+    document
+        .querySelectorAll(
+            ".reason"
+        )
+        .forEach(
+            button =>
+                button.classList.remove(
+                    "selected"
+                )
+        );
+
+
+    element.classList.add(
+        "selected"
+    );
+
+
+    document
+        .getElementById(
+            "senderForm"
+        )
+        .classList.add(
+            "visible"
+        );
+
+
+    message.className =
+        "message";
+}
+
+
+async function sendAlert() {
+
+    const name =
+        document.getElementById(
+            "senderName"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "senderPhone"
+        ).value.trim();
+
+
+    if (!selectedReason) {
+
+        showMessage(
+            "Bildirim nedenini seçin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (name.length < 2) {
+
+        showMessage(
+            "Adınızı girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (phone.length < 10) {
+
+        showMessage(
+            "Geçerli telefon numarası girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "sendButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "BİLDİRİM GÖNDERİLİYOR...";
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "send_vehicle_alert",
+            {
+                p_public_token:
+                    token,
+
+                p_alert_type:
+                    selectedReason,
+
+                p_sender_name:
+                    name,
+
+                p_sender_phone:
+                    phone
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Bildirim gönderilemedi.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "ARAÇ SAHİBİNE BİLDİR";
+
+        return;
+    }
+
+
+    if (!data || !data.success) {
+
+        showMessage(
+            data?.message ||
+            "Bildirim gönderilemedi.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "ARAÇ SAHİBİNE BİLDİR";
+
+        return;
+    }
+
+
+    showMessage(
+        "Bildirim araç sahibine iletildi. Teşekkür ederiz.",
+        "success"
+    );
+
+
+    document
+        .getElementById(
+            "senderForm"
+        )
+        .style.display =
+            "none";
+
+
+    document
+        .querySelectorAll(
+            ".reason"
+        )
+        .forEach(
+            button =>
+                button.disabled = true
+        );
+}
+
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+}
+
+
+function disableInterface() {
+
+    document
+        .querySelectorAll(
+            ".reason"
+        )
+        .forEach(
+            button =>
+                button.disabled = true
+        );
+}
+
+
+initialize();
+
+</script>
+
+</body>
+</html>
