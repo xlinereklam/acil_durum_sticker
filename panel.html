@@ -2175,7 +2175,10 @@ function openSection(section){
         renderVehicleSection();
         return;
     }
-
+if(section === "maintenance"){
+    renderMaintenanceSection();
+    return;
+}
     const titles = {
         maintenance:"Bakım Merkezi",
         emergency:"Acil & Kaza",
