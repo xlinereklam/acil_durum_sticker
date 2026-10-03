@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<meta name="theme-color" content="#0b0b0b">
+
+<title>Etiket Aktivasyonu | XLine</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(
+        circle at top,
+        #242424 0%,
+        #0b0b0b 45%
+    );
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 430px;
+    margin: 30px auto;
+}
+
+.card {
+    background: #171717;
+    border: 1px solid #303030;
+    border-radius: 26px;
+    padding: 28px 22px;
+}
+
+.brand {
+    text-align: center;
+    letter-spacing: 5px;
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 10px;
+    font-size: 27px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
+
+label {
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    margin: 17px 0 7px;
+}
+
+input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 13px;
+    border: 1px solid #383838;
+    background: #101010;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #777;
+}
+
+button {
+    width: 100%;
+    padding: 17px;
+    border: none;
+    border-radius: 14px;
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.primary {
+    background: white;
+    color: black;
+}
+
+.secondary {
+    background: #292929;
+    color: white;
+    margin-top: 10px;
+}
+
+.message {
+    display: none;
+    padding: 14px;
+    margin-top: 18px;
+    border-radius: 12px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.error {
+    display: block;
+    background: #321616;
+    color: #ff9696;
+}
+
+.success {
+    display: block;
+    background: #10291b;
+    color: #78e99e;
+}
+
+.info {
+    display: block;
+    background: #202020;
+    color: #ccc;
+}
+
+.pin {
+    text-align: center;
+    letter-spacing: 8px;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.serial {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    text-align: center;
+    color: #555;
+    font-size: 11px;
+    margin-top: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+    <div class="brand">
+        XLINE
+    </div>
+
+    <h1>
+        Etiket Aktivasyonu
+    </h1>
+
+    <div
+        id="serial"
+        class="serial"
+    >
+        Etiket kontrol ediliyor...
+    </div>
+
+
+    <!-- HESAP BÖLÜMÜ -->
+
+    <div id="authSection">
+
+        <div class="subtitle">
+            Etiketi hesabınıza bağlamak için
+            giriş yapın veya yeni hesap oluşturun.
+        </div>
+
+        <label>
+            E-posta
+        </label>
+
+        <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            placeholder="ornek@email.com"
+        >
+
+        <label>
+            Şifre
+        </label>
+
+        <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="En az 6 karakter"
+        >
+
+        <button
+            class="primary"
+            onclick="login()"
+        >
+            GİRİŞ YAP
+        </button>
+
+        <button
+            class="secondary"
+            onclick="register()"
+        >
+            YENİ HESAP OLUŞTUR
+        </button>
+
+    </div>
+
+
+    <!-- AKTİVASYON PIN BÖLÜMÜ -->
+
+    <div
+        id="activationSection"
+        class="hidden"
+    >
+
+        <div class="subtitle">
+            Hesabınız doğrulandı.
+            Etiket paketinde bulunan
+            6 haneli aktivasyon kodunu girin.
+        </div>
+
+        <label>
+            Aktivasyon Kodu
+        </label>
+
+        <input
+            id="activationPin"
+            class="pin"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            placeholder="000000"
+        >
+
+        <button
+            id="activateButton"
+            class="primary"
+            onclick="activateSticker()"
+        >
+            ETİKETİ HESABIMA BAĞLA
+        </button>
+
+        <button
+            class="secondary"
+            onclick="logout()"
+        >
+            FARKLI HESAP KULLAN
+        </button>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+</div>
+
+<div class="footer">
+    XLine Reklam & Yazılım
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="./js/config.js"></script>
+
+
+<script>
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const token =
+    params.get("t");
+
+const authSection =
+    document.getElementById(
+        "authSection"
+    );
+
+const activationSection =
+    document.getElementById(
+        "activationSection"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+const serialElement =
+    document.getElementById(
+        "serial"
+    );
+
+
+function showMessage(
+    text,
+    type = "info"
+) {
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+}
+
+
+async function checkSticker() {
+
+    if (!token) {
+
+        showMessage(
+            "Geçerli etiket bağlantısı bulunamadı.",
+            "error"
+        );
+
+        authSection.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "resolve_sticker",
+            {
+                p_public_token: token
+            }
+        );
+
+
+    if (
+        error ||
+        !data ||
+        !data.success
+    ) {
+
+        showMessage(
+            "Etiket doğrulanamadı.",
+            "error"
+        );
+
+        authSection.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    serialElement.textContent =
+        data.serial_number;
+
+
+    if (data.status !== "stock") {
+
+        showMessage(
+            "Bu etiket daha önce aktifleştirilmiş.",
+            "error"
+        );
+
+        authSection.classList.add(
+            "hidden"
+        );
+
+        activationSection.classList.add(
+            "hidden"
+        );
+
+        return;
+    }
+
+
+    checkSession();
+}
+
+
+async function checkSession() {
+
+    const {
+        data: { session }
+    } =
+        await supabaseClient.auth
+            .getSession();
+
+
+    if (session) {
+
+        authSection.classList.add(
+            "hidden"
+        );
+
+        activationSection.classList.remove(
+            "hidden"
+        );
+
+    } else {
+
+        authSection.classList.remove(
+            "hidden"
+        );
+
+        activationSection.classList.add(
+            "hidden"
+        );
+    }
+}
+
+
+async function register() {
+
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+
+    if (
+        !email ||
+        password.length < 6
+    ) {
+
+        showMessage(
+            "Geçerli e-posta ve en az 6 karakterlik şifre girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Hesap oluşturuluyor..."
+    );
+
+
+    const { data, error } =
+        await supabaseClient.auth.signUp({
+            email,
+            password
+        });
+
+
+    if (error) {
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    /*
+    Supabase e-posta doğrulaması açıksa
+    session hemen oluşmayabilir.
+    */
+
+    if (!data.session) {
+
+        showMessage(
+            "Hesap oluşturuldu. E-posta adresinize gönderilen doğrulama bağlantısını açın, ardından bu sayfaya dönün.",
+            "success"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Hesap oluşturuldu.",
+        "success"
+    );
+
+
+    await checkSession();
+}
+
+
+async function login() {
+
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+
+    if (!email || !password) {
+
+        showMessage(
+            "E-posta ve şifrenizi girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Giriş yapılıyor..."
+    );
+
+
+    const { error } =
+        await supabaseClient.auth
+            .signInWithPassword({
+                email,
+                password
+            });
+
+
+    if (error) {
+
+        showMessage(
+            "E-posta veya şifre hatalı.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Giriş başarılı.",
+        "success"
+    );
+
+
+    await checkSession();
+}
+
+
+async function activateSticker() {
+
+    const pin =
+        document.getElementById(
+            "activationPin"
+        ).value.trim();
+
+
+    if (!/^[0-9]{6}$/.test(pin)) {
+
+        showMessage(
+            "6 haneli aktivasyon kodunu girin.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "activateButton"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "AKTİFLEŞTİRİLİYOR...";
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "activate_sticker",
+            {
+                p_public_token: token,
+                p_activation_pin: pin
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Aktivasyon başarısız.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "ETİKETİ HESABIMA BAĞLA";
+
+        return;
+    }
+
+
+    if (!data || !data.success) {
+
+        showMessage(
+            data?.message ||
+            "Aktivasyon kodu hatalı.",
+            "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "ETİKETİ HESABIMA BAĞLA";
+
+        return;
+    }
+
+
+    showMessage(
+        "Etiket başarıyla hesabınıza bağlandı.",
+        "success"
+    );
+
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "./panel.html";
+
+        },
+        1500
+    );
+}
+
+
+async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    showMessage(
+        "Hesaptan çıkış yapıldı."
+    );
+
+    await checkSession();
+}
+
+
+checkSticker();
+
+</script>
+
+</body>
+</html>
