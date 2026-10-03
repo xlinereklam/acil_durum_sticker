@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0b">
+
+<title>Araç Panelim | XLine</title>
+
+<style>
+* { box-sizing:border-box; }
+
+body {
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0b0b0b;
+    color:#fff;
+    padding:18px;
+}
+
+.container {
+    max-width:500px;
+    margin:auto;
+}
+
+.header {
+    padding:18px 4px 25px;
+}
+
+.brand {
+    font-size:11px;
+    letter-spacing:4px;
+    color:#777;
+}
+
+h1 {
+    margin:8px 0 0;
+    font-size:28px;
+}
+
+.card {
+    background:#171717;
+    border:1px solid #292929;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:14px;
+}
+
+.vehicle-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.serial {
+    font-size:21px;
+    font-weight:bold;
+}
+
+.status {
+    font-size:11px;
+    padding:7px 10px;
+    border-radius:20px;
+    background:#11331e;
+    color:#77e49b;
+}
+
+.small {
+    color:#888;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.control {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px solid #292929;
+}
+
+.switch {
+    position:relative;
+    width:52px;
+    height:30px;
+}
+
+.switch input {
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider {
+    position:absolute;
+    inset:0;
+    background:#444;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+.slider:before {
+    content:"";
+    position:absolute;
+    width:22px;
+    height:22px;
+    left:4px;
+    top:4px;
+    background:white;
+    border-radius:50%;
+    transition:.2s;
+}
+
+input:checked + .slider {
+    background:#25a557;
+}
+
+input:checked + .slider:before {
+    transform:translateX(22px);
+}
+
+.section-title {
+    font-size:18px;
+    font-weight:bold;
+    margin:25px 3px 12px;
+}
+
+.alert {
+    background:#171717;
+    border:1px solid #292929;
+    border-radius:18px;
+    padding:17px;
+    margin-bottom:12px;
+}
+
+.alert.new {
+    border-color:#8c2a2a;
+}
+
+.alert-head {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.alert-title {
+    font-weight:bold;
+    font-size:16px;
+}
+
+.time {
+    color:#777;
+    font-size:11px;
+    white-space:nowrap;
+}
+
+.sender {
+    margin-top:14px;
+    background:#101010;
+    border-radius:12px;
+    padding:12px;
+}
+
+.sender-name {
+    font-weight:bold;
+}
+
+.phone {
+    color:#aaa;
+    margin-top:4px;
+    font-size:14px;
+}
+
+.actions {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+}
+
+button, .call {
+    border:0;
+    border-radius:11px;
+    padding:12px 8px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    text-align:center;
+}
+
+.call {
+    background:#258b4c;
+    color:white;
+}
+
+.ack {
+    background:#eee;
+    color:#111;
+}
+
+.block {
+    grid-column:1 / -1;
+    background:#321616;
+    color:#ff9292;
+}
+
+.empty {
+    text-align:center;
+    color:#777;
+    padding:35px 10px;
+}
+
+.message {
+    display:none;
+    padding:13px;
+    border-radius:12px;
+    margin-bottom:15px;
+    font-size:13px;
+}
+
+.message.error {
+    display:block;
+    background:#321616;
+    color:#ff9999;
+}
+
+.message.success {
+    display:block;
+    background:#10291b;
+    color:#79e59c;
+}
+
+.logout {
+    width:100%;
+    background:#222;
+    color:#aaa;
+    margin:20px 0;
+}
+
+.footer {
+    text-align:center;
+    color:#444;
+    font-size:11px;
+    padding:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="brand">XLINE SMART VEHICLE</div>
+        <h1>Araç Panelim</h1>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div id="vehicleArea">
+        <div class="card">
+            Yükleniyor...
+        </div>
+    </div>
+
+    <div class="section-title">
+        Gelen Bildirimler
+    </div>
+
+    <div id="alerts">
+        <div class="card empty">
+            Bildirimler yükleniyor...
+        </div>
+    </div>
+
+    <button class="logout" onclick="logout()">
+        HESAPTAN ÇIKIŞ YAP
+    </button>
+
+    <div class="footer">
+        XLine Reklam & Yazılım
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./js/config.js"></script>
+
+<script>
+
+let currentSticker = null;
+let currentVehicleProfile = null;
+
+const vehicleArea =
+    document.getElementById("vehicleArea");
+
+const alertsArea =
+    document.getElementById("alerts");
+
+const message =
+    document.getElementById("message");
+
+
+const alertNames = {
+    blocking: "🚧 Geçişi Engelliyor",
+    window_open: "🪟 Cam Açık Kalmış",
+    lights_on: "💡 Farlar Açık Kalmış",
+    vehicle_problem: "⚠️ Araçla İlgili Sorun",
+    emergency: "🆘 Acil Durum"
+};
+
+
+function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message " + type;
+
+    setTimeout(() => {
+        message.className = "message";
+    }, 3500);
+}
+
+
+async function initialize() {
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+
+    if (!session) {
+        window.location.href = "./index.html";
+        return;
+    }
+
+
+    await loadVehicle(session.user.id);
+}
+
+
+async function loadVehicle(userId) {
+
+    const { data: stickers, error } =
+        await supabaseClient
+            .from("stickers")
+            .select(`
+                id,
+                serial_number,
+                status,
+                type
+            `)
+            .eq("owner_id", userId)
+            .eq("type", "vehicle")
+            .limit(1);
+
+
+    if (error) {
+        console.error(error);
+
+        vehicleArea.innerHTML = `
+            <div class="card">
+                Araç etiketi yüklenemedi.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (!stickers || stickers.length === 0) {
+
+        vehicleArea.innerHTML = `
+            <div class="card">
+                Hesabınıza bağlı araç etiketi bulunamadı.
+            </div>
+        `;
+
+        alertsArea.innerHTML = "";
+
+        return;
+    }
+
+
+    currentSticker = stickers[0];
+
+
+    const { data: profiles, error: profileError } =
+        await supabaseClient
+            .from("vehicle_profiles")
+            .select(`
+                id,
+                notifications_enabled,
+                vehicle_name,
+                plate
+            `)
+            .eq("sticker_id", currentSticker.id)
+            .limit(1);
+
+
+    if (
+        profileError ||
+        !profiles ||
+        profiles.length === 0
+    ) {
+
+        console.error(profileError);
+
+        vehicleArea.innerHTML = `
+            <div class="card">
+                Araç profili bulunamadı.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    currentVehicleProfile = profiles[0];
+
+    renderVehicle();
+
+    await loadAlerts();
+}
+
+
+function renderVehicle() {
+
+    const checked =
+        currentVehicleProfile.notifications_enabled
+            ? "checked"
+            : "";
+
+
+    vehicleArea.innerHTML = `
+
+        <div class="card">
+
+            <div class="vehicle-top">
+
+                <div>
+                    <div class="serial">
+                        ${escapeHtml(currentSticker.serial_number)}
+                    </div>
+
+                    <div class="small">
+                        Araç Güvenlik Etiketi
+                    </div>
+                </div>
+
+                <div class="status">
+                    AKTİF
+                </div>
+
+            </div>
+
+
+            <div class="control">
+
+                <div>
+                    <strong>
+                        Bildirim Sistemi
+                    </strong>
+
+                    <div class="small">
+                        QR üzerinden uyarı al
+                    </div>
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        id="notificationToggle"
+                        type="checkbox"
+                        ${checked}
+                        onchange="toggleNotifications(this)"
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+async function toggleNotifications(input) {
+
+    input.disabled = true;
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "set_vehicle_notifications",
+            {
+                p_sticker_id:
+                    currentSticker.id,
+
+                p_enabled:
+                    input.checked
+            }
+        );
+
+
+    if (error || !data?.success) {
+
+        console.error(error);
+
+        input.checked = !input.checked;
+
+        showMessage(
+            "Ayar değiştirilemedi.",
+            "error"
+        );
+
+    } else {
+
+        currentVehicleProfile.notifications_enabled =
+            input.checked;
+
+        showMessage(
+            input.checked
+                ? "Bildirim sistemi açıldı."
+                : "Bildirim sistemi durduruldu.",
+            "success"
+        );
+    }
+
+
+    input.disabled = false;
+}
+
+
+async function loadAlerts() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("vehicle_alerts")
+            .select(`
+                id,
+                alert_type,
+                sender_name,
+                sender_phone,
+                sender_verified,
+                seen_at,
+                acknowledged_at,
+                created_at
+            `)
+            .eq(
+                "vehicle_profile_id",
+                currentVehicleProfile.id
+            )
+            .order(
+                "created_at",
+                { ascending:false }
+            )
+            .limit(50);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alertsArea.innerHTML = `
+            <div class="card empty">
+                Bildirimler yüklenemedi.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+        alertsArea.innerHTML = `
+            <div class="card empty">
+                Henüz bildirim yok.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    alertsArea.innerHTML =
+        data.map(renderAlert).join("");
+}
+
+
+function renderAlert(alert) {
+
+    const title =
+        alertNames[alert.alert_type]
+        || "Araç Bildirimi";
+
+
+    const date =
+        new Date(alert.created_at)
+            .toLocaleString("tr-TR");
+
+
+    const acknowledged =
+        alert.acknowledged_at !== null;
+
+
+    return `
+
+        <div
+            class="alert ${acknowledged ? "" : "new"}"
+            id="alert-${alert.id}"
+        >
+
+            <div class="alert-head">
+
+                <div class="alert-title">
+                    ${title}
+                </div>
+
+                <div class="time">
+                    ${date}
+                </div>
+
+            </div>
+
+
+            <div class="sender">
+
+                <div class="sender-name">
+                    ${escapeHtml(alert.sender_name)}
+                </div>
+
+                <div class="phone">
+                    ${escapeHtml(alert.sender_phone)}
+                </div>
+
+                <div class="small">
+                    ${
+                        alert.sender_verified
+                        ? "✓ Doğrulanmış gönderici"
+                        : "Telefon henüz doğrulanmamış"
+                    }
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                    class="call"
+                    href="tel:${encodeURIComponent(alert.sender_phone)}"
+                >
+                    📞 ARA
+                </a>
+
+
+                <button
+                    class="ack"
+                    onclick="acknowledgeAlert(
+                        '${alert.id}'
+                    )"
+                >
+                    ✓ İLGİLENİYORUM
+                </button>
+
+
+                <button
+                    class="block"
+                    onclick="blockSender(
+                        '${alert.id}'
+                    )"
+                >
+                    GÖNDERENİ ENGELLE
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+async function acknowledgeAlert(alertId) {
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "acknowledge_vehicle_alert",
+            {
+                p_alert_id: alertId
+            }
+        );
+
+
+    if (error || !data?.success) {
+
+        console.error(error);
+
+        showMessage(
+            "Bildirim güncellenemedi.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Bildirim ilgileniliyor olarak işaretlendi.",
+        "success"
+    );
+
+
+    await loadAlerts();
+}
+
+
+async function blockSender(alertId) {
+
+    if (
+        !confirm(
+            "Bu telefon numarasından gelecek yeni bildirimleri engellemek istiyor musunuz?"
+        )
+    ) {
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "block_vehicle_sender",
+            {
+                p_alert_id: alertId
+            }
+        );
+
+
+    if (error || !data?.success) {
+
+        console.error(error);
+
+        showMessage(
+            "Gönderici engellenemedi.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    showMessage(
+        "Gönderici engellendi.",
+        "success"
+    );
+}
+
+
+async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href =
+        "./index.html";
+}
+
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+initialize();
+
+</script>
+
+</body>
+</html>
