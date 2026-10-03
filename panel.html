@@ -2152,6 +2152,146 @@ button{
     }
 
 }    
+
+/* =========================================================
+   XLINE UI 2.0 — MODERN / LARGE TYPE OVERRIDE
+========================================================= */
+:root{
+  --xl-bg:#080a0d; --xl-panel:#101318; --xl-panel2:#151920;
+  --xl-line:rgba(255,255,255,.09); --xl-soft:rgba(255,255,255,.055);
+  --xl-text:#f7f8fa; --xl-muted:#9aa3ad; --xl-accent:#f3f4f6;
+}
+html{font-size:16px!important;background:var(--xl-bg)!important}
+body{font-size:16px!important;line-height:1.55!important;background:radial-gradient(circle at 50% -10%,#202630 0,#0c0f13 35%,#080a0d 70%) fixed!important;color:var(--xl-text)!important}
+body,button,input,select,textarea{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+.container,.app-shell,.page-shell,.main-shell{max-width:760px!important;margin:0 auto!important}
+main,#app,.content,.page-content{padding-bottom:110px!important}
+
+/* Genel tipografi */
+h1{font-size:30px!important;line-height:1.12!important;letter-spacing:-1px!important}
+h2,.section-title,.form-section-title,.maintenance-section-title,.service-section-title{font-size:22px!important;line-height:1.25!important;letter-spacing:-.45px!important;font-weight:800!important}
+h3,.card-title,.setting-title,.maintenance-card-title,.service-card-title{font-size:17px!important;line-height:1.35!important;font-weight:800!important}
+p,.section-description,.form-section-description,.setting-description,.maintenance-description,.service-description{font-size:14px!important;line-height:1.6!important;color:var(--xl-muted)!important}
+small,.eyebrow,.label,.vehicle-profile-label{font-size:12px!important}
+
+/* Kart sistemi: kutu içinde kutu hissini azalt */
+.card,.vehicle-form-card,.maintenance-form-card,.maintenance-card,.service-record-card,.service-summary-card,.service-maintenance-link,.setting-row,.qr-identity-row{
+  border:1px solid var(--xl-line)!important;
+  box-shadow:0 14px 40px rgba(0,0,0,.22)!important;
+}
+.card,.vehicle-form-card,.maintenance-form-card,.maintenance-card,.service-record-card{
+  background:linear-gradient(145deg,rgba(23,28,35,.96),rgba(14,17,22,.98))!important;
+  border-radius:24px!important;
+}
+.vehicle-form-card,.maintenance-form-card{padding:22px!important}
+.vehicle-form-section,.maintenance-section,.service-section{margin-top:30px!important}
+.form-section-title{margin-bottom:6px!important}
+.form-section-description{margin-bottom:18px!important}
+
+/* Formlar */
+.form-grid{gap:16px!important}
+.field{gap:8px!important}
+.field label,.settings-label{font-size:13px!important;font-weight:750!important;letter-spacing:0!important;color:#c8ced6!important}
+.field input,.field select,.compact-select,.maintenance-form-card textarea{
+  min-height:54px!important;padding:0 16px!important;border-radius:15px!important;
+  font-size:16px!important;background:#0d1116!important;color:#fff!important;
+  border:1px solid rgba(255,255,255,.11)!important;
+}
+.maintenance-form-card textarea{padding:15px 16px!important;min-height:110px!important}
+.field input:focus,.field select:focus,.compact-select:focus,.maintenance-form-card textarea:focus{border-color:rgba(255,255,255,.38)!important;box-shadow:0 0 0 4px rgba(255,255,255,.05)!important}
+.primary-save-button,.secondary-save-button,.action-button,.maintenance-save-button,.service-save-button{
+  min-height:56px!important;border-radius:16px!important;font-size:15px!important;font-weight:850!important;letter-spacing:-.1px!important;
+}
+
+/* Araç başlığı */
+.vehicle-profile-head{padding:22px!important;border-radius:24px!important;background:linear-gradient(135deg,#181d24,#0d1014)!important;border:1px solid var(--xl-line)!important;box-shadow:0 18px 50px rgba(0,0,0,.3)!important}
+.vehicle-profile-icon{width:62px!important;height:62px!important;border-radius:19px!important}
+.vehicle-profile-plate{font-size:25px!important;letter-spacing:.3px!important}
+.vehicle-profile-model{font-size:14px!important;margin-top:3px!important}
+.vehicle-profile-status{font-size:12px!important;padding:7px 10px!important}
+
+/* Ayarlar */
+.setting-row{padding:17px 0!important;border:0!important;border-bottom:1px solid var(--xl-line)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.setting-row:last-child{border-bottom:0!important}
+.setting-title{font-size:15px!important}
+.setting-description{font-size:13px!important;margin-top:3px!important}
+.settings-value{font-size:16px!important}
+.qr-mini-status{font-size:12px!important;padding:6px 9px!important}
+.modern-switch{transform:scale(1.08);transform-origin:right center}
+
+/* BAKIM — uygulama görünümü */
+.maintenance-hero,.maintenance-overview,.service-overview{
+  border-radius:26px!important;padding:24px!important;background:linear-gradient(135deg,#1d232b 0%,#10141a 68%)!important;border:1px solid var(--xl-line)!important;box-shadow:0 22px 60px rgba(0,0,0,.3)!important;
+}
+.maintenance-summary-grid,.service-summary-grid{gap:12px!important}
+.maintenance-summary-card,.service-summary-card{
+  min-height:105px!important;padding:17px!important;border-radius:19px!important;background:rgba(255,255,255,.045)!important;box-shadow:none!important;
+}
+.maintenance-summary-card span,.service-summary-card span{font-size:12px!important;color:var(--xl-muted)!important;letter-spacing:0!important}
+.maintenance-summary-card strong,.service-summary-card strong{font-size:26px!important;line-height:1.1!important;margin-top:8px!important}
+.service-summary-money{font-size:22px!important}
+.service-summary-date{font-size:14px!important}
+
+.maintenance-list,.service-record-list{display:flex!important;flex-direction:column!important;gap:13px!important}
+.maintenance-item,.maintenance-list-item{
+  padding:18px!important;border-radius:20px!important;background:linear-gradient(145deg,#171c22,#101419)!important;border:1px solid var(--xl-line)!important;
+}
+.maintenance-item-title,.maintenance-item-name{font-size:17px!important;font-weight:800!important}
+.maintenance-item-meta,.maintenance-item-detail,.maintenance-item-subtitle{font-size:13px!important;color:var(--xl-muted)!important;line-height:1.55!important}
+.maintenance-badge,.status-badge,.service-badge{font-size:12px!important;padding:7px 10px!important;border-radius:999px!important}
+
+/* Servis geçmişi: timeline hissi */
+.service-record-card{position:relative!important;overflow:hidden!important;padding:0!important;display:grid!important;grid-template-columns:92px 1fr!important}
+.service-record-card:before{content:"";position:absolute!important;left:91px!important;top:0!important;bottom:0!important;width:1px!important;background:var(--xl-line)!important}
+.service-record-date{padding:20px 14px!important;background:rgba(255,255,255,.025)!important;text-align:center!important;border:0!important}
+.service-record-date strong{font-size:18px!important;line-height:1.15!important}
+.service-record-date span{font-size:12px!important;color:var(--xl-muted)!important;margin-top:5px!important}
+.service-record-content,.service-record-main{padding:20px!important}
+.service-record-title{font-size:18px!important;font-weight:850!important;line-height:1.3!important}
+.service-record-subtitle,.service-record-meta,.service-record-description{font-size:13px!important;line-height:1.55!important;color:var(--xl-muted)!important}
+.service-record-price,.service-record-total{font-size:18px!important;font-weight:850!important}
+
+/* Bakım seçimi */
+.service-maintenance-link{padding:18px!important;border-radius:18px!important;background:rgba(255,255,255,.035)!important;box-shadow:none!important}
+.service-maintenance-link-title{font-size:14px!important;letter-spacing:0!important}
+.service-maintenance-link-description{font-size:13px!important}
+.service-maintenance-options{gap:9px!important}
+.service-check-item{min-height:44px!important;padding:0 13px!important;border-radius:13px!important;background:#181e25!important}
+.service-check-box{width:21px!important;height:21px!important;border-radius:7px!important;font-size:12px!important}
+.service-check-name{font-size:13px!important}
+.service-cost-grid{gap:12px!important}
+.service-total-box{min-height:72px!important;padding:12px 15px!important;border-radius:15px!important;background:#181e25!important}
+.service-total-box span{font-size:11px!important;letter-spacing:0!important}
+.service-total-box strong{font-size:20px!important}
+
+/* Navigasyon */
+.bottom-nav,.bottom-navigation,nav.bottom-nav{min-height:76px!important;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))!important;background:rgba(9,11,14,.93)!important;backdrop-filter:blur(22px)!important;border-top:1px solid rgba(255,255,255,.1)!important}
+.nav-item,.bottom-nav button,.nav-button{font-size:11px!important;gap:5px!important}
+.nav-item svg,.bottom-nav button svg,.nav-button svg{width:22px!important;height:22px!important}
+
+/* Mobil */
+@media(max-width:600px){
+  body{font-size:16px!important}
+  .container,.app-shell,.page-shell,.main-shell{width:100%!important;max-width:none!important}
+  .page-content,.content,main{padding-left:16px!important;padding-right:16px!important}
+  h1{font-size:27px!important}
+  h2,.section-title,.form-section-title,.maintenance-section-title,.service-section-title{font-size:21px!important}
+  .form-grid{grid-template-columns:1fr!important}
+  .vehicle-form-card,.maintenance-form-card{padding:18px!important;border-radius:21px!important}
+  .maintenance-summary-grid,.service-summary-grid{grid-template-columns:1fr 1fr!important}
+  .maintenance-summary-card,.service-summary-card{min-height:96px!important;padding:15px!important}
+  .maintenance-summary-card strong,.service-summary-card strong{font-size:23px!important}
+  .service-record-card{grid-template-columns:78px 1fr!important}
+  .service-record-card:before{left:77px!important}
+  .service-record-date{padding:18px 8px!important}
+  .service-record-content,.service-record-main{padding:18px 16px!important}
+  .service-cost-grid{grid-template-columns:1fr!important}
+  .service-total-box{grid-column:auto!important}
+  .vehicle-profile-head{padding:18px!important}
+  .vehicle-profile-icon{width:56px!important;height:56px!important}
+  .vehicle-profile-plate{font-size:22px!important}
+}
+
 </style>
 </head>
 
