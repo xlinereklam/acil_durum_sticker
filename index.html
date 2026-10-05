@@ -15,7 +15,6 @@
     --text:#171717;
     --muted:#747474;
     --line:#e7e4df;
-    --bg:#f6f5f3;
 }
 
 body{
@@ -123,13 +122,8 @@ body{
     box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
-.form{
-    display:none;
-}
-
-.form.active{
-    display:block;
-}
+.form{display:none}
+.form.active{display:block}
 
 label{
     display:block;
@@ -175,9 +169,7 @@ input:focus{
     cursor:pointer;
 }
 
-.primary:disabled{
-    opacity:.55;
-}
+.primary:disabled{opacity:.55}
 
 .message{
     display:none;
@@ -257,6 +249,7 @@ input:focus{
     </div>
 
     <div class="tabs">
+
         <button
             id="loginTab"
             class="tab active"
@@ -270,6 +263,7 @@ input:focus{
             onclick="switchMode('register')">
             Hesap Oluştur
         </button>
+
     </div>
 
     <div id="loginForm" class="form active">
@@ -363,7 +357,7 @@ input:focus{
 
     <div class="note">
         AraçX hesabınız ve araç kartınız size özeldir.
-        İletişim tercihleriniz daha sonra Profil bölümünden yönetilebilir.
+        İletişim tercihleriniz Profil bölümünden yönetilebilir.
     </div>
 
     <div class="footer">
@@ -401,9 +395,9 @@ const registerPasswordAgain = document.getElementById('registerPasswordAgain');
 const registerButton = document.getElementById('registerButton');
 
 
-/* ==============================
+/* ==========================================
    GİRİŞ / KAYIT EKRANI
-============================== */
+========================================== */
 
 function switchMode(mode){
 
@@ -417,61 +411,137 @@ function switchMode(mode){
 
     heading.textContent =
         loginMode
-        ? 'Tekrar hoş geldiniz'
-        : 'AraçX hesabınızı oluşturun';
+            ? 'Tekrar hoş geldiniz'
+            : 'AraçX hesabınızı oluşturun';
 
     desc.textContent =
         loginMode
-        ? 'Araç bilgilerinizi, bakım süreçlerinizi ve AraçX kartınızı tek yerden yönetin.'
-        : 'Hesabınızı oluşturduktan sonra AraçX kartınızı aktive edebilirsiniz.';
+            ? 'Araç bilgilerinizi, bakım süreçlerinizi ve AraçX kartınızı tek yerden yönetin.'
+            : 'Hesabınızı oluşturduktan sonra AraçX kartınızı aktive edebilirsiniz.';
 
     clearMessage();
 }
 
 
-/* ==============================
-   KULLANICI YÖNLENDİRME
-============================== */
+/* ==========================================
+   KULLANICIYI DOĞRU EKRANA YÖNLENDİR
+========================================== */
 
 async function routeUser(userId){
 
     try{
 
-        const {data,error} = await supabaseClient
+        /*
+        1 — KULLANICIYA AİT AKTİF ARAÇ KARTINI BUL
+        */
+
+        const {
+            data:stickers,
+            error:stickerError
+        } = await supabaseClient
             .from('stickers')
-            .select('id,status,type')
+            .select('id,serial_number,status,type')
             .eq('owner_id',userId)
             .eq('type','vehicle')
+            .eq('status','active')
             .limit(1);
 
-        if(error){
-            console.error('AraçX yönlendirme hatası:',error);
+
+        if(stickerError){
+
+            console.error(
+                'Sticker kontrol hatası:',
+                stickerError
+            );
 
             showMessage(
-                'Hesap bilgileri kontrol edilemedi. Lütfen tekrar deneyin.',
+                'AraçX kartınız kontrol edilemedi.',
                 'error'
             );
 
             return;
         }
 
+
         /*
-        Kullanıcının herhangi bir AraçX araç kartı yoksa
-        aktivasyon ekranına gönder.
+        2 — AKTİF KART YOKSA AKTİVASYON
         */
 
-        if(!data || data.length === 0){
+        if(!stickers || stickers.length === 0){
 
-            location.replace('./activate.html');
+            window.location.replace(
+                './activate.html'
+            );
 
             return;
         }
 
+
+        const sticker = stickers[0];
+
+
         /*
-        Araç kartı varsa paneli aç.
+        3 — KARTA BAĞLI ARAÇ PROFİLİNİ BUL
         */
 
-        location.replace('./panel.html');
+        const {
+            data:profiles,
+            error:profileError
+        } = await supabaseClient
+            .from('vehicle_profiles')
+            .select(
+                'id,plate,brand,model,current_km'
+            )
+            .eq('owner_id',userId)
+            .eq('sticker_id',sticker.id)
+            .limit(1);
+
+
+        if(profileError){
+
+            console.error(
+                'Araç profili kontrol hatası:',
+                profileError
+            );
+
+            showMessage(
+                'Araç bilgileriniz kontrol edilemedi.',
+                'error'
+            );
+
+            return;
+        }
+
+
+        /*
+        4 — PROFİL YOKSA VEYA KURULUM EKSİKSE
+            SETUP EKRANI
+        */
+
+        if(
+            !profiles ||
+            profiles.length === 0 ||
+            !profiles[0].plate ||
+            !profiles[0].brand ||
+            !profiles[0].model ||
+            profiles[0].current_km === null
+        ){
+
+            window.location.replace(
+                './setup.html'
+            );
+
+            return;
+        }
+
+
+        /*
+        5 — HER ŞEY TAMAMSA PANEL
+        */
+
+        window.location.replace(
+            './panel.html'
+        );
 
     }
     catch(error){
@@ -486,9 +556,9 @@ async function routeUser(userId){
 }
 
 
-/* ==============================
-   MEVCUT OTURUM KONTROLÜ
-============================== */
+/* ==========================================
+   MEVCUT OTURUM
+========================================== */
 
 async function checkSession(){
 
@@ -497,25 +567,37 @@ async function checkSession(){
         error
     } = await supabaseClient.auth.getSession();
 
+
     if(error){
+
         console.error(error);
         return;
     }
 
-    if(!session) return;
 
-    await routeUser(session.user.id);
+    if(!session){
+        return;
+    }
+
+
+    await routeUser(
+        session.user.id
+    );
 }
 
 
-/* ==============================
+/* ==========================================
    GİRİŞ
-============================== */
+========================================== */
 
 async function login(){
 
-    const email = loginEmail.value.trim();
-    const password = loginPassword.value;
+    const email =
+        loginEmail.value.trim();
+
+    const password =
+        loginPassword.value;
+
 
     if(!email || !password){
 
@@ -527,17 +609,23 @@ async function login(){
         return;
     }
 
+
     setButton(
         loginButton,
         true,
         'GİRİŞ YAPILIYOR...'
     );
 
-    const {data,error} =
-        await supabaseClient.auth.signInWithPassword({
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth
+        .signInWithPassword({
             email,
             password
         });
+
 
     if(error || !data.session){
 
@@ -557,13 +645,16 @@ async function login(){
         return;
     }
 
-    await routeUser(data.session.user.id);
+
+    await routeUser(
+        data.session.user.id
+    );
 }
 
 
-/* ==============================
+/* ==========================================
    YENİ HESAP
-============================== */
+========================================== */
 
 async function register(){
 
@@ -571,7 +662,9 @@ async function register(){
         registerName.value.trim();
 
     const phone =
-        normalizePhone(registerPhone.value);
+        normalizePhone(
+            registerPhone.value
+        );
 
     const email =
         registerEmail.value.trim();
@@ -645,22 +738,25 @@ async function register(){
     );
 
 
-    const {data,error} =
-        await supabaseClient.auth.signUp({
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.signUp({
 
-            email,
-            password,
+        email,
+        password,
 
-            options:{
+        options:{
 
-                data:{
-                    full_name:fullName,
-                    phone:phone
-                }
+            emailRedirectTo:
+                'https://xlinereklam.github.io/acil_durum_sticker/',
 
+            data:{
+                full_name:fullName,
+                phone:phone
             }
-
-        });
+        }
+    });
 
 
     if(error){
@@ -683,8 +779,7 @@ async function register(){
 
 
     /*
-    E-posta doğrulaması kapalıysa
-    Supabase doğrudan session döndürür.
+    E-POSTA DOĞRULAMASI KAPALIYSA
     */
 
     if(data.session){
@@ -695,7 +790,7 @@ async function register(){
         );
 
         setTimeout(
-            () => location.replace('./activate.html'),
+            () => routeUser(data.session.user.id),
             600
         );
 
@@ -704,8 +799,7 @@ async function register(){
 
 
     /*
-    E-posta doğrulaması açıksa
-    kullanıcı önce maili onaylar.
+    E-POSTA DOĞRULAMASI AÇIKSA
     */
 
     showMessage(
@@ -736,9 +830,9 @@ async function register(){
 }
 
 
-/* ==============================
+/* ==========================================
    TELEFON
-============================== */
+========================================== */
 
 function normalizePhone(value){
 
@@ -747,50 +841,65 @@ function normalizePhone(value){
 }
 
 
-/* ==============================
+/* ==========================================
    KAYIT HATALARI
-============================== */
+========================================== */
 
 function registerError(error){
 
     const text =
         String(error?.message || '')
-        .toLowerCase();
+            .toLowerCase();
+
 
     if(
         text.includes('already') ||
         text.includes('registered')
     ){
+
         return 'Bu e-posta adresiyle daha önce hesap oluşturulmuş.';
     }
 
+
     if(text.includes('password')){
+
         return 'Şifre güvenlik koşullarını karşılamıyor.';
     }
 
+
     if(text.includes('email')){
+
         return 'E-posta adresini kontrol edin.';
     }
+
 
     return 'Hesap oluşturulamadı. Bilgilerinizi kontrol edip tekrar deneyin.';
 }
 
 
-/* ==============================
+/* ==========================================
    BUTON / MESAJ
-============================== */
+========================================== */
 
-function setButton(button,disabled,text){
+function setButton(
+    button,
+    disabled,
+    text
+){
 
     button.disabled = disabled;
     button.textContent = text;
 }
 
 
-function showMessage(text,type){
+function showMessage(
+    text,
+    type
+){
 
     message.textContent = text;
-    message.className = 'message ' + type;
+    message.className =
+        'message ' + type;
 }
 
 
@@ -801,9 +910,9 @@ function clearMessage(){
 }
 
 
-/* ==============================
-   ENTER TUŞU
-============================== */
+/* ==========================================
+   ENTER
+========================================== */
 
 loginPassword.addEventListener(
     'keydown',
@@ -812,7 +921,6 @@ loginPassword.addEventListener(
         if(event.key === 'Enter'){
             login();
         }
-
     }
 );
 
@@ -824,14 +932,13 @@ registerPasswordAgain.addEventListener(
         if(event.key === 'Enter'){
             register();
         }
-
     }
 );
 
 
-/* ==============================
+/* ==========================================
    BAŞLAT
-============================== */
+========================================== */
 
 checkSession();
 
