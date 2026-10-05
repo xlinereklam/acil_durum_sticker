@@ -5478,7 +5478,7 @@ async function saveAccidentRecord(){
         owner_id:currentUser.id,
         accident_date:date,
         accident_type:document.getElementById("accidentType").value,
-        injury:document.getElementById("accidentInjury").value==="true",
+        injury_present:document.getElementById("accidentInjury").value==="true",
         emergency_services_called:document.getElementById("accidentEmergency").value==="true",
         other_vehicle_plate:document.getElementById("accidentOtherPlate").value.trim().toLocaleUpperCase("tr-TR")||null,
         other_driver_name:document.getElementById("accidentDriverName").value.trim()||null,
