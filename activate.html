@@ -232,40 +232,56 @@ button {
     </div>
 
 
-    <!-- AKTİVASYON PIN BÖLÜMÜ -->
+    <!-- E-POSTA OTP AKTİVASYON BÖLÜMÜ -->
 
-    <div
-        id="activationSection"
-        class="hidden"
-    >
+    <div id="activationSection" class="hidden">
 
-        <div class="subtitle">
-            Hesabınız doğrulandı.
-            Etiket paketinde bulunan
-            6 haneli aktivasyon kodunu girin.
+        <div class="subtitle" id="activationSubtitle">
+            AraçX kartınızı aktive etmek için 6 haneli doğrulama kodunu e-posta adresinize gönderin.
         </div>
 
-        <label>
-            Aktivasyon Kodu
-        </label>
-
-        <input
-            id="activationPin"
-            class="pin"
-            type="text"
-            inputmode="numeric"
-            maxlength="6"
-            autocomplete="one-time-code"
-            placeholder="000000"
-        >
-
         <button
-            id="activateButton"
+            id="sendCodeButton"
             class="primary"
-            onclick="activateSticker()"
+            onclick="sendActivationCode()"
         >
-            ETİKETİ HESABIMA BAĞLA
+            KODU E-POSTAMA GÖNDER
         </button>
+
+        <div id="otpArea" class="hidden">
+            <label>6 Haneli Doğrulama Kodu</label>
+
+            <input
+                id="activationOtp"
+                class="pin"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="one-time-code"
+                placeholder="000000"
+            >
+
+            <button
+                id="verifyButton"
+                class="primary"
+                onclick="verifyAndActivate()"
+            >
+                KODU DOĞRULA VE AKTİVE ET
+            </button>
+
+            <button
+                id="resendButton"
+                class="secondary"
+                onclick="sendActivationCode(true)"
+                disabled
+            >
+                KODU TEKRAR GÖNDER (60)
+            </button>
+
+            <div style="font-size:12px;color:#777;line-height:1.5;margin-top:14px;text-align:center;">
+                Kod gelmediyse Spam / Gereksiz klasörünü de kontrol edin.
+            </div>
+        </div>
 
         <button
             class="secondary"
@@ -508,7 +524,7 @@ async function register() {
     if (!data.session) {
 
         showMessage(
-            "Hesap oluşturuldu. E-posta adresinize gönderilen doğrulama bağlantısını açın, ardından bu sayfaya dönün.",
+            "Hesap oluşturuldu. E-posta adresinize gelen doğrulama koduyla hesabınızı doğrulayın.",
             "success"
         );
 
@@ -584,97 +600,165 @@ async function login() {
 }
 
 
-async function activateSticker() {
+let resendTimer = null;
+let resendSeconds = 0;
 
-    const pin =
-        document.getElementById(
-            "activationPin"
-        ).value.trim();
+function startResendCountdown(){
+    const button = document.getElementById("resendButton");
 
-
-    if (!/^[0-9]{6}$/.test(pin)) {
-
-        showMessage(
-            "6 haneli aktivasyon kodunu girin.",
-            "error"
-        );
-
-        return;
+    if(resendTimer){
+        clearInterval(resendTimer);
     }
 
-
-    const button =
-        document.getElementById(
-            "activateButton"
-        );
-
-
+    resendSeconds = 60;
     button.disabled = true;
+    button.textContent = "KODU TEKRAR GÖNDER (" + resendSeconds + ")";
 
-    button.textContent =
-        "AKTİFLEŞTİRİLİYOR...";
+    resendTimer = setInterval(function(){
+        resendSeconds--;
+
+        if(resendSeconds <= 0){
+            clearInterval(resendTimer);
+            resendTimer = null;
+            button.disabled = false;
+            button.textContent = "KODU TEKRAR GÖNDER";
+            return;
+        }
+
+        button.textContent = "KODU TEKRAR GÖNDER (" + resendSeconds + ")";
+    },1000);
+}
 
 
-    const { data, error } =
-        await supabaseClient.rpc(
-            "activate_sticker",
-            {
-                p_public_token: token,
-                p_activation_pin: pin
+async function sendActivationCode(isResend = false){
+
+    const { data:{ session } } =
+        await supabaseClient.auth.getSession();
+
+    if(!session || !session.user || !session.user.email){
+        showMessage("Oturum bulunamadı. Lütfen tekrar giriş yapın.","error");
+        return;
+    }
+
+    const sendButton = document.getElementById("sendCodeButton");
+    const resendButton = document.getElementById("resendButton");
+    const activeButton = isResend ? resendButton : sendButton;
+
+    activeButton.disabled = true;
+    activeButton.textContent = "KOD GÖNDERİLİYOR...";
+
+    const email = session.user.email;
+
+    const { error } =
+        await supabaseClient.auth.signInWithOtp({
+            email: email,
+            options: {
+                shouldCreateUser: false
             }
-        );
+        });
 
-
-    if (error) {
-
-        console.error(error);
-
+    if(error){
+        console.error("OTP gönderme:",error);
         showMessage(
-            error.message ||
-            "Aktivasyon başarısız.",
+            error.message || "Doğrulama kodu gönderilemedi. Lütfen tekrar deneyin.",
             "error"
         );
 
-        button.disabled = false;
-
-        button.textContent =
-            "ETİKETİ HESABIMA BAĞLA";
-
+        if(isResend){
+            resendButton.disabled = false;
+            resendButton.textContent = "KODU TEKRAR GÖNDER";
+        }else{
+            sendButton.disabled = false;
+            sendButton.textContent = "KODU E-POSTAMA GÖNDER";
+        }
         return;
     }
 
+    document.getElementById("otpArea").classList.remove("hidden");
+    sendButton.classList.add("hidden");
 
-    if (!data || !data.success) {
-
-        showMessage(
-            data?.message ||
-            "Aktivasyon kodu hatalı.",
-            "error"
-        );
-
-        button.disabled = false;
-
-        button.textContent =
-            "ETİKETİ HESABIMA BAĞLA";
-
-        return;
-    }
-
+    document.getElementById("activationSubtitle").textContent =
+        "6 haneli doğrulama kodu " + email + " adresine gönderildi.";
 
     showMessage(
-        "Etiket başarıyla hesabınıza bağlandı.",
+        "Kod e-posta adresinize gönderildi. Gelmediyse Spam / Gereksiz klasörünü kontrol edin.",
         "success"
     );
 
+    startResendCountdown();
+}
 
-    setTimeout(
-        function () {
 
-            window.location.href =
-                "./setup.html?t=" + encodeURIComponent(token);
-        },
-        1500
+async function verifyAndActivate(){
+
+    const otp =
+        document.getElementById("activationOtp").value.trim();
+
+    if(!/^[0-9]{6}$/.test(otp)){
+        showMessage("E-postanıza gelen 6 haneli kodu girin.","error");
+        return;
+    }
+
+    const { data:{ session } } =
+        await supabaseClient.auth.getSession();
+
+    if(!session || !session.user || !session.user.email){
+        showMessage("Oturum bulunamadı. Lütfen tekrar giriş yapın.","error");
+        return;
+    }
+
+    const verifyButton = document.getElementById("verifyButton");
+    verifyButton.disabled = true;
+    verifyButton.textContent = "KOD DOĞRULANIYOR...";
+
+    const { data:verifyData, error:verifyError } =
+        await supabaseClient.auth.verifyOtp({
+            email: session.user.email,
+            token: otp,
+            type: "email"
+        });
+
+    if(verifyError || !verifyData?.session){
+        console.error("OTP doğrulama:",verifyError);
+        showMessage(
+            "Kod hatalı veya süresi dolmuş. Kodu kontrol edin ya da yeni kod isteyin.",
+            "error"
+        );
+        verifyButton.disabled = false;
+        verifyButton.textContent = "KODU DOĞRULA VE AKTİVE ET";
+        return;
+    }
+
+    verifyButton.textContent = "ARAÇX AKTİFLEŞTİRİLİYOR...";
+
+    const { data, error } =
+        await supabaseClient.rpc(
+            "activate_sticker_email",
+            {
+                p_public_token: token
+            }
+        );
+
+    if(error || !data || !data.success){
+        console.error("Aktivasyon:",error,data);
+        showMessage(
+            error?.message || data?.message || "AraçX kartı aktive edilemedi.",
+            "error"
+        );
+        verifyButton.disabled = false;
+        verifyButton.textContent = "KODU DOĞRULA VE AKTİVE ET";
+        return;
+    }
+
+    showMessage(
+        "AraçX kartınız başarıyla aktive edildi. Araç kurulumu açılıyor...",
+        "success"
     );
+
+    setTimeout(function(){
+        window.location.href =
+            "./setup.html?t=" + encodeURIComponent(token);
+    },900);
 }
 
 
