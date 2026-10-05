@@ -4,253 +4,1498 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#f7f5f3">
+
 <title>AraçX | Araç Asistanı</title>
+
 <style>
-*{box-sizing:border-box}
-:root{--red:#e53935;--red2:#c62828;--ink:#181818;--muted:#747474;--line:#e9e5e2;--bg:#f7f5f3;--card:#fff;--green:#198754;--orange:#d97706}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.shell{width:min(680px,100%);margin:auto;padding:20px 16px 44px}
-.brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.logo{font-size:24px;font-weight:900;letter-spacing:-1px}.logo b{color:var(--red)}.descriptor{font-size:10px;font-weight:800;letter-spacing:1.3px;color:var(--muted)}
-.status{padding:7px 10px;border-radius:999px;background:#eaf7ef;color:var(--green);font-size:10px;font-weight:900}
-.hero{padding:22px;border-radius:26px;background:linear-gradient(145deg,#fff,#f1ece8);border:1px solid var(--line);box-shadow:0 14px 38px rgba(30,20,15,.07)}
-.plate{display:inline-block;padding:7px 12px;border:2px solid #202020;border-radius:7px;background:white;font-weight:900;letter-spacing:1px}
-.vehicle{margin-top:12px;font-size:24px;font-weight:900;letter-spacing:-.5px}.serial{margin-top:5px;color:var(--muted);font-size:12px}
-.notice{margin-top:14px;padding:12px 14px;border-radius:14px;background:#fff6f5;color:#7f2522;font-size:12px;line-height:1.5}
-h2{margin:24px 2px 5px;font-size:19px}.sub{margin:0 2px 13px;color:var(--muted);font-size:12px;line-height:1.5}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.action{min-height:92px;padding:15px;border:1px solid var(--line);border-radius:18px;background:var(--card);text-align:left;color:var(--ink);cursor:pointer}
-.action strong{display:block;margin-top:8px;font-size:14px}.action span{font-size:23px}.action.emergency{border-color:#f2b8b5;background:#fff4f3}.action.emergency strong,.action.emergency span{color:var(--red)}
-.panel{display:none;margin-top:16px;padding:18px;border:1px solid var(--line);border-radius:20px;background:white}.panel.show{display:block}
-.panel-title{font-size:18px;font-weight:900}.panel-text{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.5}
-.field{margin-top:13px}.field label{display:block;margin-bottom:6px;font-size:10px;font-weight:900;color:var(--muted);letter-spacing:.7px}.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:13px;padding:13px;background:#faf9f8;color:var(--ink);font:inherit}.field textarea{resize:vertical}
-.primary,.call,.secondary{display:flex;align-items:center;justify-content:center;width:100%;margin-top:13px;border:0;border-radius:14px;padding:14px;text-decoration:none;font-size:13px;font-weight:900;cursor:pointer}
-.primary{background:#1f9d55;color:#fff}.call{background:var(--red);color:#fff}.secondary{background:#eee9e5;color:#222}
-.emergency-box{display:none;margin-top:16px;padding:18px;border-radius:20px;background:#fff;border:1px solid #f0c0bd}.emergency-box.show{display:block}.emergency-box h3{margin:0;font-size:19px}.emergency-box p{color:var(--muted);font-size:12px;line-height:1.5}
-.contact-number{margin-top:12px;padding:12px;border-radius:12px;background:#f8f5f3;font-size:15px;font-weight:900}
-.message{display:none;margin-top:14px;padding:12px;border-radius:12px;font-size:12px}.message.show{display:block}.message.error{background:#fff0ef;color:#9b2823}.message.success{background:#edf8f1;color:#17683b}
-.footer{margin-top:28px;text-align:center;color:#9a9692;font-size:10px}
-.loading{padding:50px 20px;text-align:center;color:var(--muted)}
-@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.action{min-height:86px;padding:13px}.vehicle{font-size:21px}}
+*{
+    box-sizing:border-box
+}
+
+:root{
+    --red:#e53935;
+    --red2:#c62828;
+    --ink:#181818;
+    --muted:#747474;
+    --line:#e9e5e2;
+    --bg:#f7f5f3;
+    --card:#fff;
+    --green:#198754;
+    --orange:#d97706;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.shell{
+    width:min(680px,100%);
+    margin:auto;
+    padding:20px 16px 44px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo b{
+    color:var(--red);
+}
+
+.descriptor{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.3px;
+    color:var(--muted);
+}
+
+.status{
+    padding:7px 10px;
+    border-radius:999px;
+    background:#eaf7ef;
+    color:var(--green);
+    font-size:10px;
+    font-weight:900;
+}
+
+.hero{
+    padding:22px;
+    border-radius:26px;
+    background:linear-gradient(145deg,#fff,#f1ece8);
+    border:1px solid var(--line);
+    box-shadow:0 14px 38px rgba(30,20,15,.07);
+}
+
+.plate{
+    display:inline-block;
+    padding:7px 12px;
+    border:2px solid #202020;
+    border-radius:7px;
+    background:white;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.vehicle{
+    margin-top:12px;
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-.5px;
+}
+
+.serial{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.notice{
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:14px;
+    background:#fff6f5;
+    color:#7f2522;
+    font-size:12px;
+    line-height:1.5;
+}
+
+h2{
+    margin:24px 2px 5px;
+    font-size:19px;
+}
+
+.sub{
+    margin:0 2px 13px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.action{
+    min-height:92px;
+    padding:15px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--card);
+    text-align:left;
+    color:var(--ink);
+    cursor:pointer;
+}
+
+.action strong{
+    display:block;
+    margin-top:8px;
+    font-size:14px;
+}
+
+.action span{
+    font-size:23px;
+}
+
+.action.emergency{
+    border-color:#f2b8b5;
+    background:#fff4f3;
+}
+
+.action.emergency strong,
+.action.emergency span{
+    color:var(--red);
+}
+
+.panel{
+    display:none;
+    margin-top:16px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:white;
+}
+
+.panel.show{
+    display:block;
+}
+
+.panel-title{
+    font-size:18px;
+    font-weight:900;
+}
+
+.panel-text{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+}
+
+.field{
+    margin-top:13px;
+}
+
+.field label{
+    display:block;
+    margin-bottom:6px;
+    font-size:10px;
+    font-weight:900;
+    color:var(--muted);
+    letter-spacing:.7px;
+}
+
+.field input,
+.field textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:13px;
+    background:#faf9f8;
+    color:var(--ink);
+    font:inherit;
+}
+
+.field textarea{
+    resize:vertical;
+}
+
+.primary,
+.call,
+.secondary{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    margin-top:13px;
+    border:0;
+    border-radius:14px;
+    padding:14px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.primary{
+    background:#1f9d55;
+    color:#fff;
+}
+
+.call{
+    background:var(--red);
+    color:#fff;
+}
+
+.call112{
+    background:#a91515;
+    color:#fff;
+}
+
+.secondary{
+    background:#eee9e5;
+    color:#222;
+}
+
+.emergency-box{
+    display:none;
+    margin-top:16px;
+    padding:18px;
+    border-radius:20px;
+    background:#fff;
+    border:2px solid #efb3af;
+    box-shadow:0 12px 30px rgba(198,40,40,.08);
+}
+
+.emergency-box.show{
+    display:block;
+}
+
+.emergency-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.emergency-icon{
+    width:48px;
+    height:48px;
+    flex:0 0 48px;
+    border-radius:15px;
+    background:#fff0ef;
+    color:var(--red);
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    font-weight:900;
+}
+
+.emergency-box h3{
+    margin:0;
+    font-size:21px;
+}
+
+.emergency-box p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+}
+
+.contact-number{
+    margin-top:12px;
+    padding:12px;
+    border-radius:12px;
+    background:#f8f5f3;
+    font-size:15px;
+    font-weight:900;
+}
+
+.message{
+    display:none;
+    margin-top:14px;
+    padding:12px;
+    border-radius:12px;
+    font-size:12px;
+}
+
+.message.show{
+    display:block;
+}
+
+.message.error{
+    background:#fff0ef;
+    color:#9b2823;
+}
+
+.message.success{
+    background:#edf8f1;
+    color:#17683b;
+}
+
+.footer{
+    margin-top:28px;
+    text-align:center;
+    color:#9a9692;
+    font-size:10px;
+}
+
+.loading{
+    padding:50px 20px;
+    text-align:center;
+    color:var(--muted);
+}
+
+@media(max-width:420px){
+
+    .grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .action{
+        min-height:86px;
+        padding:13px;
+    }
+
+    .vehicle{
+        font-size:21px;
+    }
+}
 </style>
+
 </head>
+
 <body>
+
 <div class="shell">
+
     <div class="brand">
-        <div><div class="logo">Araç<b>X</b></div><div class="descriptor">ARAÇ ASİSTANI</div></div>
-        <div id="qrStatus" class="status">KONTROL EDİLİYOR</div>
+
+        <div>
+
+            <div class="logo">
+                Araç<b>X</b>
+            </div>
+
+            <div class="descriptor">
+                ARAÇ ASİSTANI
+            </div>
+
+        </div>
+
+        <div id="qrStatus" class="status">
+            KONTROL EDİLİYOR
+        </div>
+
     </div>
 
-    <div id="loading" class="loading">Araç bilgileri yükleniyor...</div>
+
+    <div id="loading" class="loading">
+        Araç bilgileri yükleniyor...
+    </div>
+
 
     <main id="app" style="display:none">
+
+
+        <!-- ARAÇ -->
+
         <section class="hero">
-            <div id="plate" class="plate">ARAÇ</div>
-            <div id="vehicleTitle" class="vehicle">Araç bilgisi</div>
+
+            <div id="plate" class="plate">
+                ARAÇ
+            </div>
+
+            <div id="vehicleTitle" class="vehicle">
+                Araç bilgisi
+            </div>
+
             <div id="serial" class="serial"></div>
-            <div class="notice">Araç sahibine ulaşmak için aşağıdaki durumlardan uygun olanı seçin.</div>
+
+            <div class="notice">
+                Araç sahibine ulaşmak için aşağıdaki
+                durumlardan uygun olanı seçin.
+            </div>
+
         </section>
 
+
+        <!-- DURUM SEÇİMİ -->
+
         <h2>Ne oldu?</h2>
-        <p class="sub">Acil durumda doğrudan arama; diğer durumlarda hazır WhatsApp mesajı kullanılır.</p>
+
+        <p class="sub">
+            Acil durumda doğrudan arama;
+            diğer durumlarda hazır WhatsApp mesajı kullanılır.
+        </p>
+
 
         <div id="actions" class="grid"></div>
 
+
+        <!-- WHATSAPP PANEL -->
+
         <div id="normalPanel" class="panel">
+
             <div id="selectedTitle" class="panel-title"></div>
-            <div class="panel-text">Mesaj WhatsApp'ta hazır açılır. Göndermeden önce kontrol edebilirsiniz.</div>
-            <div class="field"><label>ADINIZ</label><input id="senderName" maxlength="60" placeholder="Adınız"></div>
-            <div id="otherField" class="field" style="display:none"><label>KISA AÇIKLAMA</label><textarea id="otherMessage" maxlength="300" rows="3" placeholder="Sorunu kısaca yazın"></textarea></div>
-            <button id="whatsappButton" class="primary" onclick="openWhatsApp()">WHATSAPP İLE BİLDİR</button>
-            
+
+            <div class="panel-text">
+                Mesaj WhatsApp'ta hazır açılır.
+                Göndermeden önce kontrol edebilirsiniz.
+            </div>
+
+
+            <div class="field">
+
+                <label>ADINIZ</label>
+
+                <input
+                    id="senderName"
+                    maxlength="60"
+                    placeholder="Adınız"
+                >
+
+            </div>
+
+
+            <div
+                id="otherField"
+                class="field"
+                style="display:none"
+            >
+
+                <label>KISA AÇIKLAMA</label>
+
+                <textarea
+                    id="otherMessage"
+                    maxlength="300"
+                    rows="3"
+                    placeholder="Sorunu kısaca yazın"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                id="whatsappButton"
+                class="primary"
+                onclick="openWhatsApp()"
+            >
+                WHATSAPP İLE BİLDİR
+            </button>
+
         </div>
+
+
+        <!-- ACİL DURUM -->
 
         <div id="emergencyPanel" class="emergency-box">
-            <h3>Acil durum</h3>
-            <p>Can güvenliği riski, yangın, ciddi kaza veya acil müdahale gerektiren durumda uygun numarayı arayın.</p>
-            <a id="ownerCall" class="call" href="#">ARAÇ SAHİBİNİ ARA</a>
-            <a class="call" style="background:#b71c1c" href="tel:112" onclick="logAction('call_emergency')">112'Yİ ARA</a>
+
+            <div class="emergency-head">
+
+                <div class="emergency-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <h3>Acil Durum</h3>
+
+                    <p style="margin:4px 0 0">
+                        Uygun arama seçeneğini kullanın.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                Can güvenliği riski, yangın, ciddi kaza
+                veya acil müdahale gerektiren durumda
+                112 Acil Çağrı Merkezi'ni arayın.
+            </p>
+
+
+            <a
+                id="ownerCall"
+                class="call"
+                href="#"
+            >
+                ARAÇ SAHİBİNİ ARA
+            </a>
+
+
+            <a
+                id="call112"
+                class="call call112"
+                href="tel:112"
+                onclick="logAction('call_emergency')"
+            >
+                112'Yİ ARA
+            </a>
+
+
             <div id="secondaryContact"></div>
+
         </div>
 
+
         <div id="message" class="message"></div>
+
     </main>
 
-    <div class="footer">AraçX • Araç Asistanı</div>
+
+    <div class="footer">
+        AraçX • Araç Asistanı
+    </div>
+
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./js/config.js"></script>
+
+
 <script>
-const params=new URLSearchParams(location.search);
-const token=params.get("t")||params.get("token");
+
+/* =========================================================
+   TEMEL
+========================================================= */
+
+const params=
+    new URLSearchParams(
+        location.search
+    );
+
+const token=
+    params.get("t") ||
+    params.get("token");
+
+
 let vehicleData=null;
 let selectedType=null;
 
+
+/* =========================================================
+   DURUMLAR
+========================================================= */
+
 const actionData=[
-    ["emergency","!","Acil Durum"],
-    ["collision","◆","Araca Çarpma"],
-    ["fire_smoke","♨","Duman / Yangın"],
-    ["blocking","↔","Geçişi Engelliyor"],
-    ["lights_on","✦","Farlar Açık"],
-    ["window_open","□","Cam Açık"],
-    ["door_open","◇","Kapı / Bagaj Açık"],
-    ["key_left","⌁","Anahtar Araçta"],
-    ["alarm","!","Araç Alarmı"],
-    ["tire_problem","◉","Lastik Sorunu"],
-    ["fluid_leak","⌄","Sıvı Sızıntısı"],
-    ["plate_problem","▭","Plaka Sorunu"],
-    ["vehicle_problem","!","Araçla İlgili Sorun"],
-    ["other","•••","Diğer"]
+
+    [
+        "emergency",
+        "!",
+        "Acil Durum"
+    ],
+
+    [
+        "collision",
+        "◆",
+        "Araca Çarpma"
+    ],
+
+    [
+        "fire_smoke",
+        "♨",
+        "Duman / Yangın"
+    ],
+
+    [
+        "blocking",
+        "↔",
+        "Geçişi Engelliyor"
+    ],
+
+    [
+        "lights_on",
+        "✦",
+        "Farlar Açık"
+    ],
+
+    [
+        "window_open",
+        "□",
+        "Cam Açık"
+    ],
+
+    [
+        "door_open",
+        "◇",
+        "Kapı / Bagaj Açık"
+    ],
+
+    [
+        "key_left",
+        "⌁",
+        "Anahtar Araçta"
+    ],
+
+    [
+        "alarm",
+        "!",
+        "Araç Alarmı"
+    ],
+
+    [
+        "tire_problem",
+        "◉",
+        "Lastik Sorunu"
+    ],
+
+    [
+        "fluid_leak",
+        "⌄",
+        "Sıvı Sızıntısı"
+    ],
+
+    [
+        "plate_problem",
+        "▭",
+        "Plaka Sorunu"
+    ],
+
+    [
+        "vehicle_problem",
+        "!",
+        "Araçla İlgili Sorun"
+    ],
+
+    [
+        "other",
+        "•••",
+        "Diğer"
+    ]
+
 ];
 
+
+/* =========================================================
+   WHATSAPP MESAJLARI
+========================================================= */
+
 const messages={
-    collision:"Aracınıza temas/çarpma ile ilgili size ulaşmak istiyorum.",
-    fire_smoke:"Aracınızda duman veya yangın riski olabilecek bir durum fark ettim.",
-    blocking:"Aracınız geçişi engelliyor gibi görünüyor.",
-    lights_on:"Aracınızın farları açık kalmış görünüyor.",
-    window_open:"Aracınızın camı açık kalmış görünüyor.",
-    door_open:"Aracınızın kapısı veya bagajı açık kalmış görünüyor.",
-    key_left:"Aracınızda anahtar unutulmuş olabileceğini fark ettim.",
-    alarm:"Aracınızın alarmı çalıyor.",
-    tire_problem:"Aracınızın lastiğiyle ilgili bir sorun fark ettim.",
-    fluid_leak:"Aracınızın altında sıvı sızıntısı olabilecek bir durum fark ettim.",
-    plate_problem:"Aracınızın plakasıyla ilgili bir sorun fark ettim.",
-    vehicle_problem:"Aracınızla ilgili dikkat edilmesi gereken bir durum fark ettim.",
-    other:"Aracınızla ilgili size ulaşmak istiyorum."
+
+    collision:
+        "Aracınıza temas/çarpma ile ilgili size ulaşmak istiyorum.",
+
+    fire_smoke:
+        "Aracınızda duman veya yangın riski olabilecek bir durum fark ettim.",
+
+    blocking:
+        "Aracınız geçişi engelliyor gibi görünüyor.",
+
+    lights_on:
+        "Aracınızın farları açık kalmış görünüyor.",
+
+    window_open:
+        "Aracınızın camı açık kalmış görünüyor.",
+
+    door_open:
+        "Aracınızın kapısı veya bagajı açık kalmış görünüyor.",
+
+    key_left:
+        "Aracınızda anahtar unutulmuş olabileceğini fark ettim.",
+
+    alarm:
+        "Aracınızın alarmı çalıyor.",
+
+    tire_problem:
+        "Aracınızın lastiğiyle ilgili bir sorun fark ettim.",
+
+    fluid_leak:
+        "Aracınızın altında sıvı sızıntısı olabilecek bir durum fark ettim.",
+
+    plate_problem:
+        "Aracınızın plakasıyla ilgili bir sorun fark ettim.",
+
+    vehicle_problem:
+        "Aracınızla ilgili dikkat edilmesi gereken bir durum fark ettim.",
+
+    other:
+        "Aracınızla ilgili size ulaşmak istiyorum."
+
 };
 
-function digitsPhone(value){return String(value||"").replace(/\D/g,"");}
-function trWhatsapp(value){
-    let p=digitsPhone(value);
-    if(p.startsWith("0")&&p.length===11)p="90"+p.slice(1);
-    else if(p.startsWith("5")&&p.length===10)p="90"+p;
-    return p;
-}
-function displayPhone(value){return String(value||"").trim();}
 
-function showMessage(text,type="error"){
-    const el=document.getElementById("message");
-    el.textContent=text;el.className="message show "+type;
+/* =========================================================
+   TELEFON
+========================================================= */
+
+function digitsPhone(value){
+
+    return String(
+        value || ""
+    ).replace(
+        /\D/g,
+        ""
+    );
+
 }
+
+
+function trWhatsapp(value){
+
+    let p=
+        digitsPhone(
+            value
+        );
+
+
+    if(
+        p.startsWith("0") &&
+        p.length===11
+    ){
+
+        p=
+            "90" +
+            p.slice(1);
+
+    }
+
+    else if(
+        p.startsWith("5") &&
+        p.length===10
+    ){
+
+        p=
+            "90" +
+            p;
+
+    }
+
+
+    return p;
+
+}
+
+
+function displayPhone(value){
+
+    return String(
+        value || ""
+    ).trim();
+
+}
+
+
+/* =========================================================
+   MESAJ
+========================================================= */
+
+function showMessage(
+    text,
+    type="error"
+){
+
+    const el=
+        document.getElementById(
+            "message"
+        );
+
+    el.textContent=text;
+
+    el.className=
+        "message show " +
+        type;
+
+}
+
+
+/* =========================================================
+   BUTONLARI OLUŞTUR
+========================================================= */
 
 function renderActions(){
-    document.getElementById("actions").innerHTML=actionData.map(([type,icon,title])=>`
-        <button class="action ${type==="emergency"?"emergency":""}" onclick="selectAction('${type}')">
-            <span>${icon}</span><strong>${title}</strong>
-        </button>`).join("");
+
+    document.getElementById(
+        "actions"
+    ).innerHTML=
+
+        actionData.map(
+            ([type,icon,title])=>`
+
+                <button
+                    class="action ${
+                        type==="emergency"
+                        ? "emergency"
+                        : ""
+                    }"
+                    onclick="selectAction('${type}')"
+                >
+
+                    <span>
+                        ${icon}
+                    </span>
+
+                    <strong>
+                        ${title}
+                    </strong>
+
+                </button>
+
+            `
+        ).join("");
+
 }
+
+
+/* =========================================================
+   DURUM SEÇ
+========================================================= */
 
 function selectAction(type){
+
     selectedType=type;
-    document.getElementById("normalPanel").classList.remove("show");
-    document.getElementById("emergencyPanel").classList.remove("show");
 
-    if(type==="emergency"){
-        document.getElementById("emergencyPanel").classList.add("show");
-        logAction("view_contact");
+
+    const normalPanel=
+        document.getElementById(
+            "normalPanel"
+        );
+
+    const emergencyPanel=
+        document.getElementById(
+            "emergencyPanel"
+        );
+
+    const messageBox=
+        document.getElementById(
+            "message"
+        );
+
+
+    normalPanel.classList.remove(
+        "show"
+    );
+
+    emergencyPanel.classList.remove(
+        "show"
+    );
+
+
+    messageBox.className=
+        "message";
+
+    messageBox.textContent=
+        "";
+
+
+    /* ACİL DURUM */
+
+    if(
+        type==="emergency"
+    ){
+
+        emergencyPanel.classList.add(
+            "show"
+        );
+
+
+        logAction(
+            "view_contact"
+        );
+
+
+        setTimeout(
+            ()=>{
+
+                emergencyPanel.scrollIntoView({
+                    behavior:"smooth",
+                    block:"center"
+                });
+
+            },
+            100
+        );
+
+
         return;
+
     }
 
-    if(vehicleData.availability_status==="emergency_only"){
-        showMessage("Araç sahibi iletişimi yalnızca acil durumlar için sınırlandırmış.");
+
+    /* SADECE ACİL İLETİŞİM */
+
+    if(
+        vehicleData.availability_status===
+        "emergency_only"
+    ){
+
+        showMessage(
+            "Araç sahibi iletişimi yalnızca acil durumlar için sınırlandırmış."
+        );
+
         return;
-    }
-    if(vehicleData.availability_status==="unavailable"){
-        showMessage("Araç sahibi şu anda iletişime kapalı.");
-        return;
+
     }
 
-    document.getElementById("selectedTitle").textContent=actionData.find(x=>x[0]===type)?.[2]||"Araç bildirimi";
-    document.getElementById("otherField").style.display=type==="other"?"block":"none";
-    document.getElementById("normalPanel").classList.add("show");
-    document.getElementById("normalPanel").scrollIntoView({behavior:"smooth",block:"nearest"});
+
+    /* İLETİŞİME KAPALI */
+
+    if(
+        vehicleData.availability_status===
+        "unavailable"
+    ){
+
+        showMessage(
+            "Araç sahibi şu anda iletişime kapalı."
+        );
+
+        return;
+
+    }
+
+
+    /* WHATSAPP */
+
+    const selected=
+        actionData.find(
+            item=>
+                item[0]===type
+        );
+
+
+    document.getElementById(
+        "selectedTitle"
+    ).textContent=
+
+        selected?.[2] ||
+        "Araç bildirimi";
+
+
+    document.getElementById(
+        "otherField"
+    ).style.display=
+
+        type==="other"
+        ? "block"
+        : "none";
+
+
+    normalPanel.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        ()=>{
+
+            normalPanel.scrollIntoView({
+                behavior:"smooth",
+                block:"center"
+            });
+
+        },
+        100
+    );
+
 }
+
+
+/* =========================================================
+   QR HAREKET KAYDI
+========================================================= */
 
 async function logAction(action){
-    if(!token||!selectedType)return;
-    const name=document.getElementById("senderName")?.value.trim()||null;
-    const custom=document.getElementById("otherMessage")?.value.trim()||null;
+
+    if(
+        !token ||
+        !selectedType
+    ){
+
+        return;
+
+    }
+
+
+    const name=
+        document
+        .getElementById(
+            "senderName"
+        )
+        ?.value
+        .trim() ||
+        null;
+
+
+    const custom=
+        document
+        .getElementById(
+            "otherMessage"
+        )
+        ?.value
+        .trim() ||
+        null;
+
+
     try{
-        await supabaseClient.rpc("log_vehicle_qr_event",{
-            p_public_token:token,
-            p_event_type:selectedType,
-            p_action_type:action,
-            p_sender_name:name,
-            p_sender_message:custom,
-            p_device_id:getDeviceId()
-        });
-    }catch(e){console.warn("QR event log:",e);}
+
+        await supabaseClient.rpc(
+            "log_vehicle_qr_event",
+            {
+
+                p_public_token:
+                    token,
+
+                p_event_type:
+                    selectedType,
+
+                p_action_type:
+                    action,
+
+                p_sender_name:
+                    name,
+
+                p_sender_message:
+                    custom,
+
+                p_device_id:
+                    getDeviceId()
+
+            }
+        );
+
+    }
+    catch(e){
+
+        console.warn(
+            "QR event log:",
+            e
+        );
+
+    }
+
 }
+
+
+/* =========================================================
+   CİHAZ ID
+========================================================= */
 
 function getDeviceId(){
-    let id=localStorage.getItem("aracx_device_id");
-    if(!id){id=(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random());localStorage.setItem("aracx_device_id",id);}
+
+    let id=
+        localStorage.getItem(
+            "aracx_device_id"
+        );
+
+
+    if(!id){
+
+        id=
+            crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now() +
+              "-" +
+              Math.random();
+
+
+        localStorage.setItem(
+            "aracx_device_id",
+            id
+        );
+
+    }
+
+
     return id;
+
 }
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
 
 async function openWhatsApp(){
-    if(!selectedType)return;
-    if(!vehicleData.whatsapp_enabled){showMessage("Araç sahibi WhatsApp iletişimini kapatmış.");return;}
 
-    const phone=trWhatsapp(vehicleData.whatsapp_phone||vehicleData.owner_phone||vehicleData.phone);
-    if(!phone){showMessage("WhatsApp iletişim numarası bulunamadı.");return;}
-
-    const name=document.getElementById("senderName").value.trim();
-    const custom=document.getElementById("otherMessage").value.trim();
-    if(name.length<2){showMessage("Lütfen adınızı girin.");return;}
-    if(selectedType==="other"&&custom.length<3){showMessage("Durumu kısaca açıklayın.");return;}
-
-    let body=`Merhaba. Aracınızın üzerindeki AraçX QR etiketi üzerinden ulaşıyorum. ${messages[selectedType]||messages.other}`;
-    if(selectedType==="other")body+=` Durum: ${custom}`;
-    body+=` Gönderen: ${name}`;
-
-    logAction("whatsapp");
-    location.href=`https://wa.me/${phone}?text=${encodeURIComponent(body)}`;
-}
-
-async function initialize(){
-    renderActions();
-    if(!token){document.getElementById("loading").textContent="Geçersiz QR bağlantısı.";return;}
-
-    const {data,error}=await supabaseClient.rpc("resolve_vehicle_qr",{p_public_token:token});
-    if(error||!data||data.success===false){
-        console.error(error||data);
-        document.getElementById("loading").textContent=data?.message||"Bu AraçX etiketi kullanılamıyor.";
+    if(!selectedType){
         return;
     }
 
-    vehicleData=data;
-    const vehicle=data.vehicle||data;
-    const contact=data.contact||data;
-    vehicleData={...data,...(data.sticker||{}),...vehicle,...contact};
 
-    document.getElementById("loading").style.display="none";
-    document.getElementById("app").style.display="block";
-    document.getElementById("qrStatus").textContent="AKTİF";
-    document.getElementById("plate").textContent=vehicleData.plate||"ARAÇ";
-    document.getElementById("vehicleTitle").textContent=[vehicleData.brand,vehicleData.model,vehicleData.model_year].filter(Boolean).join(" • ")||"AraçX Kayıtlı Araç";
-    document.getElementById("serial").textContent=vehicleData.serial_number?`Etiket: ${vehicleData.serial_number}`:"";
+    if(
+        !vehicleData.whatsapp_enabled
+    ){
 
-    const ownerPhone=vehicleData.owner_phone||vehicleData.phone;
-    const tel=digitsPhone(ownerPhone);
-    const ownerCall=document.getElementById("ownerCall");
+        showMessage(
+            "Araç sahibi WhatsApp iletişimini kapatmış."
+        );
 
-    if(tel){
-        ownerCall.href=`tel:${tel}`;
-        ownerCall.onclick=()=>logAction("call_owner");
-    }else{
-        ownerCall.style.display="none";
+        return;
+
     }
 
-    if(vehicleData.emergency_contact_enabled&&vehicleData.secondary_contact_phone){
-        document.getElementById("secondaryContact").innerHTML=`
-            <div class="contact-number">${vehicleData.secondary_contact_name||"Acil durum kişisi"}: ${displayPhone(vehicleData.secondary_contact_phone)}</div>
-            <a class="secondary" href="tel:${digitsPhone(vehicleData.secondary_contact_phone)}">İKİNCİ ACİL DURUM KİŞİSİNİ ARA</a>`;
+
+    const phone=
+        trWhatsapp(
+
+            vehicleData.whatsapp_phone ||
+
+            vehicleData.owner_phone ||
+
+            vehicleData.phone
+
+        );
+
+
+    if(!phone){
+
+        showMessage(
+            "WhatsApp iletişim numarası bulunamadı."
+        );
+
+        return;
+
     }
+
+
+    const name=
+        document
+        .getElementById(
+            "senderName"
+        )
+        .value
+        .trim();
+
+
+    const custom=
+        document
+        .getElementById(
+            "otherMessage"
+        )
+        .value
+        .trim();
+
+
+    if(
+        name.length<2
+    ){
+
+        showMessage(
+            "Lütfen adınızı girin."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        selectedType==="other" &&
+        custom.length<3
+    ){
+
+        showMessage(
+            "Durumu kısaca açıklayın."
+        );
+
+        return;
+
+    }
+
+
+    let body=
+
+        `Merhaba. Aracınızın üzerindeki AraçX QR etiketi üzerinden ulaşıyorum. ${
+            messages[selectedType] ||
+            messages.other
+        }`;
+
+
+    if(
+        selectedType==="other"
+    ){
+
+        body+=
+            ` Durum: ${custom}`;
+
+    }
+
+
+    body+=
+        ` Gönderen: ${name}`;
+
+
+    /* LOG BEKLENMEZ */
+
+    logAction(
+        "whatsapp"
+    );
+
+
+    location.href=
+
+        `https://wa.me/${phone}?text=${
+            encodeURIComponent(body)
+        }`;
+
 }
 
+
+/* =========================================================
+   BAŞLAT
+========================================================= */
+
+async function initialize(){
+
+    renderActions();
+
+
+    if(!token){
+
+        document.getElementById(
+            "loading"
+        ).textContent=
+
+            "Geçersiz QR bağlantısı.";
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    }=
+
+        await supabaseClient.rpc(
+            "resolve_vehicle_qr",
+            {
+                p_public_token:
+                    token
+            }
+        );
+
+
+    if(
+        error ||
+        !data ||
+        data.success===false
+    ){
+
+        console.error(
+            error ||
+            data
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).textContent=
+
+            data?.message ||
+            "Bu AraçX etiketi kullanılamıyor.";
+
+
+        return;
+
+    }
+
+
+    /* VERİLER */
+
+    const vehicle=
+        data.vehicle ||
+        data;
+
+
+    const contact=
+        data.contact ||
+        data;
+
+
+    vehicleData={
+
+        ...data,
+
+        ...(data.sticker || {}),
+
+        ...vehicle,
+
+        ...contact
+
+    };
+
+
+    /* SAYFAYI AÇ */
+
+    document.getElementById(
+        "loading"
+    ).style.display=
+        "none";
+
+
+    document.getElementById(
+        "app"
+    ).style.display=
+        "block";
+
+
+    document.getElementById(
+        "qrStatus"
+    ).textContent=
+        "AKTİF";
+
+
+    document.getElementById(
+        "plate"
+    ).textContent=
+
+        vehicleData.plate ||
+        "ARAÇ";
+
+
+    document.getElementById(
+        "vehicleTitle"
+    ).textContent=
+
+        [
+            vehicleData.brand,
+            vehicleData.model,
+            vehicleData.model_year
+        ]
+        .filter(Boolean)
+        .join(" • ") ||
+
+        "AraçX Kayıtlı Araç";
+
+
+    document.getElementById(
+        "serial"
+    ).textContent=
+
+        vehicleData.serial_number
+
+        ? `Etiket: ${
+            vehicleData.serial_number
+        }`
+
+        : "";
+
+
+    /* =====================================================
+       ARAÇ SAHİBİ TELEFONU
+    ===================================================== */
+
+    const ownerPhone=
+
+        vehicleData.owner_phone ||
+
+        vehicleData.phone ||
+
+        vehicleData.whatsapp_phone ||
+
+        contact.owner_phone ||
+
+        contact.phone ||
+
+        contact.whatsapp_phone ||
+
+        "";
+
+
+    const tel=
+        digitsPhone(
+            ownerPhone
+        );
+
+
+    const ownerCall=
+        document.getElementById(
+            "ownerCall"
+        );
+
+
+    if(tel){
+
+        ownerCall.href=
+            `tel:${tel}`;
+
+
+        ownerCall.style.display=
+            "flex";
+
+
+        ownerCall.onclick=
+            ()=>{
+
+                logAction(
+                    "call_owner"
+                );
+
+            };
+
+    }
+
+    else{
+
+        ownerCall.style.display=
+            "none";
+
+    }
+
+
+    /* =====================================================
+       112 HER ZAMAN AKTİF
+    ===================================================== */
+
+    document.getElementById(
+        "call112"
+    ).href=
+        "tel:112";
+
+
+    /* =====================================================
+       İKİNCİ ACİL DURUM KİŞİSİ
+    ===================================================== */
+
+    if(
+        vehicleData.emergency_contact_enabled &&
+        vehicleData.secondary_contact_phone
+    ){
+
+        const secondaryPhone=
+            digitsPhone(
+                vehicleData.secondary_contact_phone
+            );
+
+
+        document.getElementById(
+            "secondaryContact"
+        ).innerHTML=`
+
+            <div class="contact-number">
+
+                ${
+                    vehicleData.secondary_contact_name ||
+                    "Acil durum kişisi"
+                }:
+
+                ${
+                    displayPhone(
+                        vehicleData.secondary_contact_phone
+                    )
+                }
+
+            </div>
+
+
+            <a
+                class="secondary"
+                href="tel:${secondaryPhone}"
+            >
+                İKİNCİ ACİL DURUM KİŞİSİNİ ARA
+            </a>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   ÇALIŞTIR
+========================================================= */
+
 initialize();
+
 </script>
+
 </body>
 </html>
