@@ -3009,6 +3009,11 @@ body{background:radial-gradient(circle at 20% 0%,#fff 0,#f7f4f2 28%,#f1f3f6 72%,
             >
                 Araç Merkezim
             </div>
+
+            <div class="vehicle-switcher" id="vehicleSwitcher">
+                <label for="vehicleSwitcherSelect">AKTİF ARAÇ</label>
+                <select id="vehicleSwitcherSelect" onchange="switchVehicle(this.value)"></select>
+            </div>
         </div>
 
         <button
@@ -3528,23 +3533,90 @@ async function loadVehicles(){
         });
 
 
-    const firstComplete =
-        vehicles.find(
-            item => item.profile
-        );
+    const completeVehicles = vehicles.filter(item => item.profile);
 
+    const savedStickerId =
+        localStorage.getItem("aracx_active_sticker_id");
 
-    if(firstComplete){
+    const selected =
+        completeVehicles.find(item => item.sticker.id === savedStickerId)
+        || completeVehicles[0]
+        || null;
 
-        currentSticker =
-            firstComplete.sticker;
-
-        currentVehicle =
-            firstComplete.profile;
-
+    if(selected){
+        currentSticker = selected.sticker;
+        currentVehicle = selected.profile;
+        localStorage.setItem("aracx_active_sticker_id", currentSticker.id);
+    }else{
+        currentSticker = null;
+        currentVehicle = null;
     }
 
+    renderVehicleSwitcher();
 }
+
+function renderVehicleSwitcher(){
+    const wrap = document.getElementById("vehicleSwitcher");
+    const select = document.getElementById("vehicleSwitcherSelect");
+    if(!wrap || !select) return;
+
+    const complete = vehicles.filter(item => item.profile);
+    if(complete.length < 2){
+        wrap.classList.remove("visible");
+        select.innerHTML = "";
+        return;
+    }
+
+    select.innerHTML = complete.map(item => {
+        const plate = item.profile.plate || "PLAKA YOK";
+        const brand = [item.profile.brand, item.profile.model].filter(Boolean).join(" ");
+        const label = brand ? `${plate} · ${brand}` : plate;
+        return `<option value="${escapeHtml(item.sticker.id)}" ${item.sticker.id === currentSticker?.id ? "selected" : ""}>${escapeHtml(label)}</option>`;
+    }).join("");
+
+    wrap.classList.add("visible");
+}
+
+async function switchVehicle(stickerId){
+    if(!stickerId || stickerId === currentSticker?.id) return;
+
+    const selected = vehicles.find(
+        item => item.sticker.id === stickerId && item.profile
+    );
+
+    if(!selected) return;
+
+    currentSticker = selected.sticker;
+    currentVehicle = selected.profile;
+    localStorage.setItem("aracx_active_sticker_id", stickerId);
+
+    reminders = [];
+    qrEvents = [];
+    maintenanceItems = [];
+    serviceRecords = [];
+    expenses = [];
+
+    mainContent.innerHTML = `<div class="loading"><div><div class="loader"></div>Araç değiştiriliyor...</div></div>`;
+
+    try{
+        await Promise.all([
+            loadReminders(),
+            loadQrEvents(),
+            loadMaintenanceItems(),
+            loadServiceRecords(),
+            loadExpenses()
+        ]);
+
+        renderVehicleSwitcher();
+        openSection(activeSection || "home");
+        showToast("Araç değiştirildi.");
+    }catch(error){
+        console.error("Araç değiştirme:", error);
+        showToast("Araç bilgileri yüklenemedi.");
+        renderHome();
+    }
+}
+
 
 
 /* =========================================================
@@ -9846,6 +9918,9 @@ html,body{background:#f4f3f0;color:#171717}body{background:linear-gradient(180de
 input,select,textarea{background:#fff!important;color:#171717!important;border-color:rgba(20,20,20,.12)!important}.section-title{font-size:20px}.section-subtitle{font-size:12px}.toast{background:#171717;color:#fff}
 .maintenance-hero,.expense-hero{background:linear-gradient(135deg,#fff,#f8f6f2)!important;color:#171717!important;border-color:rgba(20,20,20,.07)!important;box-shadow:0 12px 32px rgba(20,20,20,.06)!important}
 @media(max-width:600px){.app{padding-left:14px;padding-right:14px}.page-title{font-size:22px}.vehicle-hero{min-height:270px}.section{margin-top:23px}.bottom-nav-wrap{padding-left:10px;padding-right:10px}}
+
+/* AraçX çoklu araç seçici */
+.vehicle-switcher{margin-top:7px;display:none;align-items:center;gap:8px}.vehicle-switcher.visible{display:flex}.vehicle-switcher label{font-size:10px;font-weight:900;letter-spacing:.8px;color:#8a919a}.vehicle-switcher select{max-width:230px;height:36px;padding:0 32px 0 11px;border:1px solid #e0e3e7;border-radius:11px;background:#fff;color:#171b22;font-size:12px;font-weight:850;box-shadow:0 4px 14px rgba(20,25,35,.05);outline:none}.vehicle-switcher select:focus{border-color:#e31b23;box-shadow:0 0 0 3px rgba(227,27,35,.08)}@media(max-width:520px){.vehicle-switcher{align-items:flex-start;flex-direction:column;gap:4px}.vehicle-switcher select{max-width:190px;width:190px}}
 </style>
 </body>
 </html>
