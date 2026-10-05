@@ -3730,58 +3730,42 @@ async function loadExpenses(){
 
     if(!currentVehicle) return;
 
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
 
-    const now =
-        new Date();
-
-    const startOfYear =
-        new Date(
-            now.getFullYear(),
-            0,
-            1
-        );
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
+    const { data, error } = await supabaseClient
         .from("vehicle_expenses")
         .select(`
             id,
-            amount,
+            expense_date,
             category,
-            date
+            title,
+            description,
+            amount,
+            vehicle_km,
+            payment_method,
+            vendor_name,
+            notes
         `)
-        .eq(
-            "vehicle_profile_id",
-            currentVehicle.id
-        )
-        .gte(
-            "date",
-            formatDateForDatabase(
-                startOfYear
-            )
-        );
-
+        .eq("vehicle_profile_id", currentVehicle.id)
+        .gte("expense_date", formatDateForDatabase(startOfYear));
 
     if(error){
-
-        console.error(
-            "Masraflar:",
-            error
-        );
-
+        console.error("Masraflar:", error);
         expenses = [];
-
         return;
     }
 
-
-    expenses =
-        data || [];
-
+    // Arayüzde kullanılan alan adlarını gerçek veritabanı
+    // sütunlarından üret. Böylece aylık/yıllık toplamlar da
+    // kaydedilen masrafları doğru hesaplar.
+    expenses = (data || []).map(item => ({
+        ...item,
+        date: item.expense_date,
+        km: item.vehicle_km,
+        payment: item.payment_method,
+        vendor: item.vendor_name
+    }));
 }
 
 
