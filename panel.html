@@ -5317,20 +5317,20 @@ async function saveExpense(){
     button.textContent = "KAYDEDİLİYOR...";
 
     const {error} = await supabaseClient
-        .from("vehicle_expenses")
-        .insert({
-            vehicle_profile_id:currentVehicle.id,
-            owner_id:currentUser.id,
-            date:date,
-            category:category,
-            title:title,
-            description:description || null,
-            amount:amount,
-            km:km,
-            payment:payment || null,
-            vendor:vendor || null,
-            notes:notes || null
-        });
+    .from("vehicle_expenses")
+    .insert({
+        vehicle_profile_id: currentVehicle.id,
+        owner_id: currentUser.id,
+        expense_date: date,
+        category: category,
+        title: title,
+        description: description || null,
+        amount: amount,
+        vehicle_km: km,
+        payment_method: payment || null,
+        vendor_name: vendor || null,
+        notes: notes || null
+    });
 
     if(error){
         console.error("Masraf kaydı:",error);
