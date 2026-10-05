@@ -5452,7 +5452,17 @@ function openAccidentForm(){
             <div class="ax-form-head"><div><h3>Yeni Kaza Dosyası</h3><p>Olayla ilgili temel bilgileri kaydedin.</p></div><button onclick="closeAccidentForm()">×</button></div>
             <div class="ax-form-grid">
                 <div class="field"><label>TARİH</label><input id="accidentDate" type="date" value="${today}"></div>
-                <div class="field"><label>KAZA TÜRÜ</label><select id="accidentType"><option value="Maddi hasarlı">Maddi hasarlı</option><option value="Tek araçlı">Tek araçlı</option><option value="Park halinde hasar">Park halinde hasar</option><option value="Diğer">Diğer</option></select></div>
+                <div class="field">
+    <label>KAZA TÜRÜ</label>
+    <select id="accidentType">
+        <option value="material_damage">Maddi Hasarlı</option>
+        <option value="injury">Yaralanmalı</option>
+        <option value="single_vehicle">Tek Araçlı</option>
+        <option value="parking_damage">Park Halinde Hasar</option>
+        <option value="other">Diğer</option>
+        <option value="unknown">Belirtilmedi</option>
+    </select>
+</div>
                 <div class="field"><label>KARŞI ARAÇ PLAKASI</label><input id="accidentOtherPlate" maxlength="20" placeholder="Varsa"></div>
                 <div class="field"><label>KARŞI SÜRÜCÜ</label><input id="accidentDriverName" maxlength="100" placeholder="Ad soyad"></div>
                 <div class="field"><label>TELEFON</label><input id="accidentDriverPhone" type="tel" maxlength="30" placeholder="Varsa"></div>
