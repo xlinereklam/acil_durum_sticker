@@ -2981,6 +2981,15 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
 @media(max-width:390px){.nav-label{font-size:11.5px!important}.xv-status{font-size:8px}.xv-pills{max-width:88%}}
 </style>
 
+
+<style>
+/* AraçX satış öncesi işlev ve görünürlük düzeltmeleri */
+body{background:radial-gradient(circle at 20% 0%,#fff 0,#f7f4f2 28%,#f1f3f6 72%,#eceff3 100%)!important;background-attachment:fixed!important}
+.mileage-update-button{background:#fff!important;color:#11151c!important;border:1px solid rgba(255,255,255,.9)!important;box-shadow:0 5px 16px rgba(0,0,0,.16)!important;opacity:1!important}
+.serial{background:rgba(255,255,255,.94)!important;color:#343a44!important;border:1px solid rgba(255,255,255,.85)!important}.serial strong{color:#11151c!important;display:block!important;margin-top:2px!important}
+.nav-emergency,.nav-emergency .nav-label,.nav-emergency .nav-icon{color:#ff2d32!important}.nav-emergency svg{stroke:#ff2d32!important;fill:none!important}
+.ax-more-button,.ax-back{width:100%;min-height:48px;border:1px solid #e1e4e9;border-radius:14px;background:#fff;color:#171b22;font-weight:850;padding:12px 15px}.ax-back{width:auto;margin-bottom:14px}.ax-guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ax-guide-grid .guide{width:100%;min-height:145px}.ax-detail-card{background:#fff;border:1px solid #e7e9ee;border-radius:22px;padding:20px;box-shadow:0 10px 28px rgba(28,36,52,.07)}.ax-detail-card h2{font-size:24px;margin:5px 0 8px}.ax-detail-card>p{color:#6f7987;line-height:1.55}.ax-detail-steps{display:grid;gap:10px;margin-top:18px}.ax-detail-steps>div{display:flex;gap:12px;padding:13px;background:#f7f8fa;border-radius:15px}.ax-detail-steps span{flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#ff2d32;color:#fff;font-weight:900}.ax-detail-steps p{margin:3px 0;color:#303641;line-height:1.5}.ax-note{margin-top:16px;padding:13px;border-radius:14px;background:#fff3e7;color:#72502b;font-size:12px;line-height:1.5}.ax-record-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.ax-record-grid>div,.ax-record-text{background:#f7f8fa;border-radius:14px;padding:13px}.ax-record-grid small,.ax-record-text small{display:block;color:#8992a0;margin-bottom:5px}.ax-record-text{margin-top:10px}.ax-record-text p{margin:0;line-height:1.5}.ax-qr-actions{display:grid;gap:10px;margin-top:18px}.ax-qr-actions a,.ax-qr-actions button{display:grid;place-items:center;min-height:50px;border:0;border-radius:14px;background:#ff2d32;color:#fff;font-weight:900;text-decoration:none}.ax-qr-actions button{background:#171b22}.guide-scroll+.ax-more-button{margin-top:10px}
+</style>
 </head>
 
 <body>
@@ -3296,6 +3305,26 @@ function renderProfileSection(){
                 ${actionArea}
             </div>
         </section>
+
+        <section class="section">
+            <div class="section-head"><div><div class="section-title">İletişim Ayarları</div><div class="section-subtitle">QR kodu okutan kişinin size nasıl ulaşacağını belirleyin</div></div></div>
+            <div class="xv-settings">
+                <label class="xv-setting"><span class="xv-setting-icon">☎</span><span class="xv-setting-text"><strong>Telefon numaramı göster</strong><small>QR ekranında telefon numaranız görüntülenebilir.</small></span><input id="publicPhoneEnabled" type="checkbox" ${currentVehicle?.public_phone_enabled ? "checked" : ""}><i></i></label>
+                <label class="xv-setting"><span class="xv-setting-icon">WA</span><span class="xv-setting-text"><strong>WhatsApp iletişimi</strong><small>Acil olmayan bildirimler WhatsApp üzerinden başlatılır.</small></span><input id="whatsappEnabled" type="checkbox" ${currentVehicle?.whatsapp_enabled ? "checked" : ""}><i></i></label>
+                <div class="xv-setting"><span class="xv-setting-icon">●</span><span class="xv-setting-text"><strong>Ulaşılabilirlik</strong><small>QR ekranındaki iletişim durumunu seçin.</small></span><select id="availabilityStatus"><option value="available" ${currentVehicle?.availability_status==="available"?"selected":""}>Uygun</option><option value="emergency_only" ${currentVehicle?.availability_status==="emergency_only"?"selected":""}>Sadece acil</option><option value="unavailable" ${currentVehicle?.availability_status==="unavailable"?"selected":""}>Uygun değil</option></select></div>
+                <button class="xv-save xv-save-light" onclick="saveVehicleContactSettings()">İletişim Ayarlarını Kaydet</button>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head"><div><div class="section-title">Acil Durum Kişisi</div><div class="section-subtitle">Gerekli olduğunda ulaşılabilecek ikinci kişi</div></div></div>
+            <div class="xv-card xv-grid">
+                <div class="field"><label>AD SOYAD</label><input id="secondaryContactName" type="text" maxlength="80" value="${escapeHtml(currentVehicle?.secondary_contact_name || "")}" placeholder="Acil durumda aranacak kişi"></div>
+                <div class="field"><label>TELEFON</label><input id="secondaryContactPhone" type="tel" maxlength="20" value="${escapeHtml(currentVehicle?.secondary_contact_phone || "")}" placeholder="05XX XXX XX XX"></div>
+                <label class="xv-check"><input id="emergencyContactEnabled" type="checkbox" ${currentVehicle?.emergency_contact_enabled ? "checked" : ""}><i>✓</i><span><strong>Acil durum kişisini aktif et</strong><small>Yalnızca acil durum senaryolarında kullanılır.</small></span></label>
+                <button class="xv-save" onclick="saveEmergencyContact()">Acil Durum Kişisini Kaydet</button>
+            </div>
+        </section>
     `;
 }
 
@@ -3425,6 +3454,7 @@ async function loadVehicles(){
             serial_number,
             status,
             type,
+            public_token,
             activated_at
         `)
         .eq(
@@ -3999,67 +4029,24 @@ function renderHome(){
 
                     <div class="quick-grid">
 
-                        <button
-                            class="quick"
-                            onclick="comingSoon('Bakım ekleme')"
-                        >
-
-                            <div class="quick-icon">
-                                +
-                            </div>
-
-                            <div class="quick-title">
-                                Bakım<br>Ekle
-                            </div>
-
+                        <button class="quick" onclick="renderQrCardManager()">
+                            <div class="quick-icon">⌗</div>
+                            <div class="quick-title">QR<br>Kartım</div>
                         </button>
 
-
-                        <button
-                            class="quick"
-                            onclick="renderExpenseCenter()"
-                        >
-
-                            <div class="quick-icon">
-                                ₺
-                            </div>
-
-                            <div class="quick-title">
-                                Masraf<br>Ekle
-                            </div>
-
+                        <button class="quick" onclick="openSection('maintenance'); setTimeout(openMaintenanceForm,0)">
+                            <div class="quick-icon">+</div>
+                            <div class="quick-title">Bakım<br>Ekle</div>
                         </button>
 
-
-                        <button
-                            class="quick"
-                            onclick="renderReminderCenter(true)"
-                        >
-
-                            <div class="quick-icon">
-                                ◷
-                            </div>
-
-                            <div class="quick-title">
-                                Hatırlatma<br>Ekle
-                            </div>
-
+                        <button class="quick" onclick="renderExpenseCenter(true)">
+                            <div class="quick-icon">₺</div>
+                            <div class="quick-title">Masraf<br>Ekle</div>
                         </button>
 
-
-                        <button
-                            class="quick"
-                            onclick="comingSoon('QR kart yönetimi')"
-                        >
-
-                            <div class="quick-icon">
-                                ⌗
-                            </div>
-
-                            <div class="quick-title">
-                                QR<br>Kartım
-                            </div>
-
+                        <button class="quick" onclick="renderReminderCenter(true)">
+                            <div class="quick-icon">◷</div>
+                            <div class="quick-title">Hatırlatma<br>Ekle</div>
                         </button>
 
                     </div>
@@ -4167,34 +4154,17 @@ function renderHome(){
 
                     <div class="guide-scroll">
 
-                        ${guideCard(
-                            "♨",
-                            "Hararet",
-                            "Hararet yükseldiğinde ilk yapılacaklar"
-                        )}
+                        ${guideCard("♨","Hararet","Hararet yükseldiğinde ilk yapılacaklar","overheat")}
 
-                        ${guideCard(
-                            "!",
-                            "Yağ Lambası",
-                            "Yağ uyarısını görürseniz ne yapmalısınız?"
-                        )}
+                        ${guideCard("!","Yağ Lambası","Yağ uyarısını görürseniz ne yapmalısınız?","oil")}
 
-                        ${guideCard(
-                            "▣",
-                            "Akü",
-                            "Araç çalışmadığında temel kontroller"
-                        )}
+                        ${guideCard("▣","Akü","Araç çalışmadığında temel kontroller","battery")}
 
-                        ${guideCard(
-                            "◉",
-                            "Lastik",
-                            "Lastik problemi yaşandığında güvenli adımlar"
-                        )}
+                        ${guideCard("◉","Lastik","Lastik problemi yaşandığında güvenli adımlar","tire")}
 
                     </div>
-
+                    <button class="ax-more-button" onclick="renderVehicleGuide()">TÜM ARAÇ REHBERİNİ AÇ →</button>
                 </section>
-
 
                 <!-- EMERGENCY -->
 
@@ -5607,6 +5577,8 @@ function renderAccidentAssistant(){
             </div>
         </section>
 
+        <section class="section"><button class="ax-more-button" onclick="renderAccidentGuide()">DETAYLI KAZA REHBERİNİ AÇ →</button></section>
+
         <section class="section">
             <button class="ax-primary" onclick="openAccidentForm()">+ KAZA DOSYASI OLUŞTUR</button>
         </section>
@@ -5632,17 +5604,31 @@ async function loadAccidentRecords(){
     if(error){console.error(error);box.innerHTML=`<div class="empty">Kaza kayıtları yüklenemedi.</div>`;return;}
     if(!data?.length){box.innerHTML=`<div class="empty">Henüz kaza kaydı bulunmuyor.</div>`;return;}
     box.innerHTML=data.map(item=>`
-        <article class="ax-history-item">
+        <article class="ax-history-item" onclick="renderAccidentRecordDetail('${item.id}')" style="cursor:pointer">
             <div class="ax-history-top">
-                <div><small>${escapeHtml(formatTurkishDate(item.accident_date))}</small><strong>${escapeHtml(item.accident_type||"Kaza kaydı")}</strong></div>
+                <div><small>${escapeHtml(formatTurkishDate(item.accident_date))}</small><strong>${escapeHtml(accidentTypeLabel(item.accident_type))}</strong></div>
                 <em>${escapeHtml(item.status||"open")}</em>
             </div>
             ${item.description?`<p>${escapeHtml(item.description)}</p>`:""}
             <div class="ax-tags">
                 ${item.other_vehicle_plate?`<span>Karşı plaka: ${escapeHtml(item.other_vehicle_plate)}</span>`:""}
-                ${item.injury?`<span>Yaralanma bildirildi</span>`:""}
+                ${item.injury_present?`<span>Yaralanma bildirildi</span>`:""}
             </div>
         </article>`).join("");
+}
+
+function accidentTypeLabel(type){ return ({material_damage:"Maddi Hasarlı",injury:"Yaralanmalı",single_vehicle:"Tek Araçlı",parking_damage:"Park Halinde Hasar",other:"Diğer",unknown:"Belirtilmedi"})[type] || type || "Kaza kaydı"; }
+
+function renderAccidentGuide(){
+    pageTitle.textContent="Detaylı Kaza Rehberi";
+    mainContent.innerHTML=`<section class="section"><button class="ax-back" onclick="renderAccidentAssistant()">← Kaza Asistanı</button><div class="ax-detail-card"><div class="ax-kicker">KAZA SONRASI YOL HARİTASI</div><h2>Güvenlikten kayda kadar adım adım</h2><div class="ax-detail-steps">${["Önce kendinizin ve çevrenin güvenliğini değerlendirin. Yaralanma, yangın, duman veya ciddi tehlikede 112'yi arayın.","Güvenliyse araçların ve olay yerinin genel görünümünü, hasarları, plakaları ve yol durumunu fotoğraflayın.","Karşı araç varsa plaka, sürücü adı ve iletişim bilgisini kaydedin.","Kaza dosyasını AraçX içinde oluşturun; olayın tarihini ve açıklamasını kaydedin.","Tutanak, kolluk veya sigorta süreci olayın koşullarına göre değişebilir. Emin olmadığınız durumda resmi/kurumsal yönlendirmeyi izleyin."].map((x,i)=>`<div><span>${i+1}</span><p>${x}</p></div>`).join("")}</div><a class="ax-112" href="tel:112"><b>112</b> ACİL YARDIMI ARA</a></div></section>`;
+}
+
+async function renderAccidentRecordDetail(id){
+    pageTitle.textContent="Kaza Kaydı";
+    const {data:item,error}=await supabaseClient.from("vehicle_accident_records").select("*").eq("id",id).eq("vehicle_profile_id",currentVehicle.id).maybeSingle();
+    if(error || !item){ showToast("Kaza kaydına ulaşılamadı."); return; }
+    mainContent.innerHTML=`<section class="section"><button class="ax-back" onclick="renderAccidentAssistant()">← Kaza Geçmişi</button><div class="ax-detail-card"><div class="ax-kicker">KAZA DOSYASI</div><h2>${escapeHtml(accidentTypeLabel(item.accident_type))}</h2><p>${escapeHtml(formatTurkishDate(item.accident_date))}</p><div class="ax-record-grid"><div><small>Durum</small><strong>${escapeHtml(item.status||"open")}</strong></div><div><small>Yaralanma</small><strong>${item.injury_present?"Evet":"Hayır"}</strong></div><div><small>Acil ekip</small><strong>${item.emergency_services_called?"Çağrıldı":"Çağrılmadı"}</strong></div><div><small>Karşı plaka</small><strong>${escapeHtml(item.other_vehicle_plate||"—")}</strong></div></div>${item.description?`<div class="ax-record-text"><small>Açıklama</small><p>${escapeHtml(item.description)}</p></div>`:""}${item.notes?`<div class="ax-record-text"><small>Notlar</small><p>${escapeHtml(item.notes)}</p></div>`:""}${item.other_driver_name?`<div class="ax-record-text"><small>Karşı sürücü</small><p>${escapeHtml(item.other_driver_name)} ${escapeHtml(item.other_driver_phone||"")}</p></div>`:""}</div></section>`;
 }
 
 function openAccidentForm(){
@@ -5933,24 +5919,6 @@ function renderVehicleSection(){
             </div>
         </section>
 
-        <section class="xv-section">
-            <header><div><em>QR İLETİŞİMİ</em><h2>İletişim Ayarları</h2><p>QR kodu okutan kişinin sana nasıl ulaşacağını belirle.</p></div><mark>02</mark></header>
-            <div class="xv-settings">
-                <label class="xv-setting"><span class="xv-setting-icon">☎</span><span class="xv-setting-text"><strong>Telefon numaramı göster</strong><small>QR ekranında telefon numaran görüntülenebilir.</small></span><input id="publicPhoneEnabled" type="checkbox" ${currentVehicle.public_phone_enabled ? "checked" : ""}><i></i></label>
-                <label class="xv-setting"><span class="xv-setting-icon">WA</span><span class="xv-setting-text"><strong>WhatsApp iletişimi</strong><small>Acil olmayan bildirimler WhatsApp üzerinden gönderilebilir.</small></span><input id="whatsappEnabled" type="checkbox" ${currentVehicle.whatsapp_enabled ? "checked" : ""}><i></i></label>
-                <div class="xv-setting"><span class="xv-setting-icon">●</span><span class="xv-setting-text"><strong>Ulaşılabilirlik</strong><small>QR ekranındaki iletişim durumunu seç.</small></span><select id="availabilityStatus"><option value="available" ${availability==="available"?"selected":""}>Uygun</option><option value="emergency_only" ${availability==="emergency_only"?"selected":""}>Sadece acil</option><option value="unavailable" ${availability==="unavailable"?"selected":""}>Uygun değil</option></select></div>
-                <button class="xv-save xv-save-light" onclick="saveVehicleContactSettings()">İletişim Ayarlarını Kaydet</button>
-            </div>
-        </section>
-
-        <section class="xv-section">
-            <header><div><em>GÜVENLİK</em><h2>Acil Durum Kişisi</h2><p>Gerekli olduğunda ulaşılabilecek ikinci kişi.</p></div><mark>03</mark></header>
-            <div class="xv-card xv-grid">
-                <div class="field"><label>AD SOYAD</label><input id="secondaryContactName" type="text" maxlength="80" value="${escapeHtml(currentVehicle.secondary_contact_name || "")}" placeholder="Acil durumda aranacak kişi"></div>
-                <div class="field"><label>TELEFON</label><input id="secondaryContactPhone" type="tel" maxlength="20" value="${escapeHtml(currentVehicle.secondary_contact_phone || "")}" placeholder="05XX XXX XX XX"></div>
-                <label class="xv-check"><input id="emergencyContactEnabled" type="checkbox" ${currentVehicle.emergency_contact_enabled ? "checked" : ""}><i>✓</i><span><strong>Acil durum kişisini aktif et</strong><small>Yalnızca acil durum senaryolarında kullanılır.</small></span></label>
-            </div>
-        </section>
     `;
 }
 
@@ -9330,30 +9298,20 @@ function getNearestMaintenanceKm(){
 
 
 function getInspectionDays(){
+    let dueDate = currentVehicle?.inspection_date || null;
 
-    if(!currentVehicle.inspection_date){
-        return null;
+    if(!dueDate){
+        const inspectionReminder = reminders
+            .filter(item => item.status === "active" && item.reminder_type === "inspection" && item.due_date)
+            .sort((a,b) => String(a.due_date).localeCompare(String(b.due_date)))[0];
+        dueDate = inspectionReminder?.due_date || null;
     }
 
+    if(!dueDate) return null;
 
-    const now =
-        new Date();
-
-    const due =
-        new Date(
-            currentVehicle.inspection_date +
-            "T12:00:00"
-        );
-
-
-    return Math.ceil(
-        (
-            due.getTime() -
-            now.getTime()
-        ) /
-        86400000
-    );
-
+    const now = new Date();
+    const due = new Date(dueDate + "T12:00:00");
+    return Math.ceil((due.getTime() - now.getTime()) / 86400000);
 }
 
 
@@ -9374,7 +9332,7 @@ function getCurrentMonthExpense(){
 
             const date =
                 new Date(
-                    item.date +
+                    item.expense_date +
                     "T12:00:00"
                 );
 
@@ -9405,37 +9363,43 @@ function getCurrentMonthExpense(){
    GUIDE
 ========================================================= */
 
-function guideCard(
-    icon,
-    title,
-    text
-){
-
-    return `
-
-        <button
-            class="guide"
-            onclick="comingSoon('${escapeJs(title)} rehberi')"
-        >
-
-            <div class="guide-icon">
-                ${icon}
-            </div>
-
-            <div class="guide-title">
-                ${escapeHtml(title)}
-            </div>
-
-            <div class="guide-text">
-                ${escapeHtml(text)}
-            </div>
-
-        </button>
-
-    `;
-
+function guideCard(icon,title,text,key){
+    const guideKey = key || ({"Hararet":"overheat","Yağ Lambası":"oil","Akü":"battery","Lastik":"tire"}[title] || "general");
+    return `<button class="guide" onclick="renderGuideDetail('${guideKey}')"><div class="guide-icon">${icon}</div><div class="guide-title">${escapeHtml(title)}</div><div class="guide-text">${escapeHtml(text)}</div></button>`;
 }
 
+const vehicleGuideData = {
+    overheat:{title:"Hararet",lead:"Motor sıcaklığı normalin üzerine çıktığında güvenli ilk adımlar.",steps:["Güvenli bir yerde durun ve motoru zorlamayın.","Klima gibi ek yükleri kapatın.","Buhar veya yoğun sızıntı varsa kaputu açmaya çalışmadan araçtan uzak durun.","Motor sıcakken radyatör/genleşme kabı kapağını açmayın.","Sorun devam ediyorsa aracı kullanmayın ve teknik destek alın."]},
+    oil:{title:"Yağ Basıncı Uyarısı",lead:"Kırmızı yağ uyarısı motor için ciddi risk anlamına gelebilir.",steps:["Güvenli şekilde durun ve motoru kapatın.","Aracı zorlayarak kullanmaya devam etmeyin.","Güvenliyse zeminde belirgin yağ kaçağı olup olmadığını gözle kontrol edin.","Yağ seviyesi kontrolü için aracın kullanım kılavuzundaki yöntemi izleyin.","Uyarı sürüyorsa servis veya yol yardım desteği alın."]},
+    battery:{title:"Akü / Şarj Sistemi",lead:"Araç çalışmıyor veya akü lambası yanıyorsa temel kontrol sırası.",steps:["Far ve iç aydınlatmaların açık kalıp kalmadığını kontrol edin.","Marş sırasında tık sesi veya çok zayıf marş varsa akü zayıf olabilir.","Motor çalışırken akü lambası yanıyorsa şarj sistemi arızası olabilir.","Takviye işlemini yalnızca aracın üretici talimatlarına uygun yapın.","Emin değilseniz yol yardım veya servis desteği alın."]},
+    tire:{title:"Lastik Problemi",lead:"Basınç kaybı veya patlakta aracı kontrol altında tutun.",steps:["Ani fren ve sert direksiyon hareketlerinden kaçının.","Hızı azaltıp güvenli bir noktada durun.","Lastiği görsel olarak kontrol edin.","Stepne veya tamir kitini yalnızca güvenli ortamda ve talimatına uygun kullanın.","Yanaktan hasarlı veya tamamen inmiş lastikle sürüşe devam etmeyin."]},
+    engine:{title:"Motor Arıza Lambası",lead:"Uyarının rengi ve aracın davranışı önemlidir.",steps:["Araçta güç kaybı, sarsıntı, duman veya anormal ses olup olmadığını kontrol edin.","Kırmızı uyarı veya ciddi belirti varsa güvenli yerde durun.","Sabit sarı uyarıda aracı zorlamadan servis kontrolü planlayın.","Yanıp sönen motor uyarısını ihmal etmeyin."]},
+    brake:{title:"Fren Uyarısı",lead:"Fren sistemi uyarılarında güvenlik önceliklidir.",steps:["El freninin tamamen indiğini kontrol edin.","Fren pedalında anormal yumuşama veya frenleme kaybı varsa aracı kullanmayın.","Güvenli yerde durun ve profesyonel destek alın."]},
+    abs:{title:"ABS Uyarısı",lead:"ABS uyarısı fren destek sisteminde kontrol gerektirebilir.",steps:["Normal fren hissini kontrol edin.","ABS ışığı sürekli yanıyorsa sistemi kontrol ettirin.","Fren uyarısıyla birlikte yanıyorsa daha temkinli davranın ve servis desteği alın."]},
+    wrongfuel:{title:"Yanlış Yakıt",lead:"Yanlış yakıt fark edildiğinde motoru çalıştırmamak hasarı azaltabilir.",steps:["Kontağı/motoru çalıştırmayın.","Aracı tekrar çalıştırmayı denemeyin.","Yakıt sisteminin profesyonel olarak boşaltılması için yol yardım/servis çağırın."]},
+    leak:{title:"Sıvı Kaçağı",lead:"Aracın altında yeni bir sıvı görürseniz kaynağı bilinmeden devam etmeyin.",steps:["Sıvıya çıplak elle temas etmeyin.","Yoğun kaçak, yakıt kokusu veya duman varsa araçtan uzaklaşın.","Gösterge uyarılarını kontrol edin ve gerekiyorsa aracı kullanmayın."]}
+};
+
+function renderVehicleGuide(){
+    pageTitle.textContent="Araç Rehberi";
+    const cards=[["♨","Hararet","Motor sıcaklığı yükselirse","overheat"],["!","Yağ Lambası","Yağ basıncı uyarısı","oil"],["▣","Akü","Çalışmama ve şarj sistemi","battery"],["◉","Lastik","Basınç kaybı ve patlak","tire"],["⚙","Motor Lambası","Motor arıza uyarısı","engine"],["!","Fren","Fren sistemi uyarısı","brake"],["ABS","ABS","ABS uyarısı","abs"],["⛽","Yanlış Yakıt","Yanlış yakıt durumunda","wrongfuel"],["≈","Sıvı Kaçağı","Araç altındaki sıvılar","leak"]];
+    mainContent.innerHTML=`<section class="section"><button class="ax-back" onclick="renderHome()">← Ana Sayfa</button><div class="section-head"><div><div class="section-title">Araç Rehberi</div><div class="section-subtitle">Uyarı ve arıza anında hızlı ilk adımlar</div></div></div><div class="ax-guide-grid">${cards.map(x=>guideCard(...x)).join("")}</div></section>`;
+}
+
+function renderGuideDetail(key){
+    const g=vehicleGuideData[key]; if(!g)return renderVehicleGuide();
+    pageTitle.textContent=g.title;
+    mainContent.innerHTML=`<section class="section"><button class="ax-back" onclick="renderVehicleGuide()">← Araç Rehberi</button><div class="ax-detail-card"><div class="ax-kicker">ARAÇX ARAÇ REHBERİ</div><h2>${escapeHtml(g.title)}</h2><p>${escapeHtml(g.lead)}</p><div class="ax-detail-steps">${g.steps.map((x,i)=>`<div><span>${i+1}</span><p>${escapeHtml(x)}</p></div>`).join("")}</div><div class="ax-note">Bu bölüm genel ilk adımları verir; arıza teşhisi yerine geçmez. Güvenlik riski varsa aracı kullanmayın.</div></div></section>`;
+}
+
+
+function renderQrCardManager(){
+    pageTitle.textContent="QR Kartım";
+    const active=currentSticker?.status==="active";
+    const token=currentSticker?.public_token || "";
+    const publicUrl=token ? `https://xlinereklam.github.io/acil_durum_sticker/vehicle.html?t=${encodeURIComponent(token)}` : "";
+    mainContent.innerHTML=`<section class="section"><button class="ax-back" onclick="renderHome()">← Ana Sayfa</button><div class="ax-detail-card"><div class="ax-kicker">ARAÇX QR KARTI</div><h2>${escapeHtml(currentSticker?.serial_number||"—")}</h2><p>Durum: <strong style="color:${active?'#169b57':'#e02b31'}">${active?'Aktif':'Pasif'}</strong></p><div class="ax-qr-actions">${publicUrl?`<a href="${publicUrl}" target="_blank" rel="noopener">QR EKRANINI AÇ</a><button onclick="navigator.clipboard.writeText('${publicUrl}').then(()=>showToast('QR bağlantısı kopyalandı.'))">BAĞLANTIYI KOPYALA</button>`:`<div class="ax-note">QR bağlantısı yüklenemedi. Kartı yeniden açmayı deneyin.</div>`}</div><div class="ax-note">Bu ekran kartınızın durumunu ve QR hedefini kontrol etmek içindir. Sticker sahipliği bu panelden değiştirilemez.</div></div></section>`;
+}
 
 /* =========================================================
    QR META
