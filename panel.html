@@ -9389,47 +9389,62 @@ function getInspectionDays(){
 
 function getCurrentMonthExpense(){
 
-    const now =
-        new Date();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
 
-    const year =
-        now.getFullYear();
+    // Manuel eklenen araç masrafları
+    const expenseTotal = expenses.reduce(
+        (total, item) => {
 
-    const month =
-        now.getMonth();
+            if(!item.expense_date){
+                return total;
+            }
 
-
-    return expenses.reduce(
-        (total,item) => {
-
-            const date =
-                new Date(
-                    item.expense_date +
-                    "T12:00:00"
-                );
-
+            const date = new Date(
+                item.expense_date + "T12:00:00"
+            );
 
             if(
                 date.getFullYear() === year &&
                 date.getMonth() === month
             ){
-
-                return total +
-                    Number(
-                        item.amount || 0
-                    );
-
+                return total + Number(item.amount || 0);
             }
 
-
             return total;
-
         },
         0
     );
 
-}
 
+    // Servis geçmişindeki bakım / onarım maliyetleri
+    const serviceTotal = serviceRecords.reduce(
+        (total, item) => {
+
+            if(!item.service_date){
+                return total;
+            }
+
+            const date = new Date(
+                item.service_date + "T12:00:00"
+            );
+
+            if(
+                date.getFullYear() === year &&
+                date.getMonth() === month
+            ){
+                return total + Number(item.total_cost || 0);
+            }
+
+            return total;
+        },
+        0
+    );
+
+
+    return expenseTotal + serviceTotal;
+}
 
 /* =========================================================
    GUIDE
