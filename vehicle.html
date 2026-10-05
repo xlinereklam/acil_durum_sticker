@@ -62,7 +62,7 @@ h2{margin:24px 2px 5px;font-size:19px}.sub{margin:0 2px 13px;color:var(--muted);
             <div class="field"><label>ADINIZ</label><input id="senderName" maxlength="60" placeholder="Adınız"></div>
             <div id="otherField" class="field" style="display:none"><label>KISA AÇIKLAMA</label><textarea id="otherMessage" maxlength="300" rows="3" placeholder="Sorunu kısaca yazın"></textarea></div>
             <button id="whatsappButton" class="primary" onclick="openWhatsApp()">WHATSAPP İLE BİLDİR</button>
-            <a id="fallbackCall" class="secondary" href="#" onclick="logAction('call_owner');">TELEFONLA ARA</a>
+            
         </div>
 
         <div id="emergencyPanel" class="emergency-box">
@@ -178,7 +178,7 @@ async function logAction(action){
             p_action_type:action,
             p_sender_name:name,
             p_sender_message:custom,
-p_device_id:getDeviceId()
+            p_device_id:getDeviceId()
         });
     }catch(e){console.warn("QR event log:",e);}
 }
@@ -193,11 +193,7 @@ async function openWhatsApp(){
     if(!selectedType)return;
     if(!vehicleData.whatsapp_enabled){showMessage("Araç sahibi WhatsApp iletişimini kapatmış.");return;}
 
-    const phone=trWhatsapp(
-    vehicleData.whatsapp_phone ||
-    vehicleData.owner_phone ||
-    vehicleData.phone
-);
+    const phone=trWhatsapp(vehicleData.whatsapp_phone||vehicleData.owner_phone||vehicleData.phone);
     if(!phone){showMessage("WhatsApp iletişim numarası bulunamadı.");return;}
 
     const name=document.getElementById("senderName").value.trim();
@@ -227,7 +223,7 @@ async function initialize(){
     vehicleData=data;
     const vehicle=data.vehicle||data;
     const contact=data.contact||data;
-    vehicleData={...data,...vehicle,...contact};
+    vehicleData={...data,...(data.sticker||{}),...vehicle,...contact};
 
     document.getElementById("loading").style.display="none";
     document.getElementById("app").style.display="block";
@@ -239,15 +235,12 @@ async function initialize(){
     const ownerPhone=vehicleData.owner_phone||vehicleData.phone;
     const tel=digitsPhone(ownerPhone);
     const ownerCall=document.getElementById("ownerCall");
-    const fallback=document.getElementById("fallbackCall");
 
     if(tel){
         ownerCall.href=`tel:${tel}`;
-        fallback.href=`tel:${tel}`;
         ownerCall.onclick=()=>logAction("call_owner");
     }else{
         ownerCall.style.display="none";
-        fallback.style.display="none";
     }
 
     if(vehicleData.emergency_contact_enabled&&vehicleData.secondary_contact_phone){
