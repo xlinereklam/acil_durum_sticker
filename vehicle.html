@@ -193,7 +193,11 @@ async function openWhatsApp(){
     if(!selectedType)return;
     if(!vehicleData.whatsapp_enabled){showMessage("Araç sahibi WhatsApp iletişimini kapatmış.");return;}
 
-    const phone=trWhatsapp(vehicleData.whatsapp_phone||vehicleData.owner_phone);
+    const phone=trWhatsapp(
+    vehicleData.whatsapp_phone ||
+    vehicleData.owner_phone ||
+    vehicleData.phone
+);
     if(!phone){showMessage("WhatsApp iletişim numarası bulunamadı.");return;}
 
     const name=document.getElementById("senderName").value.trim();
