@@ -3056,6 +3056,7 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
 ========================================================= */
 
 let currentUser = null;
+let userProfile = null;
 
 let vehicles = [];
 
@@ -3121,6 +3122,7 @@ async function initialize(){
 
         setProfileInitial();
 
+        await loadUserProfile();
 
         await loadVehicles();
 
@@ -3172,8 +3174,11 @@ function setProfileInitial(){
     const email =
         currentUser?.email || "";
 
+    const identity =
+        userProfile?.full_name || email;
+
     const first =
-        email
+        identity
         .trim()
         .charAt(0)
         .toUpperCase();
@@ -3183,6 +3188,143 @@ function setProfileInitial(){
 
 }
 
+
+/* =========================================================
+   USER PROFILE
+========================================================= */
+
+async function loadUserProfile(){
+
+    const { data, error } =
+        await supabaseClient
+        .from("profiles")
+        .select("id, full_name, phone")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+    if(error){
+        console.error("Profil yükleme:", error);
+        return;
+    }
+
+    userProfile = data || {
+        id: currentUser.id,
+        full_name: "",
+        phone: ""
+    };
+
+    setProfileInitial();
+}
+
+function normalizeTrPhone(value){
+
+    let digits = String(value || "").replace(/\D/g, "");
+
+    if(digits.startsWith("90") && digits.length === 12){
+        digits = "0" + digits.slice(2);
+    }
+
+    if(digits.startsWith("5") && digits.length === 10){
+        digits = "0" + digits;
+    }
+
+    return digits;
+}
+
+function isValidTrMobile(value){
+    return /^05\d{9}$/.test(normalizeTrPhone(value));
+}
+
+function renderProfileSection(){
+
+    pageTitle.textContent = "Profil";
+
+    const fullName = userProfile?.full_name || "";
+    const phone = userProfile?.phone || "";
+    const email = currentUser?.email || "";
+
+    mainContent.innerHTML = `
+        <section class="section">
+            <div class="vehicle-form-card profile-card" style="padding:22px;">
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+                    <div style="width:58px;height:58px;border-radius:18px;background:#ffe9e9;color:#ff2d32;display:grid;place-items:center;font-size:22px;font-weight:900;">
+                        ${escapeHtml((fullName || email || "A").trim().charAt(0).toUpperCase())}
+                    </div>
+                    <div>
+                        <div style="font-size:21px;font-weight:900;color:#11151c;">Hesap Bilgileri</div>
+                        <div style="font-size:13px;color:#7a8492;margin-top:3px;">AraçX iletişim bilgileriniz</div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="profileFullName">Ad Soyad</label>
+                    <input id="profileFullName" type="text" maxlength="100" autocomplete="name" value="${escapeHtml(fullName)}" placeholder="Adınız Soyadınız">
+                </div>
+
+                <div class="field">
+                    <label for="profilePhone">Telefon</label>
+                    <input id="profilePhone" type="tel" inputmode="tel" maxlength="16" autocomplete="tel" value="${escapeHtml(phone)}" placeholder="05XXXXXXXXX">
+                    <div style="font-size:12px;color:#7a8492;margin-top:7px;line-height:1.45;">QR üzerinden araç sahibine ulaşılması için bu numara kullanılır.</div>
+                </div>
+
+                <div class="field">
+                    <label for="profileEmail">E-posta</label>
+                    <input id="profileEmail" type="email" value="${escapeHtml(email)}" disabled style="opacity:.72;cursor:not-allowed;">
+                    <div style="font-size:12px;color:#7a8492;margin-top:7px;line-height:1.45;">Giriş hesabınıza bağlı e-posta adresidir.</div>
+                </div>
+
+                <button class="primary-save-button" onclick="saveUserProfile()" style="width:100%;margin-top:8px;background:#ff2d32;color:#fff;border:0;">
+                    Bilgileri Kaydet
+                </button>
+            </div>
+        </section>
+    `;
+}
+
+async function saveUserProfile(){
+
+    const fullName =
+        document.getElementById("profileFullName")?.value.trim() || "";
+
+    const rawPhone =
+        document.getElementById("profilePhone")?.value.trim() || "";
+
+    const phone = normalizeTrPhone(rawPhone);
+
+    if(fullName.length < 2){
+        showToast("Ad soyad bilgisini girin.");
+        return;
+    }
+
+    if(!isValidTrMobile(phone)){
+        showToast("Telefonu 05XXXXXXXXX formatında girin.");
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
+        .from("profiles")
+        .upsert({
+            id: currentUser.id,
+            full_name: fullName,
+            phone: phone
+        }, {
+            onConflict: "id"
+        })
+        .select("id, full_name, phone")
+        .single();
+
+    if(error){
+        console.error("Profil kaydetme:", error);
+        showToast("Profil bilgileri kaydedilemedi.");
+        return;
+    }
+
+    userProfile = data;
+    setProfileInitial();
+    showToast("Profil bilgileri kaydedildi.");
+    renderProfileSection();
+}
 
 /* =========================================================
    VEHICLES
@@ -5603,6 +5745,12 @@ if(section === "maintenance"){
         renderAccidentAssistant();
         return;
     }
+
+    if(section === "profile"){
+        renderProfileSection();
+        return;
+    }
+
     const titles = {
         maintenance:"Bakım Merkezi",
         emergency:"Acil & Kaza",
