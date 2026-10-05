@@ -3416,7 +3416,30 @@ function renderProfileSection(){
                 <button class="xv-save" onclick="saveEmergencyContact()">Acil Durum Kişisini Kaydet</button>
             </div>
         </section>
+
+        <section class="section">
+            <div class="section-head"><div><div class="section-title">Hesap</div><div class="section-subtitle">AraçX oturumunuzu yönetin</div></div></div>
+            <div class="vehicle-form-card" style="padding:20px;">
+                <button id="logoutButton" onclick="logoutAraX()" style="width:100%;min-height:50px;border:1px solid #e1e3e7;border-radius:14px;background:#fff;color:#d7282f;font-size:14px;font-weight:900;cursor:pointer;">ÇIKIŞ YAP</button>
+            </div>
+        </section>
     `;
+}
+
+async function logoutAraX(){
+    const button = document.getElementById("logoutButton");
+    if(button){ button.disabled=true; button.textContent="ÇIKIŞ YAPILIYOR..."; }
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if(error){
+        console.error("Çıkış hatası:", error);
+        if(button){ button.disabled=false; button.textContent="ÇIKIŞ YAP"; }
+        showToast("Çıkış yapılamadı.");
+        return;
+    }
+
+    window.location.replace("./index.html");
 }
 
 function enableProfileEdit(){
