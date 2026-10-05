@@ -356,6 +356,9 @@ let currentUser = null;
 let currentSticker = null;
 let vehicleProfile = null;
 
+const params = new URLSearchParams(window.location.search);
+const setupToken = params.get("t");
+
 
 /* =========================
    MESAJ
@@ -393,51 +396,36 @@ async function start(){
 
 
     /* =========================
-       AKTİF ARAÇ KARTINI BUL
+       KURULACAK ARAÇX KARTINI BUL
     ========================= */
 
-    const {
-        data:stickers,
-        error:stickerError
-    } = await supabaseClient
+    if(!setupToken){
+        showMessage("Kurulum bağlantısı eksik. AraçX kartınızı tekrar okutun.","error");
+        return;
+    }
+
+    const { data:stickers, error:stickerError } = await supabaseClient
         .from("stickers")
-        .select("id,serial_number,status,type")
+        .select("id,serial_number,status,type,public_token")
         .eq("owner_id",currentUser.id)
         .eq("type","vehicle")
         .eq("status","active")
+        .eq("public_token",setupToken)
         .limit(1);
 
-
     if(stickerError){
-
         console.error(stickerError);
-
-        showMessage(
-            "AraçX kartınız kontrol edilemedi.",
-            "error"
-        );
-
+        showMessage("AraçX kartınız kontrol edilemedi.","error");
         return;
-
     }
-
 
     if(!stickers || stickers.length === 0){
-
-        showMessage(
-            "Hesabınıza bağlı aktif AraçX kartı bulunamadı.",
-            "error"
-        );
-
+        showMessage("Bu AraçX kartı bu hesaba bağlı değil veya aktif değil.","error");
         return;
-
     }
 
-
     currentSticker = stickers[0];
-
-    serialBox.textContent =
-        "AraçX • " + currentSticker.serial_number;
+    serialBox.textContent = "AraçX • " + currentSticker.serial_number;
 
 
     /* =========================
@@ -498,7 +486,7 @@ async function start(){
         vehicleProfile.current_km !== null
     ){
 
-        window.location.replace("./panel.html");
+        window.location.replace("./panel.html?vehicle=" + encodeURIComponent(currentSticker.id));
         return;
 
     }
@@ -722,7 +710,7 @@ async function saveVehicle(){
 
     setTimeout(function(){
 
-        window.location.replace("./panel.html");
+        window.location.replace("./panel.html?vehicle=" + encodeURIComponent(currentSticker.id));
 
     },700);
 
