@@ -3198,7 +3198,7 @@ async function loadUserProfile(){
     const { data, error } =
         await supabaseClient
         .from("profiles")
-        .select("id, full_name, phone")
+        .select("id, full_name, phone, profile_edit_used, profile_edit_used_at")
         .eq("id", currentUser.id)
         .maybeSingle();
 
@@ -3210,7 +3210,9 @@ async function loadUserProfile(){
     userProfile = data || {
         id: currentUser.id,
         full_name: "",
-        phone: ""
+        phone: "",
+        profile_edit_used: false,
+        profile_edit_used_at: null
     };
 
     setProfileInitial();
@@ -3242,6 +3244,26 @@ function renderProfileSection(){
     const fullName = userProfile?.full_name || "";
     const phone = userProfile?.phone || "";
     const email = currentUser?.email || "";
+    const editUsed = userProfile?.profile_edit_used === true;
+    const serial = currentSticker?.serial_number || "";
+
+    const actionArea = editUsed
+        ? `
+            <div style="margin-top:18px;padding:16px;border-radius:16px;background:#fff4f4;border:1px solid #ffd6d8;">
+                <div style="font-size:14px;font-weight:850;color:#171a20;">Bilgi değişikliği için destek gerekiyor</div>
+                <div style="font-size:12px;color:#7a8492;line-height:1.55;margin-top:5px;">
+                    Bilgi değiştirme sayısını doldurduğunuz için tekrar değişiklik yapamamaktasınız. Lütfen değişiklik talebi gönderin.
+                </div>
+            </div>
+            <button class="primary-save-button" onclick="requestProfileChange()" style="width:100%;margin-top:12px;background:#20b45b;color:#fff;border:0;">
+                WhatsApp'tan Değişiklik Talep Et
+            </button>
+        `
+        : `
+            <button class="primary-save-button" onclick="enableProfileEdit()" style="width:100%;margin-top:12px;background:#ff2d32;color:#fff;border:0;">
+                Bilgilerimi Düzelt
+            </button>
+        `;
 
     mainContent.innerHTML = `
         <section class="section">
@@ -3252,47 +3274,84 @@ function renderProfileSection(){
                     </div>
                     <div>
                         <div style="font-size:21px;font-weight:900;color:#11151c;">Hesap Bilgileri</div>
-                        <div style="font-size:13px;color:#7a8492;margin-top:3px;">AraçX iletişim bilgileriniz</div>
+                        <div style="font-size:13px;color:#7a8492;margin-top:3px;">AraçX hesap sahibine ait bilgiler</div>
                     </div>
                 </div>
 
                 <div class="field">
+                    <label>Ad Soyad</label>
+                    <input type="text" value="${escapeHtml(fullName)}" disabled style="opacity:.82;cursor:not-allowed;">
+                </div>
+
+                <div class="field">
+                    <label>Telefon</label>
+                    <input type="tel" value="${escapeHtml(phone)}" disabled style="opacity:.82;cursor:not-allowed;">
+                </div>
+
+                <div class="field">
+                    <label>E-posta</label>
+                    <input type="email" value="${escapeHtml(email)}" disabled style="opacity:.72;cursor:not-allowed;">
+                </div>
+
+                ${actionArea}
+            </div>
+        </section>
+    `;
+}
+
+function enableProfileEdit(){
+
+    if(userProfile?.profile_edit_used === true){
+        requestProfileChange();
+        return;
+    }
+
+    const fullName = userProfile?.full_name || "";
+    const phone = userProfile?.phone || "";
+    const email = currentUser?.email || "";
+
+    mainContent.innerHTML = `
+        <section class="section">
+            <div class="vehicle-form-card profile-card" style="padding:22px;">
+                <div style="font-size:21px;font-weight:900;color:#11151c;">Bilgilerimi Düzelt</div>
+                <div style="font-size:13px;color:#7a8492;line-height:1.55;margin-top:5px;margin-bottom:20px;">
+                    Hesap bilgilerinizi güncelleyin.
+                </div>
+
+                <div class="field">
                     <label for="profileFullName">Ad Soyad</label>
-                    <input id="profileFullName" type="text" maxlength="100" autocomplete="name" value="${escapeHtml(fullName)}" placeholder="Adınız Soyadınız">
+                    <input id="profileFullName" type="text" maxlength="100" autocomplete="name" value="${escapeHtml(fullName)}">
                 </div>
 
                 <div class="field">
                     <label for="profilePhone">Telefon</label>
                     <input id="profilePhone" type="tel" inputmode="tel" maxlength="16" autocomplete="tel" value="${escapeHtml(phone)}" placeholder="05XXXXXXXXX">
-                    <div style="font-size:12px;color:#7a8492;margin-top:7px;line-height:1.45;">QR üzerinden araç sahibine ulaşılması için bu numara kullanılır.</div>
                 </div>
 
                 <div class="field">
-                    <label for="profileEmail">E-posta</label>
-                    <input id="profileEmail" type="email" value="${escapeHtml(email)}" disabled style="opacity:.72;cursor:not-allowed;">
-                    <div style="font-size:12px;color:#7a8492;margin-top:7px;line-height:1.45;">Giriş hesabınıza bağlı e-posta adresidir.</div>
+                    <label>E-posta</label>
+                    <input type="email" value="${escapeHtml(email)}" disabled style="opacity:.72;cursor:not-allowed;">
                 </div>
 
-                <button class="primary-save-button" onclick="saveUserProfile()" style="width:100%;margin-top:8px;background:#ff2d32;color:#fff;border:0;">
-                    Bilgileri Kaydet
+                <button class="primary-save-button" onclick="saveOneTimeProfileEdit()" style="width:100%;margin-top:14px;background:#ff2d32;color:#fff;border:0;">
+                    Düzeltmeyi Kaydet
+                </button>
+                <button onclick="renderProfileSection()" style="width:100%;margin-top:9px;min-height:48px;border-radius:14px;border:1px solid #dfe3e9;background:#fff;color:#333;font-weight:800;">
+                    Vazgeç
                 </button>
             </div>
         </section>
     `;
 }
 
-async function saveUserProfile(){
+async function saveOneTimeProfileEdit(){
 
-    const fullName =
-        document.getElementById("profileFullName")?.value.trim() || "";
-
-    const rawPhone =
-        document.getElementById("profilePhone")?.value.trim() || "";
-
+    const fullName = document.getElementById("profileFullName")?.value.trim() || "";
+    const rawPhone = document.getElementById("profilePhone")?.value.trim() || "";
     const phone = normalizeTrPhone(rawPhone);
 
     if(fullName.length < 2){
-        showToast("Ad soyad bilgisini girin.");
+        showToast("Ad soyad bilgisini kontrol edin.");
         return;
     }
 
@@ -3301,29 +3360,52 @@ async function saveUserProfile(){
         return;
     }
 
-    const { data, error } =
-        await supabaseClient
-        .from("profiles")
-        .upsert({
-            id: currentUser.id,
-            full_name: fullName,
-            phone: phone
-        }, {
-            onConflict: "id"
-        })
-        .select("id, full_name, phone")
-        .single();
+    const confirmed = confirm(
+        "Bilgilerinizi güncellemek istediğinize emin misiniz?"
+    );
+
+    if(!confirmed) return;
+
+    const { data, error } = await supabaseClient.rpc("use_profile_edit", {
+        p_full_name: fullName,
+        p_phone: phone
+    });
 
     if(error){
-        console.error("Profil kaydetme:", error);
-        showToast("Profil bilgileri kaydedilemedi.");
+        console.error("Profil düzeltme:", error);
+        showToast(error.message || "Bilgiler değiştirilemedi.");
+        await loadUserProfile();
+        renderProfileSection();
         return;
     }
 
-    userProfile = data;
+    const updated = Array.isArray(data) ? data[0] : data;
+
+    if(updated){
+        userProfile = {
+            ...userProfile,
+            ...updated
+        };
+    }else{
+        await loadUserProfile();
+    }
+
     setProfileInitial();
-    showToast("Profil bilgileri kaydedildi.");
+    showToast("Bilgileriniz güncellendi.");
     renderProfileSection();
+}
+
+function requestProfileChange(){
+
+    const serial = currentSticker?.serial_number || "Belirtilmedi";
+    const message = `Merhaba, AraçX hesap bilgilerimde değişiklik yapmak istiyorum. Sticker seri numaram: ${serial}.`;
+    const supportPhone = "905535964626";
+
+    window.open(
+        `https://wa.me/${supportPhone}?text=${encodeURIComponent(message)}`,
+        "_blank",
+        "noopener,noreferrer"
+    );
 }
 
 /* =========================================================
