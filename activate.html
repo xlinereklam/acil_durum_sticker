@@ -8,9 +8,9 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
 >
 
-<meta name="theme-color" content="#0b0b0b">
+<meta name="theme-color" content="#f6f5f3">
 
-<title>Etiket Aktivasyonu | XLine</title>
+<title>AraçX | Kart Aktivasyonu</title>
 
 <style>
 
@@ -171,11 +171,11 @@ button {
 <div class="card">
 
     <div class="brand">
-        XLINE
+        Araç<span style="color:#e3262e">X</span><div style="font-size:10px;letter-spacing:1.5px;margin-top:5px;color:#888">ARAÇ ASİSTANI</div>
     </div>
 
     <h1>
-        Etiket Aktivasyonu
+        Kart Aktivasyonu
     </h1>
 
     <div
@@ -287,7 +287,7 @@ button {
 </div>
 
 <div class="footer">
-    XLine Reklam & Yazılım
+    AraçX • XLine Reklam & Yazılım
 </div>
 
 </div>
@@ -666,7 +666,7 @@ async function activateSticker() {
         function () {
 
             window.location.href =
-    "./setup.html";
+                "./setup.html?t=" + encodeURIComponent(token);
         },
         1500
     );
