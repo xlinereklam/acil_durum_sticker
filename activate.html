@@ -322,6 +322,8 @@ const params =
 const token =
     params.get("t");
 
+let stickerStatus = null;
+
 const authSection =
     document.getElementById(
         "authSection"
@@ -404,23 +406,7 @@ async function checkSticker() {
         data.serial_number;
 
 
-    if (data.status !== "stock") {
-
-        showMessage(
-            "Bu etiket daha önce aktifleştirilmiş.",
-            "error"
-        );
-
-        authSection.classList.add(
-            "hidden"
-        );
-
-        activationSection.classList.add(
-            "hidden"
-        );
-
-        return;
-    }
+    stickerStatus = data.status;
 
 
     checkSession();
@@ -437,26 +423,40 @@ async function checkSession() {
 
 
     if (session) {
+        authSection.classList.add("hidden");
 
-        authSection.classList.add(
-            "hidden"
-        );
+        if (stickerStatus === "stock") {
+            activationSection.classList.remove("hidden");
+            return;
+        }
 
-        activationSection.classList.remove(
-            "hidden"
-        );
+        activationSection.classList.add("hidden");
+        showMessage("AraçX kartı zaten aktif. Paneliniz açılıyor...", "success");
+
+        setTimeout(function () {
+            window.location.href = "./panel.html";
+        }, 500);
 
     } else {
+        authSection.classList.remove("hidden");
+        activationSection.classList.add("hidden");
 
-        authSection.classList.remove(
-            "hidden"
-        );
+        if (stickerStatus && stickerStatus !== "stock") {
+            document.querySelector("#authSection .subtitle").textContent =
+                "Bu AraçX kartı daha önce aktive edilmiş. Hesabınıza ulaşmak için giriş yapın.";
 
-        activationSection.classList.add(
-            "hidden"
-        );
+            const registerButton =
+                document.querySelector('#authSection button[onclick="register()"]');
+
+            if (registerButton) registerButton.classList.add("hidden");
+
+            showMessage(
+                "Kartınız aktif. E-posta ve şifrenizle giriş yapabilirsiniz.",
+                "info"
+            );
+        }
     }
-}
+}}
 
 
 async function register() {
