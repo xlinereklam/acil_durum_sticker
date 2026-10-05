@@ -22,12 +22,10 @@ body {
     margin: 0;
     min-height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
-    background: radial-gradient(
-        circle at top,
-        #242424 0%,
-        #0b0b0b 45%
-    );
-    color: white;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(227,38,46,.10), transparent 30%),
+        linear-gradient(180deg,#fbfaf8,#f6f5f3);
+    color: #171717;
     padding: 20px;
 }
 
@@ -38,8 +36,8 @@ body {
 }
 
 .card {
-    background: #171717;
-    border: 1px solid #303030;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,.06);
     border-radius: 26px;
     padding: 28px 22px;
 }
@@ -76,9 +74,9 @@ input {
     width: 100%;
     padding: 16px;
     border-radius: 13px;
-    border: 1px solid #383838;
-    background: #101010;
-    color: white;
+    border: 1px solid #e7e4df;
+    background: #fbfbfa;
+    color: #171717;
     font-size: 16px;
     outline: none;
 }
@@ -99,13 +97,13 @@ button {
 }
 
 .primary {
-    background: white;
-    color: black;
+    background: linear-gradient(135deg,#e3262e,#f13d44);
+    color: white;
 }
 
 .secondary {
-    background: #292929;
-    color: white;
+    background: #f1f1f1;
+    color: #171717;
     margin-top: 10px;
 }
 
@@ -120,20 +118,20 @@ button {
 
 .error {
     display: block;
-    background: #321616;
-    color: #ff9696;
+    background: #fff0f0;
+    color: #b51e24;
 }
 
 .success {
     display: block;
-    background: #10291b;
-    color: #78e99e;
+    background: #ecf8f1;
+    color: #17864b;
 }
 
 .info {
     display: block;
-    background: #202020;
-    color: #ccc;
+    background: #f2f2f2;
+    color: #555;
 }
 
 .pin {
@@ -480,7 +478,14 @@ async function register() {
     const { data, error } =
         await supabaseClient.auth.signUp({
             email,
-            password
+            password,
+            options: {
+                emailRedirectTo:
+                    window.location.origin +
+                    window.location.pathname +
+                    "?t=" +
+                    encodeURIComponent(token)
+            }
         });
 
 
