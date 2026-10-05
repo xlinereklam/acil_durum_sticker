@@ -3791,8 +3791,8 @@ function renderHome(){
         currentVehicle.current_km;
 
 
-    const maintenanceDistance =
-        getNearestMaintenanceKm();
+    const maintenanceSummary =
+        getHomeMaintenanceSummary();
 
 
     const inspectionDays =
@@ -3920,17 +3920,11 @@ function renderHome(){
                         </div>
 
                         <div class="stat-value">
-                            ${
-                                maintenanceDistance !== null
-                                ? formatNumber(
-                                    maintenanceDistance
-                                  ) + " km"
-                                : "—"
-                            }
+                            ${maintenanceSummary.value}
                         </div>
 
                         <div class="stat-label">
-                            BAKIMA KALAN
+                            ${escapeHtml(maintenanceSummary.label)}
                         </div>
 
                     </div>
@@ -7498,13 +7492,17 @@ function getMaintenanceStatus(item){
     const overdue =
         (
             kmRemaining !== null &&
-            kmRemaining <= 0
+            kmRemaining < 0
         )
         ||
         (
             dayRemaining !== null &&
-            dayRemaining <= 0
+            dayRemaining < 0
         );
+
+    const dueNow =
+        (kmRemaining !== null && kmRemaining === 0) ||
+        (dayRemaining !== null && dayRemaining === 0);
 
 
     const approaching =
@@ -7530,16 +7528,16 @@ function getMaintenanceStatus(item){
     let progress = 25;
 
 
-    if(overdue){
+    if(overdue || dueNow){
 
-        label = "BAKIM ZAMANI";
+        label = overdue ? "BAKIM GECİKTİ" : "BAKIM ZAMANI";
         className = "maintenance-danger";
         progress = 100;
 
 
         if(
             kmRemaining !== null &&
-            kmRemaining <= 0
+            kmRemaining < 0
         ){
 
             detail =
@@ -7550,12 +7548,16 @@ function getMaintenanceStatus(item){
 
         }else if(
             dayRemaining !== null &&
-            dayRemaining <= 0
+            dayRemaining < 0
         ){
 
             detail =
                 Math.abs(dayRemaining) +
                 " gün geçti";
+
+        }else if(dueNow){
+
+            detail = "Bakım zamanı geldi";
 
         }
 
@@ -7628,6 +7630,7 @@ function getMaintenanceStatus(item){
         detail,
         progress,
         overdue,
+        dueNow,
         approaching
     };
 
@@ -9194,6 +9197,100 @@ function getReminderInfo(reminder){
 /* =========================================================
    STATS LOGIC
 ========================================================= */
+
+function getHomeMaintenanceSummary(){
+
+    if(!maintenanceItems.length){
+        return {
+            value:"—",
+            label:"BAKIM EKLENMEDİ"
+        };
+    }
+
+    const items = maintenanceItems.map(item => {
+        const status = getMaintenanceStatus(item);
+        const currentKm =
+            currentVehicle.current_km !== null &&
+            currentVehicle.current_km !== undefined
+            ? Number(currentVehicle.current_km)
+            : null;
+
+        const kmRemaining =
+            currentKm !== null &&
+            item.next_service_km !== null &&
+            item.next_service_km !== undefined
+            ? Number(item.next_service_km) - currentKm
+            : null;
+
+        let dayRemaining = null;
+        if(item.next_service_date){
+            const due = new Date(item.next_service_date + "T12:00:00");
+            const now = new Date();
+            dayRemaining = Math.ceil((due.getTime() - now.getTime()) / 86400000);
+        }
+
+        return {
+            item,
+            status,
+            kmRemaining,
+            dayRemaining
+        };
+    });
+
+    // Önce gecikmiş bakım, sonra tam zamanı gelen, sonra en yakın bakım.
+    items.sort((a,b) => {
+        const rank = x => {
+            if(x.status.overdue) return 0;
+            if(x.status.dueNow) return 1;
+            return 2;
+        };
+        const rankDiff = rank(a) - rank(b);
+        if(rankDiff !== 0) return rankDiff;
+
+        const aDistance = a.kmRemaining !== null ? Math.abs(a.kmRemaining) :
+            (a.dayRemaining !== null ? Math.abs(a.dayRemaining) * 50 : Number.MAX_SAFE_INTEGER);
+        const bDistance = b.kmRemaining !== null ? Math.abs(b.kmRemaining) :
+            (b.dayRemaining !== null ? Math.abs(b.dayRemaining) * 50 : Number.MAX_SAFE_INTEGER);
+        return aDistance - bDistance;
+    });
+
+    const nearest = items[0];
+    const name = getMaintenanceName(nearest.item).toUpperCase();
+
+    if(nearest.status.overdue){
+        return {
+            value:"BAKIM GECİKTİ",
+            label:name
+        };
+    }
+
+    if(nearest.status.dueNow){
+        return {
+            value:"BAKIM ZAMANI",
+            label:name
+        };
+    }
+
+    if(nearest.kmRemaining !== null){
+        return {
+            value:formatNumber(Math.max(0, nearest.kmRemaining)) + " km",
+            label:name + " • BAKIMA KALAN"
+        };
+    }
+
+    if(nearest.dayRemaining !== null){
+        return {
+            value:Math.max(0, nearest.dayRemaining) + " gün",
+            label:name + " • BAKIMA KALAN"
+        };
+    }
+
+    return {
+        value:"—",
+        label:name
+    };
+}
+
 
 function getNearestMaintenanceKm(){
 
