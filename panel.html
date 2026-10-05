@@ -3251,6 +3251,59 @@ function isValidTrMobile(value){
     return /^05\d{9}$/.test(normalizeTrPhone(value));
 }
 
+
+/* =========================================================
+   ARAÇX - KART DURUMU (ACTIVE / PAUSED)
+========================================================= */
+async function toggleVehicleCardStatus(){
+    if(!currentSticker || !currentUser){
+        showToast("AraçX kartı bulunamadı.");
+        return;
+    }
+
+    const isActive = currentSticker.status === "active";
+    const newStatus = isActive ? "paused" : "active";
+
+    if(!confirm(
+        isActive
+        ? "Kartı pasife almak istiyor musunuz? QR kodunuz siz tekrar aktif edene kadar kullanılamaz."
+        : "AraçX kartını tekrar aktif etmek istiyor musunuz?"
+    )) return;
+
+    const button = document.getElementById("vehicleCardStatusButton");
+    if(button){
+        button.disabled = true;
+        button.textContent = "İŞLENİYOR...";
+    }
+
+    const { data, error } = await supabaseClient.rpc(
+        "set_my_vehicle_sticker_status",
+        { p_sticker_id: currentSticker.id, p_status: newStatus }
+    );
+
+    if(error){
+        console.error("Kart durum değiştirme:", error);
+        if(button){
+            button.disabled = false;
+            button.textContent = isActive ? "KARTI PASİFE AL" : "KARTI AKTİF ET";
+        }
+        showToast("Kart durumu değiştirilemedi.");
+        return;
+    }
+
+    const updatedSticker = Array.isArray(data) ? data[0] : data;
+    currentSticker = {...currentSticker, ...(updatedSticker || {}), status:newStatus};
+
+    const vehicleIndex = vehicles.findIndex(item => item.sticker.id === currentSticker.id);
+    if(vehicleIndex !== -1){
+        vehicles[vehicleIndex].sticker = {...vehicles[vehicleIndex].sticker, ...currentSticker};
+    }
+
+    renderVehicleSwitcher();
+    showToast(newStatus === "active" ? "AraçX kartı aktif edildi." : "AraçX kartı pasife alındı.");
+    renderProfileSection();
+}
+
 function renderProfileSection(){
 
     pageTitle.textContent = "Profil";
@@ -3308,6 +3361,39 @@ function renderProfileSection(){
                 </div>
 
                 ${actionArea}
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <div class="section-title">AraçX Kart Ayarları</div>
+                    <div class="section-subtitle">Seçili aracın QR kartını yönetin</div>
+                </div>
+            </div>
+            <div class="vehicle-form-card" style="padding:20px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+                    <div>
+                        <div style="font-size:15px;font-weight:900;color:#11151c;">Araç Kartı</div>
+                        <div style="font-size:12px;color:#7a8492;line-height:1.5;margin-top:4px;">
+                            ${escapeHtml(currentSticker?.serial_number || "—")} · Kartı pasife aldığınızda QR iletişim ekranı kullanılamaz.
+                        </div>
+                    </div>
+                    <div style="
+                        flex-shrink:0;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:900;
+                        background:${currentSticker?.status === "active" ? "#eaf8ef" : "#fff0f0"};
+                        color:${currentSticker?.status === "active" ? "#169b57" : "#d7282f"};
+                    ">
+                        ${currentSticker?.status === "active" ? "● AKTİF" : "● PASİF"}
+                    </div>
+                </div>
+                <button id="vehicleCardStatusButton" onclick="toggleVehicleCardStatus()" style="
+                    width:100%;min-height:48px;margin-top:16px;border:0;border-radius:14px;font-weight:900;cursor:pointer;
+                    background:${currentSticker?.status === "active" ? "#f0f1f3" : "#11151c"};
+                    color:${currentSticker?.status === "active" ? "#222" : "#fff"};
+                ">
+                    ${currentSticker?.status === "active" ? "KARTI PASİFE AL" : "KARTI AKTİF ET"}
+                </button>
             </div>
         </section>
 
