@@ -2617,6 +2617,340 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
 }
 
 
+
+/* =========================================================
+   ARAÇX - MASRAFLAR MERKEZİ
+========================================================= */
+
+.expense-hero{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    padding:28px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-xl);
+    background:
+        linear-gradient(135deg,rgba(255,93,99,.14),rgba(255,255,255,.025)),
+        var(--surface);
+    box-shadow:var(--shadow);
+}
+
+.expense-eyebrow{
+    color:var(--red);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1.8px;
+}
+
+.expense-title{
+    max-width:650px;
+    margin-top:8px;
+    font-size:27px;
+    line-height:1.15;
+    font-weight:800;
+    letter-spacing:-.8px;
+}
+
+.expense-subtitle{
+    max-width:650px;
+    margin-top:10px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+.expense-primary-button,
+.expense-save-button{
+    border:0;
+    border-radius:14px;
+    padding:14px 18px;
+    background:var(--red);
+    color:white;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.4px;
+}
+
+.expense-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.expense-stat{
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:var(--surface);
+}
+
+.expense-stat span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.8px;
+}
+
+.expense-stat strong{
+    display:block;
+    margin-top:6px;
+    font-size:22px;
+    font-weight:800;
+}
+
+.expense-category-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.expense-category-card{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--surface);
+}
+
+.expense-category-icon{
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:var(--red-bg);
+    color:var(--red);
+    font-weight:800;
+}
+
+.expense-category-card span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:700;
+}
+
+.expense-category-card strong{
+    display:block;
+    margin-top:2px;
+    font-size:13px;
+}
+
+.expense-list{
+    display:grid;
+    gap:12px;
+}
+
+.expense-item{
+    display:flex;
+    gap:15px;
+    padding:18px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    background:var(--surface);
+}
+
+.expense-item-icon{
+    width:44px;
+    height:44px;
+    flex:0 0 44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:var(--red-bg);
+    color:var(--red);
+    font-size:18px;
+    font-weight:800;
+}
+
+.expense-item-main{
+    min-width:0;
+    flex:1;
+}
+
+.expense-item-top{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+}
+
+.expense-item-category{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.7px;
+    text-transform:uppercase;
+}
+
+.expense-item-title{
+    margin-top:3px;
+    font-size:16px;
+    font-weight:800;
+}
+
+.expense-item-amount{
+    flex:0 0 auto;
+    color:var(--red);
+    font-size:16px;
+    font-weight:800;
+}
+
+.expense-item-description{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.expense-item-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.expense-item-meta span{
+    padding:7px 9px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+}
+
+.expense-item-actions{
+    margin-top:12px;
+}
+
+.expense-item-actions button,
+.expense-back-button{
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:9px 11px;
+    background:var(--surface-2);
+    color:var(--text);
+    font-size:11px;
+    font-weight:800;
+}
+
+.expense-item-actions button.danger{
+    color:var(--red);
+}
+
+.expense-empty{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    padding:28px;
+    border:1px dashed var(--line);
+    border-radius:20px;
+    color:var(--muted);
+    text-align:center;
+}
+
+.expense-empty strong{
+    color:var(--text);
+}
+
+.expense-form-card{
+    margin-top:18px;
+    padding:22px;
+    border:1px solid var(--line);
+    border-radius:22px;
+    background:var(--surface);
+    box-shadow:var(--shadow);
+}
+
+.expense-form-head{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.expense-form-title{
+    font-size:20px;
+    font-weight:800;
+}
+
+.expense-form-text{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.expense-form-close{
+    width:38px;
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--surface-2);
+    color:var(--text);
+    font-size:22px;
+}
+
+.expense-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+}
+
+.expense-form-full{
+    grid-column:1/-1;
+}
+
+.expense-save-button{
+    width:100%;
+    margin-top:18px;
+}
+
+@media(max-width:700px){
+    .expense-hero{
+        align-items:stretch;
+        flex-direction:column;
+        padding:20px;
+    }
+
+    .expense-title{
+        font-size:22px;
+    }
+
+    .expense-primary-button{
+        width:100%;
+    }
+
+    .expense-stats{
+        grid-template-columns:1fr;
+    }
+
+    .expense-category-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .expense-form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .expense-form-full{
+        grid-column:auto;
+    }
+
+    .expense-item{
+        padding:14px;
+    }
+
+    .expense-item-top{
+        flex-direction:column;
+    }
+}
+
 </style>
 
 <style id="xline-aracim-redesign">
@@ -3469,7 +3803,7 @@ function renderHome(){
 
                         <button
                             class="quick"
-                            onclick="comingSoon('Masraf ekleme')"
+                            onclick="renderExpenseCenter()"
                         >
 
                             <div class="quick-icon">
@@ -4581,6 +4915,448 @@ function getReminderOverdueCount(){
     ).length;
 }
 
+
+
+
+/* =========================================================
+   ARAÇX - MASRAFLAR MERKEZİ
+========================================================= */
+
+function renderExpenseCenter(openForm = false){
+
+    activeSection = "maintenance";
+    setNavigation("maintenance");
+    pageTitle.textContent = "Masraflar";
+
+    const now = new Date();
+    const thisMonth = now.getMonth();
+    const thisYear = now.getFullYear();
+
+    const monthTotal = expenses
+        .filter(item => {
+            const d = new Date(item.expense_date + "T12:00:00");
+            return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+        })
+        .reduce((sum,item) => sum + Number(item.amount || 0), 0);
+
+    const yearTotal = expenses
+        .filter(item => {
+            const d = new Date(item.expense_date + "T12:00:00");
+            return d.getFullYear() === thisYear;
+        })
+        .reduce((sum,item) => sum + Number(item.amount || 0), 0);
+
+    const total = expenses
+        .reduce((sum,item) => sum + Number(item.amount || 0), 0);
+
+    const sorted = [...expenses].sort(
+        (a,b) => new Date(b.expense_date) - new Date(a.expense_date)
+    );
+
+    mainContent.innerHTML = `
+
+        <section class="expense-hero">
+            <div>
+                <div class="expense-eyebrow">ARAÇX ARAÇ ASİSTANI</div>
+                <div class="expense-title">Aracınız size gerçekte ne kadara mal oluyor?</div>
+                <div class="expense-subtitle">
+                    Bakım, tamir, lastik, muayene, sigorta ve diğer araç giderlerini tek yerde görün.
+                </div>
+            </div>
+
+            <button class="expense-primary-button" onclick="openExpenseForm()">
+                + MASRAF EKLE
+            </button>
+        </section>
+
+        <section class="section">
+            <div class="expense-stats">
+                <div class="expense-stat">
+                    <span>BU AY</span>
+                    <strong>${formatServiceMoney(monthTotal)}</strong>
+                </div>
+                <div class="expense-stat">
+                    <span>${thisYear}</span>
+                    <strong>${formatServiceMoney(yearTotal)}</strong>
+                </div>
+                <div class="expense-stat">
+                    <span>TOPLAM</span>
+                    <strong>${formatServiceMoney(total)}</strong>
+                </div>
+            </div>
+        </section>
+
+        <div id="expenseFormArea"></div>
+
+        <section class="section">
+            <div class="section-head">
+                <div>
+                    <div class="section-title">Masraf Geçmişi</div>
+                    <div class="section-subtitle">${expenses.length} kayıt</div>
+                </div>
+            </div>
+
+            <div class="expense-category-grid">
+                ${renderExpenseCategorySummary()}
+            </div>
+
+            <div class="expense-list">
+                ${
+                    sorted.length
+                    ? sorted.map(renderExpenseItem).join("")
+                    : `
+                        <div class="expense-empty">
+                            <strong>Henüz masraf kaydı yok.</strong>
+                            <span>İlk araç giderinizi ekleyin.</span>
+                        </div>
+                    `
+                }
+            </div>
+        </section>
+
+        <section class="section">
+            <button class="expense-back-button" onclick="renderMaintenanceSection()">
+                ← Bakım Merkezine Dön
+            </button>
+        </section>
+    `;
+
+    if(openForm) openExpenseForm();
+}
+
+
+function getExpenseCategoryMeta(category){
+
+    const map = {
+        maintenance:{name:"Bakım",icon:"🔧"},
+        repair:{name:"Tamir",icon:"⚙"},
+        tire:{name:"Lastik",icon:"◉"},
+        inspection:{name:"Muayene",icon:"✓"},
+        insurance:{name:"Sigorta / Kasko",icon:"▣"},
+        other:{name:"Diğer",icon:"₺"}
+    };
+
+    return map[category] || map.other;
+}
+
+
+function renderExpenseCategorySummary(){
+
+    const categories = [
+        "maintenance",
+        "repair",
+        "tire",
+        "inspection",
+        "insurance",
+        "other"
+    ];
+
+    return categories.map(category => {
+
+        const meta = getExpenseCategoryMeta(category);
+
+        const amount = expenses
+            .filter(item => item.category === category)
+            .reduce((sum,item) => sum + Number(item.amount || 0), 0);
+
+        return `
+            <div class="expense-category-card">
+                <div class="expense-category-icon">${meta.icon}</div>
+                <div>
+                    <span>${escapeHtml(meta.name)}</span>
+                    <strong>${formatServiceMoney(amount)}</strong>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+
+function renderExpenseItem(item){
+
+    const meta = getExpenseCategoryMeta(item.category);
+
+    return `
+        <article class="expense-item">
+
+            <div class="expense-item-icon">${meta.icon}</div>
+
+            <div class="expense-item-main">
+
+                <div class="expense-item-top">
+                    <div>
+                        <div class="expense-item-category">
+                            ${escapeHtml(meta.name)}
+                        </div>
+
+                        <div class="expense-item-title">
+                            ${escapeHtml(item.title)}
+                        </div>
+                    </div>
+
+                    <div class="expense-item-amount">
+                        ${formatServiceMoney(item.amount)}
+                    </div>
+                </div>
+
+                ${
+                    item.description
+                    ? `<div class="expense-item-description">${escapeHtml(item.description)}</div>`
+                    : ""
+                }
+
+                <div class="expense-item-meta">
+                    <span>📅 ${escapeHtml(formatTurkishDate(item.expense_date))}</span>
+
+                    ${
+                        item.km !== null && item.km !== undefined
+                        ? `<span>🚗 ${formatNumber(item.km)} km</span>`
+                        : ""
+                    }
+
+                    ${
+                        item.vendor
+                        ? `<span>📍 ${escapeHtml(item.vendor)}</span>`
+                        : ""
+                    }
+
+                    ${
+                        item.payment_method
+                        ? `<span>${escapeHtml(getExpensePaymentName(item.payment_method))}</span>`
+                        : ""
+                    }
+                </div>
+
+                <div class="expense-item-actions">
+                    <button class="danger" onclick="deleteExpense('${item.id}')">
+                        Sil
+                    </button>
+                </div>
+
+            </div>
+
+        </article>
+    `;
+}
+
+
+function getExpensePaymentName(value){
+
+    const map = {
+        cash:"Nakit",
+        card:"Kart",
+        transfer:"Havale / EFT",
+        other:"Diğer"
+    };
+
+    return map[value] || value || "";
+}
+
+
+function openExpenseForm(){
+
+    const area = document.getElementById("expenseFormArea");
+    if(!area) return;
+
+    const today = new Date().toISOString().slice(0,10);
+
+    area.innerHTML = `
+
+        <section class="expense-form-card">
+
+            <div class="expense-form-head">
+                <div>
+                    <div class="expense-form-title">Yeni Masraf</div>
+                    <div class="expense-form-text">
+                        Araç giderini kaydedin. Servis geçmişindeki tutarlar burada otomatik olarak tekrar sayılmaz.
+                    </div>
+                </div>
+
+                <button class="expense-form-close" onclick="closeExpenseForm()">×</button>
+            </div>
+
+            <div class="expense-form-grid">
+
+                <div class="field">
+                    <label>KATEGORİ</label>
+                    <select id="expenseCategory">
+                        <option value="maintenance">Bakım</option>
+                        <option value="repair">Tamir</option>
+                        <option value="tire">Lastik</option>
+                        <option value="inspection">Muayene</option>
+                        <option value="insurance">Sigorta / Kasko</option>
+                        <option value="other">Diğer</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>TARİH</label>
+                    <input id="expenseDate" type="date" value="${today}">
+                </div>
+
+                <div class="field">
+                    <label>BAŞLIK</label>
+                    <input id="expenseTitle" type="text" maxlength="100" placeholder="Örn. Motor yağı ve filtre">
+                </div>
+
+                <div class="field">
+                    <label>TUTAR</label>
+                    <input id="expenseAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0">
+                </div>
+
+                <div class="field">
+                    <label>KM</label>
+                    <input
+                        id="expenseKm"
+                        type="number"
+                        min="0"
+                        step="1"
+                        inputmode="numeric"
+                        value="${
+                            currentVehicle.current_km !== null &&
+                            currentVehicle.current_km !== undefined
+                            ? currentVehicle.current_km
+                            : ""
+                        }"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>ÖDEME</label>
+                    <select id="expensePayment">
+                        <option value="">Belirtilmedi</option>
+                        <option value="cash">Nakit</option>
+                        <option value="card">Kart</option>
+                        <option value="transfer">Havale / EFT</option>
+                        <option value="other">Diğer</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>FİRMA / USTA</label>
+                    <input id="expenseVendor" type="text" maxlength="100" placeholder="İsteğe bağlı">
+                </div>
+
+                <div class="field expense-form-full">
+                    <label>AÇIKLAMA</label>
+                    <textarea id="expenseDescription" rows="3" maxlength="500" placeholder="Yapılan işlem veya masraf detayı"></textarea>
+                </div>
+
+                <div class="field expense-form-full">
+                    <label>NOT</label>
+                    <textarea id="expenseNotes" rows="2" maxlength="500" placeholder="İsteğe bağlı"></textarea>
+                </div>
+
+            </div>
+
+            <button id="saveExpenseButton" class="expense-save-button" onclick="saveExpense()">
+                MASRAFI KAYDET
+            </button>
+
+        </section>
+    `;
+
+    area.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+
+function closeExpenseForm(){
+
+    const area = document.getElementById("expenseFormArea");
+    if(area) area.innerHTML = "";
+}
+
+
+async function saveExpense(){
+
+    const category = document.getElementById("expenseCategory").value;
+    const date = document.getElementById("expenseDate").value;
+    const title = document.getElementById("expenseTitle").value.trim();
+    const amount = Number(document.getElementById("expenseAmount").value);
+    const kmValue = document.getElementById("expenseKm").value;
+    const km = kmValue !== "" ? Number(kmValue) : null;
+    const payment = document.getElementById("expensePayment").value;
+    const vendor = document.getElementById("expenseVendor").value.trim();
+    const description = document.getElementById("expenseDescription").value.trim();
+    const notes = document.getElementById("expenseNotes").value.trim();
+
+    if(!date){
+        showToast("Masraf tarihini seçin.");
+        return;
+    }
+
+    if(!title){
+        showToast("Masraf başlığını girin.");
+        return;
+    }
+
+    if(!Number.isFinite(amount) || amount <= 0){
+        showToast("Geçerli bir tutar girin.");
+        return;
+    }
+
+    if(km !== null && (!Number.isInteger(km) || km < 0)){
+        showToast("Kilometreyi kontrol edin.");
+        return;
+    }
+
+    const button = document.getElementById("saveExpenseButton");
+    button.disabled = true;
+    button.textContent = "KAYDEDİLİYOR...";
+
+    const {error} = await supabaseClient
+        .from("vehicle_expenses")
+        .insert({
+            vehicle_profile_id:currentVehicle.id,
+            owner_id:currentUser.id,
+            expense_date:date,
+            category:category,
+            title:title,
+            description:description || null,
+            amount:amount,
+            km:km,
+            payment_method:payment || null,
+            vendor:vendor || null,
+            notes:notes || null
+        });
+
+    if(error){
+        console.error("Masraf kaydı:",error);
+        button.disabled = false;
+        button.textContent = "MASRAFI KAYDET";
+        showToast("Masraf kaydedilemedi.");
+        return;
+    }
+
+    await loadExpenses();
+
+    showToast("Masraf kaydedildi.");
+    renderExpenseCenter();
+}
+
+
+async function deleteExpense(id){
+
+    const approved = window.confirm("Bu masraf kaydını silmek istiyor musunuz?");
+    if(!approved) return;
+
+    const {error} = await supabaseClient
+        .from("vehicle_expenses")
+        .delete()
+        .eq("id",id)
+        .eq("vehicle_profile_id",currentVehicle.id);
+
+    if(error){
+        console.error(error);
+        showToast("Masraf silinemedi.");
+        return;
+    }
+
+    await loadExpenses();
+
+    showToast("Masraf silindi.");
+    renderExpenseCenter();
+}
 
 
 /* =========================================================
