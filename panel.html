@@ -2951,6 +2951,18 @@ html,body{background:#f3f4f7!important;color:#10131a!important}body{padding-bott
     }
 }
 
+
+/* ARAÇX KAZA ASİSTANI */
+.ax-accident-hero{display:flex;align-items:center;gap:18px;padding:24px;border:1px solid rgba(255,82,82,.22);border-radius:24px;background:linear-gradient(135deg,rgba(255,82,82,.16),rgba(255,255,255,.02)),var(--surface);box-shadow:var(--shadow)}
+.ax-warning{width:58px;height:58px;flex:0 0 58px;display:flex;align-items:center;justify-content:center;clip-path:polygon(50% 0,100% 100%,0 100%);padding-top:14px;background:var(--red);color:#fff;font-size:27px;font-weight:900}
+.ax-kicker{color:var(--red);font-size:11px;font-weight:800;letter-spacing:1.5px}.ax-accident-hero h2{margin:5px 0 0;font-size:25px}.ax-accident-hero p{margin:7px 0 0;color:var(--muted);font-size:14px;line-height:1.55}
+.ax-112{display:flex;align-items:center;justify-content:center;gap:12px;min-height:64px;border-radius:18px;background:var(--red);color:#fff;text-decoration:none;font-size:16px;font-weight:900}.ax-112 b{padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.16);font-size:20px}
+.ax-steps,.ax-history{display:grid;gap:12px}.ax-step{display:flex;gap:14px;padding:17px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}.ax-step>span{width:35px;height:35px;flex:0 0 35px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--red);color:#fff;font-weight:900}.ax-step strong{font-size:15px}.ax-step p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.ax-primary{width:100%;border:0;border-radius:15px;padding:15px 18px;background:var(--red);color:#fff;font-size:13px;font-weight:900}
+.ax-form{margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:22px;background:var(--surface);box-shadow:var(--shadow)}.ax-form-head{display:flex;justify-content:space-between;gap:15px;margin-bottom:18px}.ax-form-head h3{margin:0;font-size:20px}.ax-form-head p{margin:5px 0 0;color:var(--muted);font-size:13px}.ax-form-head button{width:38px;height:38px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--text);font-size:22px}.ax-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}.ax-full{grid-column:1/-1}
+.ax-history-item{padding:17px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}.ax-history-top{display:flex;justify-content:space-between;gap:12px}.ax-history-top small{display:block;color:var(--muted)}.ax-history-top strong{display:block;margin-top:3px}.ax-history-top em{height:max-content;padding:6px 9px;border-radius:999px;background:var(--red-bg);color:var(--red);font-size:10px;font-style:normal;font-weight:800}.ax-history-item p{color:var(--muted);font-size:13px}.ax-tags{display:flex;flex-wrap:wrap;gap:7px}.ax-tags span{padding:6px 8px;border:1px solid var(--line);border-radius:9px;color:var(--muted);font-size:10px;font-weight:700}
+@media(max-width:700px){.ax-accident-hero{align-items:flex-start;padding:18px}.ax-warning{width:46px;height:46px;flex-basis:46px;padding-top:10px;font-size:21px}.ax-accident-hero h2{font-size:20px}.ax-form-grid{grid-template-columns:1fr}.ax-full{grid-column:auto}}
+
 </style>
 
 <style id="xline-aracim-redesign">
@@ -5359,6 +5371,127 @@ async function deleteExpense(id){
 }
 
 
+
+/* =========================================================
+   ARAÇX - KAZA ASİSTANI
+========================================================= */
+
+function renderAccidentAssistant(){
+    activeSection="emergency";
+    setNavigation("emergency");
+    pageTitle.textContent="Kaza Asistanı";
+
+    mainContent.innerHTML=`
+        <section class="ax-accident-hero">
+            <div class="ax-warning">!</div>
+            <div>
+                <div class="ax-kicker">ARAÇX ACİL DURUM</div>
+                <h2>Sakin olun. Önce güvenliğiniz.</h2>
+                <p>Yaralanma, yangın veya ciddi tehlike varsa belge toplamaya çalışmadan acil yardım isteyin.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <a class="ax-112" href="tel:112"><b>112</b> ACİL YARDIMI ARA</a>
+        </section>
+
+        <section class="section">
+            <div class="section-head"><div><div class="section-title">Kaza Anında</div><div class="section-subtitle">Sırayla ilerleyin</div></div></div>
+            <div class="ax-steps">
+                ${accidentStep(1,"Güvenliğinizi sağlayın","Mümkünse güvenli bir noktaya geçin. Trafik içinde gereksiz risk almayın.")}
+                ${accidentStep(2,"Yaralanma veya ciddi tehlike var mı?","Varsa 112'yi arayın. Yangın, duman veya yakıt sızıntısında araçtan uzaklaşın.")}
+                ${accidentStep(3,"Olayı belgeleyin","Güvenliyse araçların konumu, hasarlar, plakalar ve çevreyi fotoğraflayın.")}
+                ${accidentStep(4,"Karşı araç bilgilerini alın","Plaka, sürücü adı ve iletişim bilgisini kaydedin.")}
+            </div>
+        </section>
+
+        <section class="section">
+            <button class="ax-primary" onclick="openAccidentForm()">+ KAZA DOSYASI OLUŞTUR</button>
+        </section>
+
+        <div id="accidentFormArea"></div>
+
+        <section class="section">
+            <div class="section-head"><div><div class="section-title">Kaza Geçmişi</div><div class="section-subtitle">Araç için oluşturulan kayıtlar</div></div></div>
+            <div id="accidentHistory" class="ax-history"><div class="empty">Kayıtlar yükleniyor...</div></div>
+        </section>
+    `;
+    loadAccidentRecords();
+}
+
+function accidentStep(no,title,body){
+    return `<div class="ax-step"><span>${no}</span><div><strong>${title}</strong><p>${body}</p></div></div>`;
+}
+
+async function loadAccidentRecords(){
+    const box=document.getElementById("accidentHistory");
+    if(!box)return;
+    const {data,error}=await supabaseClient.from("vehicle_accident_records").select("*").eq("vehicle_profile_id",currentVehicle.id).order("accident_date",{ascending:false});
+    if(error){console.error(error);box.innerHTML=`<div class="empty">Kaza kayıtları yüklenemedi.</div>`;return;}
+    if(!data?.length){box.innerHTML=`<div class="empty">Henüz kaza kaydı bulunmuyor.</div>`;return;}
+    box.innerHTML=data.map(item=>`
+        <article class="ax-history-item">
+            <div class="ax-history-top">
+                <div><small>${escapeHtml(formatTurkishDate(item.accident_date))}</small><strong>${escapeHtml(item.accident_type||"Kaza kaydı")}</strong></div>
+                <em>${escapeHtml(item.status||"open")}</em>
+            </div>
+            ${item.description?`<p>${escapeHtml(item.description)}</p>`:""}
+            <div class="ax-tags">
+                ${item.other_vehicle_plate?`<span>Karşı plaka: ${escapeHtml(item.other_vehicle_plate)}</span>`:""}
+                ${item.injury?`<span>Yaralanma bildirildi</span>`:""}
+            </div>
+        </article>`).join("");
+}
+
+function openAccidentForm(){
+    const area=document.getElementById("accidentFormArea");
+    if(!area)return;
+    const today=new Date().toISOString().slice(0,10);
+    area.innerHTML=`
+        <section class="ax-form">
+            <div class="ax-form-head"><div><h3>Yeni Kaza Dosyası</h3><p>Olayla ilgili temel bilgileri kaydedin.</p></div><button onclick="closeAccidentForm()">×</button></div>
+            <div class="ax-form-grid">
+                <div class="field"><label>TARİH</label><input id="accidentDate" type="date" value="${today}"></div>
+                <div class="field"><label>KAZA TÜRÜ</label><select id="accidentType"><option value="Maddi hasarlı">Maddi hasarlı</option><option value="Tek araçlı">Tek araçlı</option><option value="Park halinde hasar">Park halinde hasar</option><option value="Diğer">Diğer</option></select></div>
+                <div class="field"><label>KARŞI ARAÇ PLAKASI</label><input id="accidentOtherPlate" maxlength="20" placeholder="Varsa"></div>
+                <div class="field"><label>KARŞI SÜRÜCÜ</label><input id="accidentDriverName" maxlength="100" placeholder="Ad soyad"></div>
+                <div class="field"><label>TELEFON</label><input id="accidentDriverPhone" type="tel" maxlength="30" placeholder="Varsa"></div>
+                <div class="field"><label>YARALANMA</label><select id="accidentInjury"><option value="false">Hayır</option><option value="true">Evet</option></select></div>
+                <div class="field"><label>ACİL EKİP ÇAĞRILDI MI?</label><select id="accidentEmergency"><option value="false">Hayır</option><option value="true">Evet</option></select></div>
+                <div class="field ax-full"><label>AÇIKLAMA</label><textarea id="accidentDescription" rows="4" maxlength="1000"></textarea></div>
+                <div class="field ax-full"><label>NOT</label><textarea id="accidentNotes" rows="3" maxlength="1000"></textarea></div>
+            </div>
+            <button id="saveAccidentButton" class="ax-primary" onclick="saveAccidentRecord()">KAZA DOSYASINI KAYDET</button>
+        </section>`;
+    area.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function closeAccidentForm(){const a=document.getElementById("accidentFormArea");if(a)a.innerHTML="";}
+
+async function saveAccidentRecord(){
+    const date=document.getElementById("accidentDate").value;
+    if(!date){showToast("Kaza tarihini seçin.");return;}
+    const button=document.getElementById("saveAccidentButton");
+    button.disabled=true;button.textContent="KAYDEDİLİYOR...";
+    const {error}=await supabaseClient.from("vehicle_accident_records").insert({
+        vehicle_profile_id:currentVehicle.id,
+        owner_id:currentUser.id,
+        accident_date:date,
+        accident_type:document.getElementById("accidentType").value,
+        injury:document.getElementById("accidentInjury").value==="true",
+        emergency_services_called:document.getElementById("accidentEmergency").value==="true",
+        other_vehicle_plate:document.getElementById("accidentOtherPlate").value.trim().toLocaleUpperCase("tr-TR")||null,
+        other_driver_name:document.getElementById("accidentDriverName").value.trim()||null,
+        other_driver_phone:document.getElementById("accidentDriverPhone").value.trim()||null,
+        description:document.getElementById("accidentDescription").value.trim()||null,
+        notes:document.getElementById("accidentNotes").value.trim()||null,
+        status:"open"
+    });
+    if(error){console.error(error);button.disabled=false;button.textContent="KAZA DOSYASINI KAYDET";showToast("Kaza dosyası kaydedilemedi.");return;}
+    showToast("Kaza dosyası oluşturuldu.");closeAccidentForm();loadAccidentRecords();
+}
+
+
 /* =========================================================
    QR EVENTS RENDER
 ========================================================= */
@@ -5455,6 +5588,11 @@ if(section === "maintenance"){
     renderMaintenanceSection();
     return;
 }
+
+    if(section === "emergency"){
+        renderAccidentAssistant();
+        return;
+    }
     const titles = {
         maintenance:"Bakım Merkezi",
         emergency:"Acil & Kaza",
