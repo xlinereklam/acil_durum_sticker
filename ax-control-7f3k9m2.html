@@ -3,7 +3,7 @@
 <title>AraçX | Yönetim Merkezi</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./js/config.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f2;color:#171717}button,input,select,textarea{font:inherit}.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}aside{background:#171717;color:#fff;padding:25px 16px}.logo{font-size:28px;font-weight:900;margin:0 10px 28px}.logo b{color:#e11d2e}.nav button{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:none;color:#bbb;text-align:left;font-weight:700;margin:4px 0}.nav button:hover,.nav .on{background:#292929;color:#fff}main{padding:28px;overflow:hidden}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.top h1{margin:0}.muted{color:#777;font-size:13px}.card{background:#fff;border:1px solid #e8e8e4;border-radius:18px;box-shadow:0 8px 28px #0000000c}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:18px}.stat{padding:17px}.stat small{color:#777;font-weight:bold}.stat strong{display:block;font-size:26px;margin-top:7px}.tools{display:flex;gap:9px;flex-wrap:wrap;padding:14px;margin-bottom:12px}.tools input{flex:1;min-width:280px}input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:11px;background:#fff}textarea{width:100%;min-height:80px}.btn{padding:11px 15px;border:0;border-radius:11px;font-weight:800;cursor:pointer}.dark{background:#171717;color:#fff}.red{background:#d71920;color:#fff}.soft{background:#eee}.table{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1000px}th,td{padding:13px;border-bottom:1px solid #eee;text-align:left;font-size:13px}th{font-size:11px;color:#777}tbody tr{cursor:pointer}tbody tr:hover{background:#fafaf8}.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:900}.active,.sold{background:#e5f5eb;color:#147142}.paused{background:#fff0d5;color:#855600}.revoked{background:#fde5e5;color:#a11}.stock,.generated{background:#eee;color:#555}.printed{background:#f1eafa;color:#69408b}.at_dealer{background:#e7eefc;color:#34588f}.panel{padding:20px}.hidden{display:none}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info,.vehicle{padding:14px;border-radius:13px;background:#fafaf8;margin-top:9px}.vehicle{border:1px solid #eee;background:#fff}.section{margin:24px 0 8px}.event{padding:10px 0;border-bottom:1px solid #eee;font-size:13px}.msg{padding:12px;border-radius:11px;background:#fff3d6;color:#745000;margin:10px 0}.err{padding:12px;background:#fdeaea;color:#991b1b;border-radius:11px}.loading{text-align:center;padding:30px;color:#777}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f2;color:#171717}button,input,select,textarea{font:inherit}.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}aside{background:#171717;color:#fff;padding:25px 16px}.logo{font-size:28px;font-weight:900;margin:0 10px 28px}.logo b{color:#e11d2e}.nav button{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:none;color:#bbb;text-align:left;font-weight:700;margin:4px 0}.nav button:hover,.nav .on{background:#292929;color:#fff}main{padding:28px;overflow:hidden}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.top h1{margin:0}.muted{color:#777;font-size:13px}.card{background:#fff;border:1px solid #e8e8e4;border-radius:18px;box-shadow:0 8px 28px #0000000c}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:18px}.stat{padding:17px}.stat small{color:#777;font-weight:bold}.stat strong{display:block;font-size:26px;margin-top:7px}.tools{display:flex;gap:9px;flex-wrap:wrap;padding:14px;margin-bottom:12px}.tools input{flex:1;min-width:280px}input,select,textarea{padding:11px;border:1px solid #ddd;border-radius:11px;background:#fff}textarea{width:100%;min-height:80px}.btn{padding:11px 15px;border:0;border-radius:11px;font-weight:800;cursor:pointer}.dark{background:#171717;color:#fff}.red{background:#d71920;color:#fff}.soft{background:#eee}.table{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1000px}th,td{padding:13px;border-bottom:1px solid #eee;text-align:left;font-size:13px}th{font-size:11px;color:#777}tbody tr{cursor:pointer}tbody tr:hover{background:#fafaf8}.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:900}.active,.sold{background:#e5f5eb;color:#147142}.paused{background:#fff0d5;color:#855600}.revoked{background:#fde5e5;color:#a11}.stock,.generated{background:#eee;color:#555}.printed{background:#f1eafa;color:#69408b}.at_dealer{background:#e7eefc;color:#34588f}.panel{padding:20px}.hidden{display:none!important}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info,.vehicle{padding:14px;border-radius:13px;background:#fafaf8;margin-top:9px}.vehicle{border:1px solid #eee;background:#fff}.section{margin:24px 0 8px}.event{padding:10px 0;border-bottom:1px solid #eee;font-size:13px}.msg{padding:12px;border-radius:11px;background:#fff3d6;color:#745000;margin:10px 0}.err{padding:12px;background:#fdeaea;color:#991b1b;border-radius:11px}.loading{text-align:center;padding:30px;color:#777}
 .modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000}.modalbox{width:min(620px,100%);max-height:90vh;overflow:auto}.opgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.opgrid .btn{width:100%}@media(max-width:600px){.opgrid{grid-template-columns:1fr}}
 @media(max-width:850px){.app{display:block}aside{padding:14px}.nav{display:flex;overflow:auto}.nav button{width:auto;white-space:nowrap}.stats{grid-template-columns:repeat(2,1fr)}main{padding:15px}.grid{grid-template-columns:1fr}}
 </style></head>
@@ -32,7 +32,7 @@
 <div id="adminApp" class="app hidden"><aside><div class="logo">Araç<b>X</b></div><div class="nav">
 <button class="on" onclick="view('home',this)">▦ Genel Bakış</button><button onclick="view('labels',this)">▣ Etiketler</button><button onclick="view('support',this)">◉ Müşteri / Destek</button><button onclick="view('dealers',this)">⌂ Bayiler</button>
 </div></aside><main>
-<div class="top"><div><h1>AraçX Yönetim Merkezi</h1><div id="mail" class="muted">Yetki kontrol ediliyor…</div></div><button class="btn soft" onclick="logout()">Çıkış</button></div>
+<div class="top"><div><h1>AraçX Yönetim Merkezi</h1><div id="mail" class="muted">Yetki kontrol ediliyor…</div></div><button type="button" class="btn soft" onclick="logout()">Çıkış</button></div>
 <div id="error"></div>
 <section id="home"><div id="stats" class="stats"><div class="card loading">Yükleniyor…</div></div><div class="card panel"><h2>Son Etiketler</h2><div id="recent" class="table"></div></div></section>
 <section id="labels" class="hidden"><div class="card tools"><input id="q" placeholder="Seri, plaka, müşteri, telefon, e-posta veya bayi"><select id="st"><option value="">Tüm durumlar</option><option value="active">Aktif</option><option value="paused">Pasif</option><option value="stock">Aktivasyon bekliyor</option><option value="revoked">İptal</option></select><select id="inv"><option value="">Tüm fiziksel durumlar</option><option value="generated">Üretildi</option><option value="printed">Basıldı</option><option value="in_stock">Stokta</option><option value="at_dealer">Bayide</option><option value="sold">Satıldı</option></select><button class="btn dark" onclick="loadLabels()">Ara</button></div><div class="card table" id="labelsTable"></div></section>
@@ -56,7 +56,7 @@
       <textarea id="dealerAddress" placeholder="Adres" style="margin-top:10px"></textarea>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button class="btn red" onclick="saveDealer()">BAYİYİ KAYDET</button>
-        <button class="btn soft" onclick="clearDealerForm()">Temizle</button>
+        <button type="button" class="btn soft" onclick="clearDealerForm()">Temizle</button>
       </div>
       <div id="dealerSaveMsg"></div>
     </div>
@@ -75,7 +75,7 @@
   <div class="card panel">
     <div class="top" style="margin-bottom:10px">
       <div><h2 style="margin:0">Bayiler</h2><div class="muted">Bayi stok ve aktivasyon görünümü</div></div>
-      <button class="btn soft" onclick="loadDealers()">Yenile</button>
+      <button type="button" class="btn soft" onclick="loadDealers()">Yenile</button>
     </div>
     <div id="dealerList" class="table"></div>
   </div>
@@ -87,7 +87,7 @@
   <div class="card panel modalbox">
     <div class="top" style="margin-bottom:12px">
       <div><h2 id="opSerial" style="margin:0">Etiket İşlemi</h2><div id="opMeta" class="muted"></div></div>
-      <button class="btn soft" onclick="closeStickerOps()">Kapat</button>
+      <button type="button" class="btn soft" onclick="closeStickerOps()">Kapat</button>
     </div>
     <div class="msg">Fiziksel stok işlemleri teknik QR durumunu değiştirmez. Aktivasyon/askıya alma ayrı yönetilir.</div>
     <div class="opgrid">
@@ -98,7 +98,7 @@
     </div>
     <div id="opDealerBox" class="hidden" style="margin-top:12px">
       <select id="opDealer" style="width:100%;margin-bottom:8px"><option value="">Bayi seçin</option></select>
-      <button class="btn dark" style="width:100%" onclick="setInventory('at_dealer')">SEÇİLEN BAYİYE ATA</button>
+      <button type="button" class="btn dark" style="width:100%" onclick="setInventory('at_dealer')">SEÇİLEN BAYİYE ATA</button>
     </div>
     <div id="opResult"></div>
   </div>
@@ -107,6 +107,7 @@
 <script>
 let customer=null;
 let stickerOp=null;
+let stickerRows=[];
 const E=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const D=v=>v?new Date(v).toLocaleString('tr-TR'):'—';
 const T=s=>({active:'AKTİF',paused:'PASİF',stock:'AKTİVASYON BEKLİYOR',revoked:'İPTAL',generated:'ÜRETİLDİ',printed:'BASILDI',in_stock:'STOKTA',at_dealer:'BAYİDE',sold:'SATILDI'}[s]||s||'—');
@@ -219,15 +220,19 @@ async function adminSignIn(){
 async function loadSummary(){let {data,error}=await supabaseClient.rpc('admin_dashboard_summary');if(error)return fail(error.message);let a=[['Müşteri',data.customers],['Araç',data.vehicles],['Toplam QR',data.stickers_total],['Aktif',data.stickers_active],['Pasif',data.stickers_paused],['Aktivasyon Bekliyor',data.stickers_stock],['Basıldı',data.printed],['Bayide',data.at_dealer],['Satıldı',data.sold],['Bayi',data.dealers]];stats.innerHTML=a.map(x=>`<div class="card stat"><small>${E(x[0])}</small><strong>${Number(x[1]||0)}</strong></div>`).join('')}
 async function getLabels(search='',status='',inventory='',limit=100){return await supabaseClient.rpc('admin_list_stickers',{p_search:search||null,p_status:status||null,p_inventory_status:inventory||null,p_limit:limit,p_offset:0})}
 function table(rows){
-  if(!rows.length)return '<div class="loading">Kayıt bulunamadı.</div>';
-  return `<table><thead><tr><th>Seri</th><th>Durum</th><th>Fiziksel</th><th>Müşteri</th><th>Telefon</th><th>Araç</th><th>Plaka</th><th>Bayi</th><th>Aktivasyon</th><th>İşlem</th></tr></thead><tbody>${rows.map(r=>`<tr>
+  stickerRows=rows||[];
+  if(!stickerRows.length)return '<div class="loading">Kayıt bulunamadı.</div>';
+  return `<table><thead><tr><th>Seri</th><th>Durum</th><th>Fiziksel</th><th>Müşteri</th><th>Telefon</th><th>Araç</th><th>Plaka</th><th>Bayi</th><th>Aktivasyon</th><th>İşlem</th></tr></thead><tbody>${stickerRows.map((r,i)=>`<tr>
     <td><b>${E(r.serial_number)}</b></td>
     <td><span class="badge ${E(r.technical_status)}">${E(T(r.technical_status))}</span></td>
     <td><span class="badge ${E(r.inventory_status)}">${E(T(r.inventory_status))}</span></td>
     <td>${r.owner_id?`<button class="btn soft" onclick="openCustomer('${E(r.owner_id)}')">${E(r.owner_name||'Müşteri')}</button>`:E(r.owner_name||'—')}</td>
-    <td>${E(r.owner_phone||'—')}</td><td>${E([r.brand,r.model].filter(Boolean).join(' ')||'—')}</td>
-    <td><b>${E(r.plate||'—')}</b></td><td>${E(r.dealer_name||'—')}</td><td>${E(D(r.activated_at))}</td>
-    <td><button class="btn dark" onclick='openStickerOps(${JSON.stringify(JSON.stringify({sticker_id:r.sticker_id,serial_number:r.serial_number,technical_status:r.technical_status,inventory_status:r.inventory_status,dealer_id:r.dealer_id,dealer_name:r.dealer_name}))})'>İşlem</button></td>
+    <td>${E(r.owner_phone||'—')}</td>
+    <td>${E([r.brand,r.model].filter(Boolean).join(' ')||'—')}</td>
+    <td><b>${E(r.plate||'—')}</b></td>
+    <td>${E(r.dealer_name||'—')}</td>
+    <td>${E(D(r.activated_at))}</td>
+    <td><button class="btn dark" onclick="openStickerOpsByIndex(${i})">İşlem</button></td>
   </tr>`).join('')}</tbody></table>`;
 }
 async function loadRecent(){let {data,error}=await getLabels('','','',10);recent.innerHTML=error?`<div class="err">${E(error.message)}</div>`:table(data||[])}
@@ -305,19 +310,20 @@ async function ensureDealerCache(){
   dealerCache=data||[];
 }
 
-async function openStickerOps(payload){
+async function openStickerOpsByIndex(index){
   try{
-    stickerOp=JSON.parse(payload);
+    stickerOp=stickerRows[index];
+    if(!stickerOp) throw new Error('Etiket bilgisi bulunamadı. Listeyi yenileyip tekrar deneyin.');
     opSerial.textContent=stickerOp.serial_number;
     opMeta.textContent=`Teknik: ${T(stickerOp.technical_status)} · Fiziksel: ${T(stickerOp.inventory_status)}${stickerOp.dealer_name?' · Bayi: '+stickerOp.dealer_name:''}`;
     opResult.innerHTML='';
     opDealerBox.classList.add('hidden');
     await ensureDealerCache();
     opDealer.innerHTML='<option value="">Bayi seçin</option>'+dealerCache.filter(x=>x.active).map(d=>`<option value="${E(d.dealer_id)}" ${d.dealer_id===stickerOp.dealer_id?'selected':''}>${E(d.dealer_code)} · ${E(d.dealer_name)}</option>`).join('');
-    stickerModal.classList.remove('hidden');
+    stickerModal.classList.remove('hidden');stickerModal.style.display='flex';
   }catch(e){fail(e.message||String(e))}
 }
-function closeStickerOps(){stickerModal.classList.add('hidden');stickerOp=null}
+function closeStickerOps(){stickerModal.classList.add('hidden');stickerModal.style.display='none';stickerOp=null}
 function showDealerAssign(){opDealerBox.classList.remove('hidden')}
 
 async function setInventory(status){
