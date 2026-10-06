@@ -144,6 +144,14 @@
       <button class="btn soft" onclick="showDealerAssign()">BAYİYE ATA / BAYİ DEĞİŞTİR</button>
       <button class="btn soft" onclick="setInventory('sold')">SATILDI</button>
     </div>
+    <h3 class="section" style="margin-top:18px">QR İşlemleri</h3>
+    <div class="opgrid">
+      <button class="btn dark" onclick="openPublicQr()">QR'I AÇ</button>
+      <button class="btn soft" onclick="copyPublicQr()">QR LİNKİNİ KOPYALA</button>
+      <button class="btn soft" onclick="showPublicQr()">QR KODUNU GÖRÜNTÜLE</button>
+      <button class="btn soft" onclick="copyActivationUrl()">AKTİVASYON LİNKİNİ KOPYALA</button>
+    </div>
+    <div id="qrPreview" class="hidden" style="margin-top:12px;text-align:center;padding:16px;background:#fafaf8;border-radius:13px"></div>
     <div id="opDealerBox" class="hidden" style="margin-top:12px">
       <select id="opDealer" style="width:100%;margin-bottom:8px"><option value="">Bayi seçin</option></select>
       <button type="button" class="btn dark" style="width:100%" onclick="setInventory('at_dealer')">SEÇİLEN BAYİYE ATA</button>
@@ -504,6 +512,14 @@ async function openStickerOpsByIndex(index){
 }
 function closeStickerOps(){stickerModal.classList.add('hidden');stickerModal.style.display='none';stickerOp=null}
 function showDealerAssign(){opDealerBox.classList.remove('hidden')}
+function getPublicQrUrl(){if(!stickerOp?.public_token)throw new Error("Bu etiket için public_token yönetici listesinden gelmiyor.");return window.location.origin+window.location.pathname.replace(/[^/]+$/,'')+'vehicle.html?t='+encodeURIComponent(stickerOp.public_token)}
+function getActivationUrl(){if(stickerOp?.activation_url)return stickerOp.activation_url;if(!stickerOp?.public_token)throw new Error("Aktivasyon adresi için public_token bulunamadı.");return window.location.origin+window.location.pathname.replace(/[^/]+$/,'')+'activate.html?t='+encodeURIComponent(stickerOp.public_token)}
+async function copyTextSafe(v){try{await navigator.clipboard.writeText(v)}catch(_){const a=document.createElement('textarea');a.value=v;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}}
+function openPublicQr(){try{window.open(getPublicQrUrl(),'_blank','noopener')}catch(e){opResult.innerHTML=`<div class="err" style="margin-top:10px">${E(e.message)}</div>`}}
+async function copyPublicQr(){try{await copyTextSafe(getPublicQrUrl());opResult.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142;margin-top:10px">QR bağlantısı kopyalandı.</div>'}catch(e){opResult.innerHTML=`<div class="err" style="margin-top:10px">${E(e.message)}</div>`}}
+async function copyActivationUrl(){try{await copyTextSafe(getActivationUrl());opResult.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142;margin-top:10px">Aktivasyon bağlantısı kopyalandı.</div>'}catch(e){opResult.innerHTML=`<div class="err" style="margin-top:10px">${E(e.message)}</div>`}}
+function showPublicQr(){try{const u=getPublicQrUrl();qrPreview.innerHTML=`<div style="font-weight:900;margin-bottom:10px">${E(stickerOp.serial_number)} · Araç QR</div><img alt="AraçX QR" width="220" height="220" style="max-width:100%;background:#fff;padding:8px;border-radius:12px" src="https://api.qrserver.com/v1/create-qr-code/?size=440x440&data=${encodeURIComponent(u)}"><div class="muted" style="margin-top:10px;word-break:break-all">${E(u)}</div>`;qrPreview.classList.remove('hidden')}catch(e){opResult.innerHTML=`<div class="err" style="margin-top:10px">${E(e.message)}</div>`}}
+
 
 async function setInventory(status){
   if(!stickerOp)return;
