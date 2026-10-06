@@ -83,6 +83,27 @@
 <section id="detail" class="card panel hidden"></section>
 </main></div></div>
 
+
+<div id="dealerDetailModal" class="modal hidden" onclick="if(event.target===this)closeDealerDetail()">
+  <div class="card panel modalbox" style="width:min(1050px,100%)">
+    <div class="top" style="margin-bottom:12px">
+      <div><h2 id="dealerDetailTitle" style="margin:0">Bayi Detayı</h2><div id="dealerDetailMeta" class="muted"></div></div>
+      <button type="button" class="btn soft" onclick="closeDealerDetail()">Kapat</button>
+    </div>
+    <div id="dealerDetailStats" class="stats" style="grid-template-columns:repeat(4,1fr)"></div>
+    <div class="tools" style="padding:0;margin:12px 0">
+      <select id="dealerDetailFilter" onchange="renderDealerDetail()">
+        <option value="">Tüm ürünler</option>
+        <option value="at_dealer">Bayide</option>
+        <option value="sold">Satılanlar</option>
+        <option value="active">Aktive edilenler</option>
+        <option value="paused">Pasif QR</option>
+      </select>
+    </div>
+    <div id="dealerDetailTable" class="table"></div>
+  </div>
+</div>
+
 <div id="stickerModal" class="modal hidden" onclick="if(event.target===this)closeStickerOps()">
   <div class="card panel modalbox">
     <div class="top" style="margin-bottom:12px">
@@ -108,6 +129,8 @@
 let customer=null;
 let stickerOp=null;
 let stickerRows=[];
+let dealerStickerRows=[];
+let currentDealerDetail=null;
 const E=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const D=v=>v?new Date(v).toLocaleString('tr-TR'):'—';
 const T=s=>({active:'AKTİF',paused:'PASİF',stock:'AKTİVASYON BEKLİYOR',revoked:'İPTAL',generated:'ÜRETİLDİ',printed:'BASILDI',in_stock:'STOKTA',at_dealer:'BAYİDE',sold:'SATILDI'}[s]||s||'—');
@@ -261,8 +284,75 @@ async function loadDealers(){
     <td>${E(d.contact_name||'—')}<div class="muted">${E(d.phone||'')}</div></td>
     <td><b>${Number(d.total_labels||0)}</b></td><td>${Number(d.stock_labels||0)}</td><td>${Number(d.active_labels||0)}</td><td>${Number(d.paused_labels||0)}</td>
     <td><span class="badge ${d.active?'active':'paused'}">${d.active?'AKTİF':'PASİF'}</span></td>
-    <td><button class="btn soft" onclick="event.stopPropagation();editDealer('${E(d.dealer_id)}')">Düzenle</button></td>
+    <td><div style="display:flex;gap:6px"><button type="button" class="btn dark" onclick="event.stopPropagation();openDealerDetail('${E(d.dealer_id)}')">Detay</button><button type="button" class="btn soft" onclick="event.stopPropagation();editDealer('${E(d.dealer_id)}')">Düzenle</button></div></td>
   </tr>`).join('')}</tbody></table>`;
+}
+
+
+async function openDealerDetail(id){
+  const d=dealerCache.find(x=>x.dealer_id===id);
+  currentDealerDetail=d||{dealer_id:id,dealer_name:'Bayi'};
+  dealerDetailTitle.textContent=(d?.dealer_name||'Bayi')+' · Ürün Detayı';
+  dealerDetailMeta.textContent=[d?.dealer_code,d?.city,d?.district].filter(Boolean).join(' · ');
+  dealerDetailStats.innerHTML='<div class="card loading">Yükleniyor…</div>';
+  dealerDetailTable.innerHTML='<div class="loading">Etiketler yükleniyor…</div>';
+  dealerDetailFilter.value='';
+  dealerDetailModal.classList.remove('hidden');
+  dealerDetailModal.style.display='flex';
+
+  const {data,error}=await supabaseClient.rpc('admin_dealer_stickers',{p_dealer_id:id});
+  if(error){
+    dealerDetailStats.innerHTML='';
+    dealerDetailTable.innerHTML=`<div class="err">${E(error.message)}</div>`;
+    return;
+  }
+  dealerStickerRows=data||[];
+  renderDealerDetail();
+}
+
+function closeDealerDetail(){
+  dealerDetailModal.classList.add('hidden');
+  dealerDetailModal.style.display='none';
+  dealerStickerRows=[];
+  currentDealerDetail=null;
+}
+
+function renderDealerDetail(){
+  const all=dealerStickerRows||[];
+  const sold=all.filter(x=>x.inventory_status==='sold').length;
+  const atDealer=all.filter(x=>x.inventory_status==='at_dealer').length;
+  const active=all.filter(x=>x.technical_status==='active').length;
+  const paused=all.filter(x=>x.technical_status==='paused').length;
+
+  dealerDetailStats.innerHTML=[
+    ['Toplam',all.length],['Bayide',atDealer],['Satılan',sold],['Aktive',active]
+  ].map(x=>`<div class="card stat"><small>${E(x[0])}</small><strong>${x[1]}</strong></div>`).join('');
+
+  const f=dealerDetailFilter.value;
+  let rows=all;
+  if(f==='at_dealer'||f==='sold') rows=all.filter(x=>x.inventory_status===f);
+  if(f==='active'||f==='paused') rows=all.filter(x=>x.technical_status===f);
+
+  if(!rows.length){
+    dealerDetailTable.innerHTML='<div class="loading">Bu filtrede ürün bulunamadı.</div>';
+    return;
+  }
+
+  dealerDetailTable.innerHTML=`<table>
+    <thead><tr><th>Seri</th><th>Fiziksel</th><th>QR Durumu</th><th>Plaka</th><th>Araç</th><th>Müşteri</th><th>Telefon</th><th>Bayide</th><th>Satış</th><th>Aktivasyon</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr>
+      <td><b>${E(r.serial_number)}</b></td>
+      <td><span class="badge ${E(r.inventory_status)}">${E(T(r.inventory_status))}</span></td>
+      <td><span class="badge ${E(r.technical_status)}">${E(T(r.technical_status))}</span></td>
+      <td><b>${E(r.plate||'—')}</b></td>
+      <td>${E([r.brand,r.model].filter(Boolean).join(' ')||'—')}</td>
+      <td>${E(r.owner_name||'—')}</td>
+      <td>${E(r.owner_phone||'—')}</td>
+      <td>${E(D(r.dealer_assigned_at))}</td>
+      <td>${E(D(r.sold_at))}</td>
+      <td>${E(D(r.activated_at))}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
 }
 
 function clearDealerForm(){
