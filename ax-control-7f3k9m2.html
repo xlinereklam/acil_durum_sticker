@@ -35,7 +35,20 @@
 <div class="top"><div><h1>AraçX Yönetim Merkezi</h1><div id="mail" class="muted">Yetki kontrol ediliyor…</div></div><button type="button" class="btn soft" onclick="logout()">Çıkış</button></div>
 <div id="error"></div>
 <section id="home"><div id="stats" class="stats"><div class="card loading">Yükleniyor…</div></div><div class="card panel"><h2>Son Etiketler</h2><div id="recent" class="table"></div></div></section>
-<section id="labels" class="hidden"><div class="card tools"><input id="q" placeholder="Seri, plaka, müşteri, telefon, e-posta veya bayi"><select id="st"><option value="">Tüm durumlar</option><option value="active">Aktif</option><option value="paused">Pasif</option><option value="stock">Aktivasyon bekliyor</option><option value="revoked">İptal</option></select><select id="inv"><option value="">Tüm fiziksel durumlar</option><option value="generated">Üretildi</option><option value="printed">Basıldı</option><option value="in_stock">Stokta</option><option value="at_dealer">Bayide</option><option value="sold">Satıldı</option></select><button class="btn dark" onclick="loadLabels()">Ara</button></div><div class="card table" id="labelsTable"></div></section>
+<section id="labels" class="hidden">
+<div class="card panel" style="margin-bottom:12px">
+  <div class="top" style="margin-bottom:12px">
+    <div><h2 style="margin:0">Yeni Etiket Üret</h2><div class="muted">Yalnızca yönetici hesabı ile üretilebilir.</div></div>
+  </div>
+  <div class="grid">
+    <select id="genType"><option value="vehicle">AraçX · Araç</option><option value="moto">AraçX · Moto</option></select>
+    <input id="genQty" type="number" min="1" max="100" value="1" placeholder="Adet">
+  </div>
+  <button type="button" class="btn red" style="margin-top:10px" onclick="generateLabels()">ETİKET ÜRET</button>
+  <div id="genMsg"></div>
+  <div id="genResults" class="table" style="margin-top:10px"></div>
+</div>
+<div class="card tools"><input id="q" placeholder="Seri, plaka, müşteri, telefon, e-posta veya bayi"><select id="st"><option value="">Tüm durumlar</option><option value="active">Aktif</option><option value="paused">Pasif</option><option value="stock">Aktivasyon bekliyor</option><option value="revoked">İptal</option></select><select id="inv"><option value="">Tüm fiziksel durumlar</option><option value="generated">Üretildi</option><option value="printed">Basıldı</option><option value="in_stock">Stokta</option><option value="at_dealer">Bayide</option><option value="sold">Satıldı</option></select><button class="btn dark" onclick="loadLabels()">Ara</button></div><div class="card table" id="labelsTable"></div></section>
 <section id="support" class="hidden">
   <div class="card tools">
     <input id="sq" placeholder="Ad, telefon, e-posta, seri veya plaka">
@@ -254,6 +267,35 @@ async function adminSignIn(){
   showAdmin(user);
   await Promise.all([loadSummary(),loadRecent()]);
 }
+
+async function generateLabels(){
+  const qty=Number(genQty.value||0);
+  const type=genType.value;
+  if(!Number.isInteger(qty)||qty<1||qty>100){
+    genMsg.innerHTML='<div class="err" style="margin-top:10px">Adet 1–100 arasında olmalı.</div>';
+    return;
+  }
+  if(!confirm(`${qty} adet ${type==='vehicle'?'Araç':'Moto'} etiketi üretilecek. Onaylıyor musun?`))return;
+  genMsg.innerHTML='<div class="msg">Etiketler üretiliyor…</div>';
+  genResults.innerHTML='';
+  const {data,error}=await supabaseClient.rpc('admin_generate_stickers',{
+    p_type:type,
+    p_quantity:qty
+  });
+  if(error){
+    genMsg.innerHTML=`<div class="err" style="margin-top:10px">${E(error.message)}</div>`;
+    return;
+  }
+  const rows=data||[];
+  genMsg.innerHTML=`<div class="msg" style="background:#e5f5eb;color:#147142">${rows.length} etiket üretildi.</div>`;
+  genResults.innerHTML=rows.length?`<table><thead><tr><th>Seri</th><th>Aktivasyon Adresi</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr>
+    <td><b>${E(r.serial_number)}</b></td>
+    <td style="max-width:520px;word-break:break-all">${E(r.activation_url)}</td>
+    <td><button type="button" class="btn soft" onclick="navigator.clipboard.writeText('${E(r.activation_url)}')">Adresi Kopyala</button></td>
+  </tr>`).join('')}</tbody></table>`:'';
+  await Promise.all([loadSummary(),loadRecent(),loadLabels()]);
+}
+
 async function loadSummary(){let {data,error}=await supabaseClient.rpc('admin_dashboard_summary');if(error)return fail(error.message);let a=[['Müşteri',data.customers],['Araç',data.vehicles],['Toplam QR',data.stickers_total],['Aktif',data.stickers_active],['Pasif',data.stickers_paused],['Aktivasyon Bekliyor',data.stickers_stock],['Basıldı',data.printed],['Bayide',data.at_dealer],['Satıldı',data.sold],['Bayi',data.dealers]];stats.innerHTML=a.map(x=>`<div class="card stat"><small>${E(x[0])}</small><strong>${Number(x[1]||0)}</strong></div>`).join('')}
 async function getLabels(search='',status='',inventory='',limit=100){return await supabaseClient.rpc('admin_list_stickers',{p_search:search||null,p_status:status||null,p_inventory_status:inventory||null,p_limit:limit,p_offset:0})}
 function table(rows){
