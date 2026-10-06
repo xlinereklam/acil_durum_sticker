@@ -14,7 +14,18 @@
     <input id="adminEmail" type="email" autocomplete="username" placeholder="Yönetici e-posta" style="width:100%;margin-bottom:10px">
     <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Şifre" style="width:100%;margin-bottom:10px">
     <button class="btn red" style="width:100%" onclick="adminSignIn()">YÖNETİM MERKEZİNE GİR</button>
+    <button class="btn soft" style="width:100%;margin-top:9px" onclick="forgotPassword()">ŞİFREMİ UNUTTUM</button>
     <div id="loginMsg"></div>
+  </div>
+</div>
+<div id="resetPanel" class="hidden" style="min-height:100vh;align-items:center;justify-content:center;padding:20px;background:#f5f5f2">
+  <div class="card panel" style="width:min(440px,100%)">
+    <div class="logo" style="color:#171717;margin:0 0 6px">Araç<b>X</b></div>
+    <div class="muted" style="margin-bottom:24px">YENİ YÖNETİCİ ŞİFRESİ</div>
+    <input id="newPassword" type="password" autocomplete="new-password" placeholder="Yeni şifre" style="width:100%;margin-bottom:10px">
+    <input id="newPassword2" type="password" autocomplete="new-password" placeholder="Yeni şifre tekrar" style="width:100%;margin-bottom:10px">
+    <button class="btn red" style="width:100%" onclick="saveNewPassword()">YENİ ŞİFREYİ KAYDET</button>
+    <div id="resetMsg"></div>
   </div>
 </div>
 <div id="adminApp" class="app hidden"><aside><div class="logo">Araç<b>X</b></div><div class="nav">
@@ -32,6 +43,61 @@ let customer=null;
 const E=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
 const D=v=>v?new Date(v).toLocaleString('tr-TR'):'—';
 const T=s=>({active:'AKTİF',paused:'PASİF',stock:'AKTİVASYON BEKLİYOR',revoked:'İPTAL',generated:'ÜRETİLDİ',printed:'BASILDI',in_stock:'STOKTA',at_dealer:'BAYİDE',sold:'SATILDI'}[s]||s||'—');
+
+const ADMIN_EMAIL='refik.ozcakmak@gmail.com';
+
+async function forgotPassword(){
+  const email=(adminEmail.value.trim() || ADMIN_EMAIL).toLowerCase();
+  adminEmail.value=email;
+  loginMsg.innerHTML='<div class="msg">Şifre sıfırlama bağlantısı gönderiliyor…</div>';
+  const redirectTo=window.location.origin + window.location.pathname + '?reset=1';
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo});
+  if(error){
+    loginMsg.innerHTML=`<div class="err" style="margin-top:10px">${E(error.message)}</div>`;
+    return;
+  }
+  loginMsg.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142">Şifre sıfırlama bağlantısı e-postana gönderildi. Gelen bağlantıyı aç.</div>';
+}
+
+function showReset(){
+  adminLogin.classList.add('hidden');
+  adminApp.classList.add('hidden');
+  resetPanel.classList.remove('hidden');
+  resetPanel.style.display='flex';
+}
+
+async function saveNewPassword(){
+  const p1=newPassword.value;
+  const p2=newPassword2.value;
+  if(p1.length<8){
+    resetMsg.innerHTML='<div class="err" style="margin-top:10px">Şifre en az 8 karakter olmalı.</div>';
+    return;
+  }
+  if(p1!==p2){
+    resetMsg.innerHTML='<div class="err" style="margin-top:10px">Şifreler aynı değil.</div>';
+    return;
+  }
+  resetMsg.innerHTML='<div class="msg">Şifre kaydediliyor…</div>';
+  const {data:{user}}=await supabaseClient.auth.getUser();
+  if(!user){
+    resetMsg.innerHTML='<div class="err" style="margin-top:10px">Sıfırlama oturumu bulunamadı. E-postadaki bağlantıyı yeniden aç.</div>';
+    return;
+  }
+  if(!(await isAdmin(user.id))){
+    await supabaseClient.auth.signOut();
+    resetMsg.innerHTML='<div class="err" style="margin-top:10px">Bu hesap yönetici hesabı değil.</div>';
+    return;
+  }
+  const {error}=await supabaseClient.auth.updateUser({password:p1});
+  if(error){
+    resetMsg.innerHTML=`<div class="err" style="margin-top:10px">${E(error.message)}</div>`;
+    return;
+  }
+  resetMsg.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142">Yeni şifre kaydedildi. Yönetim merkezi açılıyor…</div>';
+  history.replaceState({},'',window.location.pathname);
+  setTimeout(async()=>{resetPanel.style.display='none';resetPanel.classList.add('hidden');showAdmin(user);await Promise.all([loadSummary(),loadRecent()])},700);
+}
+
 async function isAdmin(userId){
   const {data,error}=await supabaseClient.from('aracx_admins').select('user_id').eq('user_id',userId).maybeSingle();
   return !error && !!data;
@@ -47,7 +113,17 @@ function showAdmin(user){
   mail.textContent=user.email||'Yönetici';
 }
 async function init(){
+  const params=new URLSearchParams(location.search);
+  const hash=location.hash || '';
+  const wantsReset=params.get('reset')==='1' || hash.includes('type=recovery');
   const {data:{session}}=await supabaseClient.auth.getSession();
+
+  if(wantsReset){
+    if(session){showReset();return}
+    showLogin('Şifre sıfırlama bağlantısı geçersiz veya süresi dolmuş. Şifremi Unuttum ile yeni bağlantı gönder.');
+    return;
+  }
+
   if(!session){showLogin();return}
   if(!(await isAdmin(session.user.id))){
     await supabaseClient.auth.signOut();
