@@ -29,13 +29,56 @@
   </div>
 </div>
 <div id="adminApp" class="app hidden"><aside><div class="logo">Araç<b>X</b></div><div class="nav">
-<button class="on" onclick="view('home',this)">▦ Genel Bakış</button><button onclick="view('labels',this)">▣ Etiketler</button><button onclick="view('support',this)">◉ Müşteri / Destek</button><button onclick="alert('Bayi yönetimini sonraki modülde açacağız.')">⌂ Bayiler</button>
+<button class="on" onclick="view('home',this)">▦ Genel Bakış</button><button onclick="view('labels',this)">▣ Etiketler</button><button onclick="view('support',this)">◉ Müşteri / Destek</button><button onclick="view('dealers',this)">⌂ Bayiler</button>
 </div></aside><main>
 <div class="top"><div><h1>AraçX Yönetim Merkezi</h1><div id="mail" class="muted">Yetki kontrol ediliyor…</div></div><button class="btn soft" onclick="logout()">Çıkış</button></div>
 <div id="error"></div>
 <section id="home"><div id="stats" class="stats"><div class="card loading">Yükleniyor…</div></div><div class="card panel"><h2>Son Etiketler</h2><div id="recent" class="table"></div></div></section>
 <section id="labels" class="hidden"><div class="card tools"><input id="q" placeholder="Seri, plaka, müşteri, telefon, e-posta veya bayi"><select id="st"><option value="">Tüm durumlar</option><option value="active">Aktif</option><option value="paused">Pasif</option><option value="stock">Aktivasyon bekliyor</option><option value="revoked">İptal</option></select><select id="inv"><option value="">Tüm fiziksel durumlar</option><option value="generated">Üretildi</option><option value="printed">Basıldı</option><option value="in_stock">Stokta</option><option value="at_dealer">Bayide</option><option value="sold">Satıldı</option></select><button class="btn dark" onclick="loadLabels()">Ara</button></div><div class="card table" id="labelsTable"></div></section>
 <section id="support" class="hidden"><div class="card tools"><input id="sq" placeholder="Seri, plaka, telefon, müşteri veya e-posta"><button class="btn red" onclick="findCustomer()">Müşteriyi Bul</button></div><div id="results"></div></section>
+
+<section id="dealers" class="hidden">
+  <div class="grid" style="margin-bottom:12px">
+    <div class="card panel">
+      <h2 style="margin-top:0">Bayi Ekle / Düzenle</h2>
+      <input id="dealerId" type="hidden">
+      <div class="grid">
+        <input id="dealerCode" placeholder="Bayi Kodu (örn. ALN-001)">
+        <input id="dealerName" placeholder="Bayi Adı">
+        <input id="dealerContact" placeholder="Yetkili Ad Soyad">
+        <input id="dealerPhone" placeholder="Telefon">
+        <input id="dealerEmail" type="email" placeholder="E-posta">
+        <input id="dealerCity" placeholder="İl">
+        <input id="dealerDistrict" placeholder="İlçe">
+        <select id="dealerActive"><option value="true">Aktif Bayi</option><option value="false">Pasif Bayi</option></select>
+      </div>
+      <textarea id="dealerAddress" placeholder="Adres" style="margin-top:10px"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn red" onclick="saveDealer()">BAYİYİ KAYDET</button>
+        <button class="btn soft" onclick="clearDealerForm()">Temizle</button>
+      </div>
+      <div id="dealerSaveMsg"></div>
+    </div>
+
+    <div class="card panel">
+      <h2 style="margin-top:0">Seri Aralığını Bayiye Ata</h2>
+      <div class="msg">Yalnızca henüz aktive edilmemiş <b>stock</b> etiketler toplu atanır.</div>
+      <input id="rangeStart" placeholder="Başlangıç: AR-000100" style="width:100%;margin-bottom:9px">
+      <input id="rangeEnd" placeholder="Bitiş: AR-000149" style="width:100%;margin-bottom:9px">
+      <select id="rangeDealer" style="width:100%;margin-bottom:9px"><option value="">Bayi seçin</option></select>
+      <button class="btn dark" style="width:100%" onclick="assignRange()">SERİLERİ BAYİYE ATA</button>
+      <div id="rangeMsg"></div>
+    </div>
+  </div>
+
+  <div class="card panel">
+    <div class="top" style="margin-bottom:10px">
+      <div><h2 style="margin:0">Bayiler</h2><div class="muted">Bayi stok ve aktivasyon görünümü</div></div>
+      <button class="btn soft" onclick="loadDealers()">Yenile</button>
+    </div>
+    <div id="dealerList" class="table"></div>
+  </div>
+</section>
 <section id="detail" class="card panel hidden"></section>
 </main></div></div>
 <script>
@@ -162,7 +205,63 @@ async function openCustomer(id){customer=id;document.querySelectorAll('main>sect
 <h3 class="section">Son QR Hareketleri</h3>${ev.map(e=>`<div class="event"><b>${E(e.serial_number)}</b> · ${E(e.event_type)} → ${E(e.action_type)} <span class="muted">· ${E(D(e.created_at))}</span></div>`).join('')||'<div class="muted">Hareket yok.</div>'}
 <h3 class="section">Destek Notları</h3>${no.map(n=>`<div class="event">${E(n.note)} <span class="muted">· ${E(D(n.created_at))}</span></div>`).join('')||'<div class="muted">Not yok.</div>'}`}
 async function saveEdit(){let isPaid=paid.value==='true',a=amount.value;saveResult.innerHTML='<div class="msg">Kaydediliyor…</div>';let {error}=await supabaseClient.rpc('admin_update_customer_profile',{p_user_id:customer,p_full_name:en.value.trim(),p_phone:ep.value.trim(),p_is_paid:isPaid,p_amount:isPaid&&a?Number(a):null,p_description:desc.value.trim()||null});if(error){saveResult.innerHTML=`<div class="err">${E(error.message)}</div>`;return}saveResult.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142">Güncellendi ve işlem kaydedildi.</div>';setTimeout(()=>openCustomer(customer),700)}
-function view(n,b){detail.classList.add('hidden');['home','labels','support'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==n));document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));if(b)b.classList.add('on');if(n==='labels')loadLabels()}
+function view(n,b){detail.classList.add('hidden');['home','labels','support','dealers'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==n));document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));if(b)b.classList.add('on');if(n==='labels')loadLabels();if(n==='dealers')loadDealers()}
+
+let dealerCache=[];
+
+async function loadDealers(){
+  dealerList.innerHTML='<div class="loading">Bayiler yükleniyor…</div>';
+  const {data,error}=await supabaseClient.rpc('admin_list_dealers');
+  if(error){dealerList.innerHTML=`<div class="err">${E(error.message)}</div>`;return}
+  dealerCache=data||[];
+  rangeDealer.innerHTML='<option value="">Bayi seçin</option>'+dealerCache.filter(x=>x.active).map(d=>`<option value="${E(d.dealer_id)}">${E(d.dealer_code)} · ${E(d.dealer_name)}</option>`).join('');
+  if(!dealerCache.length){dealerList.innerHTML='<div class="loading">Henüz bayi eklenmemiş.</div>';return}
+  dealerList.innerHTML=`<table><thead><tr><th>Kod</th><th>Bayi</th><th>Konum</th><th>Yetkili</th><th>Toplam</th><th>Stok</th><th>Aktif</th><th>Pasif</th><th>Durum</th><th></th></tr></thead><tbody>${dealerCache.map(d=>`<tr>
+    <td><b>${E(d.dealer_code)}</b></td><td>${E(d.dealer_name)}</td><td>${E([d.city,d.district].filter(Boolean).join(' / ')||'—')}</td>
+    <td>${E(d.contact_name||'—')}<div class="muted">${E(d.phone||'')}</div></td>
+    <td><b>${Number(d.total_labels||0)}</b></td><td>${Number(d.stock_labels||0)}</td><td>${Number(d.active_labels||0)}</td><td>${Number(d.paused_labels||0)}</td>
+    <td><span class="badge ${d.active?'active':'paused'}">${d.active?'AKTİF':'PASİF'}</span></td>
+    <td><button class="btn soft" onclick="event.stopPropagation();editDealer('${E(d.dealer_id)}')">Düzenle</button></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+function clearDealerForm(){
+  dealerId.value='';dealerCode.value='';dealerName.value='';dealerContact.value='';dealerPhone.value='';
+  dealerEmail.value='';dealerCity.value='';dealerDistrict.value='';dealerAddress.value='';dealerActive.value='true';dealerSaveMsg.innerHTML='';
+}
+function editDealer(id){
+  const d=dealerCache.find(x=>x.dealer_id===id); if(!d)return;
+  dealerId.value=d.dealer_id;dealerCode.value=d.dealer_code||'';dealerName.value=d.dealer_name||'';
+  dealerContact.value=d.contact_name||'';dealerPhone.value=d.phone||'';dealerEmail.value=d.email||'';
+  dealerCity.value=d.city||'';dealerDistrict.value=d.district||'';dealerAddress.value=d.address||'';
+  dealerActive.value=String(!!d.active);window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function saveDealer(){
+  if(!dealerCode.value.trim()||!dealerName.value.trim()){dealerSaveMsg.innerHTML='<div class="err" style="margin-top:10px">Bayi kodu ve bayi adı zorunlu.</div>';return}
+  dealerSaveMsg.innerHTML='<div class="msg">Kaydediliyor…</div>';
+  const {error}=await supabaseClient.rpc('admin_save_dealer',{
+    p_dealer_id:dealerId.value||null,p_dealer_code:dealerCode.value.trim(),p_name:dealerName.value.trim(),
+    p_contact_name:dealerContact.value.trim()||null,p_phone:dealerPhone.value.trim()||null,
+    p_email:dealerEmail.value.trim()||null,p_city:dealerCity.value.trim()||null,p_district:dealerDistrict.value.trim()||null,
+    p_address:dealerAddress.value.trim()||null,p_active:dealerActive.value==='true'
+  });
+  if(error){dealerSaveMsg.innerHTML=`<div class="err" style="margin-top:10px">${E(error.message)}</div>`;return}
+  dealerSaveMsg.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142">Bayi kaydedildi.</div>';
+  clearDealerForm();await loadDealers();await loadSummary();
+}
+
+async function assignRange(){
+  const start=rangeStart.value.trim().toUpperCase(), end=rangeEnd.value.trim().toUpperCase(), dealer=rangeDealer.value;
+  if(!start||!end||!dealer){rangeMsg.innerHTML='<div class="err" style="margin-top:10px">Başlangıç, bitiş ve bayi seçimi gerekli.</div>';return}
+  if(!confirm(`${start} - ${end} seri aralığını seçilen bayiye atamak istiyor musun?`))return;
+  rangeMsg.innerHTML='<div class="msg">Etiketler atanıyor…</div>';
+  const {data,error}=await supabaseClient.rpc('admin_assign_serial_range_to_dealer',{p_start_serial:start,p_end_serial:end,p_dealer_id:dealer});
+  if(error){rangeMsg.innerHTML=`<div class="err" style="margin-top:10px">${E(error.message)}</div>`;return}
+  rangeMsg.innerHTML=`<div class="msg" style="background:#e5f5eb;color:#147142">${E(data.dealer_name)} bayisine ${Number(data.assigned_count||0)} etiket atandı.</div>`;
+  await Promise.all([loadDealers(),loadSummary(),loadRecent()]);
+}
+
 function fail(x){error.innerHTML=`<div class="err">${E(x)}</div>`}async function logout(){await supabaseClient.auth.signOut();location.reload()}
 adminPassword.addEventListener('keydown',e=>{if(e.key==='Enter')adminSignIn()});q.addEventListener('keydown',e=>{if(e.key==='Enter')loadLabels()});sq.addEventListener('keydown',e=>{if(e.key==='Enter')findCustomer()});init();
 </script></body></html>
