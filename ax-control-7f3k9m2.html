@@ -30,13 +30,27 @@
   </div>
 </div>
 <div id="adminApp" class="app hidden"><aside><div class="logo">Araç<b>X</b></div><div class="nav">
-<button class="on" onclick="view('home',this)">▦ Genel Bakış</button><button onclick="view('labels',this)">▣ Etiketler</button><button onclick="view('support',this)">◉ Müşteri / Destek</button><button onclick="view('dealers',this)">⌂ Bayiler</button>
+<button class="on" onclick="view('home',this)">▦ Genel Bakış</button><button onclick="view('labels',this)">▣ Etiketler</button><button onclick="view('support',this)">◉ Müşteriler</button><button onclick="view('dealers',this)">⌂ Bayiler</button>
 </div></aside><main>
 <div class="top"><div><h1>AraçX Yönetim Merkezi</h1><div id="mail" class="muted">Yetki kontrol ediliyor…</div></div><button type="button" class="btn soft" onclick="logout()">Çıkış</button></div>
 <div id="error"></div>
 <section id="home"><div id="stats" class="stats"><div class="card loading">Yükleniyor…</div></div><div class="card panel"><h2>Son Etiketler</h2><div id="recent" class="table"></div></div></section>
 <section id="labels" class="hidden"><div class="card tools"><input id="q" placeholder="Seri, plaka, müşteri, telefon, e-posta veya bayi"><select id="st"><option value="">Tüm durumlar</option><option value="active">Aktif</option><option value="paused">Pasif</option><option value="stock">Aktivasyon bekliyor</option><option value="revoked">İptal</option></select><select id="inv"><option value="">Tüm fiziksel durumlar</option><option value="generated">Üretildi</option><option value="printed">Basıldı</option><option value="in_stock">Stokta</option><option value="at_dealer">Bayide</option><option value="sold">Satıldı</option></select><button class="btn dark" onclick="loadLabels()">Ara</button></div><div class="card table" id="labelsTable"></div></section>
-<section id="support" class="hidden"><div class="card tools"><input id="sq" placeholder="Seri, plaka, telefon, müşteri veya e-posta"><button class="btn red" onclick="findCustomer()">Müşteriyi Bul</button></div><div id="results"></div></section>
+<section id="support" class="hidden">
+  <div class="card tools">
+    <input id="sq" placeholder="Ad, telefon, e-posta, seri veya plaka">
+    <button type="button" class="btn red" onclick="loadCustomers()">Müşteri Ara</button>
+    <button type="button" class="btn soft" onclick="sq.value='';loadCustomers()">Tümünü Göster</button>
+  </div>
+  <div class="card panel">
+    <div class="top" style="margin-bottom:10px">
+      <div><h2 style="margin:0">Müşteriler</h2><div class="muted">Sisteme kayıtlı kullanıcılar ve bağlı AraçX kartları</div></div>
+      <button type="button" class="btn soft" onclick="loadCustomers()">Yenile</button>
+    </div>
+    <div id="customerList" class="table"></div>
+  </div>
+  <div id="results" class="hidden"></div>
+</section>
 
 <section id="dealers" class="hidden">
   <div class="grid" style="margin-bottom:12px">
@@ -260,7 +274,40 @@ function table(rows){
 }
 async function loadRecent(){let {data,error}=await getLabels('','','',10);recent.innerHTML=error?`<div class="err">${E(error.message)}</div>`:table(data||[])}
 async function loadLabels(){labelsTable.innerHTML='<div class="loading">Aranıyor…</div>';let {data,error}=await getLabels(q.value.trim(),st.value,inv.value,300);labelsTable.innerHTML=error?`<div class="err">${E(error.message)}</div>`:table(data||[])}
-async function findCustomer(){let {data,error}=await getLabels(sq.value.trim(),'','',100);if(error){results.innerHTML=`<div class="err">${E(error.message)}</div>`;return}let m=new Map;(data||[]).filter(x=>x.owner_id).forEach(x=>m.set(x.owner_id,x));results.innerHTML=`<div class="card panel"><h3>Bulunan Müşteriler</h3>${[...m.values()].map(r=>`<div class="vehicle" style="cursor:pointer" onclick="openCustomer('${r.owner_id}')"><b>${E(r.owner_name||r.owner_email)}</b><div class="muted">${E(r.owner_phone||'')} · ${E(r.owner_email||'')} · ${E(r.serial_number)}</div></div>`).join('')||'<div class="muted">Müşteri bulunamadı.</div>'}</div>`}
+async function loadCustomers(){
+  customerList.innerHTML='<div class="loading">Müşteriler yükleniyor…</div>';
+  const {data,error}=await supabaseClient.rpc('admin_list_customers',{
+    p_search:sq.value.trim()||null,
+    p_limit:300,
+    p_offset:0
+  });
+  if(error){
+    customerList.innerHTML=`<div class="err">${E(error.message)}</div>`;
+    return;
+  }
+  const rows=data||[];
+  if(!rows.length){
+    customerList.innerHTML='<div class="loading">Müşteri bulunamadı.</div>';
+    return;
+  }
+  customerList.innerHTML=`<table>
+    <thead><tr><th>Müşteri</th><th>Telefon</th><th>E-posta</th><th>Kayıt</th><th>Son Giriş</th><th>Etiket</th><th>Araç</th><th>Aktif</th><th>Pasif</th><th>Düzeltme</th><th></th></tr></thead>
+    <tbody>${rows.map(r=>`<tr>
+      <td><b>${E(r.full_name||'İsimsiz')}</b></td>
+      <td>${E(r.phone||'—')}</td>
+      <td>${E(r.email||'—')}</td>
+      <td>${E(D(r.created_at))}</td>
+      <td>${E(D(r.last_sign_in_at))}</td>
+      <td><b>${Number(r.sticker_count||0)}</b></td>
+      <td>${Number(r.vehicle_count||0)}</td>
+      <td><span class="badge active">${Number(r.active_sticker_count||0)}</span></td>
+      <td><span class="badge paused">${Number(r.paused_sticker_count||0)}</span></td>
+      <td>${r.profile_edit_used?'Kullanıldı':'Kullanılmadı'}</td>
+      <td><button type="button" class="btn dark" onclick="openCustomer('${E(r.user_id)}')">Dosya</button></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+async function findCustomer(){return loadCustomers()}
 async function openCustomer(id){customer=id;document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));detail.classList.remove('hidden');detail.innerHTML='<div class="loading">Müşteri dosyası açılıyor…</div>';let {data,error}=await supabaseClient.rpc('admin_customer_detail',{p_user_id:id});if(error){detail.innerHTML=`<div class="err">${E(error.message)}</div>`;return}let c=data.customer||{},ss=data.stickers||[],ev=data.recent_qr_events||[],no=data.support_notes||[];detail.innerHTML=`<button class="btn soft" onclick="view('support')">← Geri</button><h2>${E(c.full_name||'İsimsiz Müşteri')}</h2><div class="muted">${E(c.email||'')} · Kayıt: ${E(D(c.created_at))}</div>
 <h3 class="section">Müşteri Bilgileri</h3><div class="grid"><div class="info"><b>Ad Soyad</b><br>${E(c.full_name||'—')}</div><div class="info"><b>Telefon</b><br>${E(c.phone||'—')}</div><div class="info"><b>Son Giriş</b><br>${E(D(c.last_sign_in_at))}</div><div class="info"><b>Kendi Düzeltme Hakkı</b><br>${c.profile_edit_used?'Kullanıldı':'Kullanılmadı'}</div></div>
 <h3 class="section">Araçlar ve QR Etiketleri</h3>${ss.map(s=>`<div class="vehicle"><b>${E(s.serial_number)} · ${E(s.plate||'Plaka yok')}</b><div class="muted">${E([s.brand,s.model,s.model_year].filter(Boolean).join(' '))}</div><div style="margin-top:8px"><span class="badge ${E(s.status)}">${E(T(s.status))}</span> <span class="badge ${E(s.inventory_status)}">${E(T(s.inventory_status))}</span></div><div class="muted">KM: ${E(s.current_km??'—')} · Bayi: ${E(s.dealer_name||'—')} · WhatsApp: ${s.whatsapp_enabled?'Açık':'Kapalı'}</div></div>`).join('')||'<div class="msg">Bağlı kart yok.</div>'}
@@ -268,7 +315,7 @@ async function openCustomer(id){customer=id;document.querySelectorAll('main>sect
 <h3 class="section">Son QR Hareketleri</h3>${ev.map(e=>`<div class="event"><b>${E(e.serial_number)}</b> · ${E(e.event_type)} → ${E(e.action_type)} <span class="muted">· ${E(D(e.created_at))}</span></div>`).join('')||'<div class="muted">Hareket yok.</div>'}
 <h3 class="section">Destek Notları</h3>${no.map(n=>`<div class="event">${E(n.note)} <span class="muted">· ${E(D(n.created_at))}</span></div>`).join('')||'<div class="muted">Not yok.</div>'}`}
 async function saveEdit(){let isPaid=paid.value==='true',a=amount.value;saveResult.innerHTML='<div class="msg">Kaydediliyor…</div>';let {error}=await supabaseClient.rpc('admin_update_customer_profile',{p_user_id:customer,p_full_name:en.value.trim(),p_phone:ep.value.trim(),p_is_paid:isPaid,p_amount:isPaid&&a?Number(a):null,p_description:desc.value.trim()||null});if(error){saveResult.innerHTML=`<div class="err">${E(error.message)}</div>`;return}saveResult.innerHTML='<div class="msg" style="background:#e5f5eb;color:#147142">Güncellendi ve işlem kaydedildi.</div>';setTimeout(()=>openCustomer(customer),700)}
-function view(n,b){detail.classList.add('hidden');['home','labels','support','dealers'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==n));document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));if(b)b.classList.add('on');if(n==='labels')loadLabels();if(n==='dealers')loadDealers()}
+function view(n,b){detail.classList.add('hidden');['home','labels','support','dealers'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==n));document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));if(b)b.classList.add('on');if(n==='labels')loadLabels();if(n==='dealers')loadDealers();if(n==='support')loadCustomers()}
 
 let dealerCache=[];
 
@@ -437,5 +484,5 @@ async function setInventory(status){
 }
 
 function fail(x){error.innerHTML=`<div class="err">${E(x)}</div>`}async function logout(){await supabaseClient.auth.signOut();location.reload()}
-adminPassword.addEventListener('keydown',e=>{if(e.key==='Enter')adminSignIn()});q.addEventListener('keydown',e=>{if(e.key==='Enter')loadLabels()});sq.addEventListener('keydown',e=>{if(e.key==='Enter')findCustomer()});init();
+adminPassword.addEventListener('keydown',e=>{if(e.key==='Enter')adminSignIn()});q.addEventListener('keydown',e=>{if(e.key==='Enter')loadLabels()});sq.addEventListener('keydown',e=>{if(e.key==='Enter')loadCustomers()});init();
 </script></body></html>
