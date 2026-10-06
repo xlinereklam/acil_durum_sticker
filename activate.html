@@ -185,52 +185,19 @@ button {
 
 
     <!-- HESAP BÖLÜMÜ -->
-
     <div id="authSection">
-
-        <div class="subtitle">
-            Etiketi hesabınıza bağlamak için
-            giriş yapın veya yeni hesap oluşturun.
+        <div class="subtitle" id="authSubtitle">Etiketi hesabınıza bağlamak için giriş yapın veya yeni hesap oluşturun.</div>
+        <div id="registerFields" class="hidden">
+            <label>Ad Soyad</label><input id="fullName" type="text" autocomplete="name" placeholder="Adınız Soyadınız">
+            <label>Telefon</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="05XX XXX XX XX">
         </div>
-
-        <label>
-            E-posta
-        </label>
-
-        <input
-            id="email"
-            type="email"
-            autocomplete="email"
-            placeholder="ornek@email.com"
-        >
-
-        <label>
-            Şifre
-        </label>
-
-        <input
-            id="password"
-            type="password"
-            autocomplete="current-password"
-            placeholder="En az 6 karakter"
-        >
-
-        <button
-            class="primary"
-            onclick="login()"
-        >
-            GİRİŞ YAP
-        </button>
-
-        <button
-            class="secondary"
-            onclick="register()"
-        >
-            YENİ HESAP OLUŞTUR
-        </button>
-
+        <label>E-posta</label><input id="email" type="email" autocomplete="email" placeholder="ornek@email.com">
+        <label>Şifre</label><input id="password" type="password" autocomplete="current-password" placeholder="En az 6 karakter">
+        <button id="loginButton" class="primary" onclick="login()">GİRİŞ YAP</button>
+        <button id="showRegisterButton" class="secondary" onclick="showRegisterForm()">YENİ HESAP OLUŞTUR</button>
+        <button id="registerButton" class="primary hidden" onclick="register()">HESABIMI OLUŞTUR</button>
+        <button id="backLoginButton" class="secondary hidden" onclick="showLoginForm()">ZATEN HESABIM VAR</button>
     </div>
-
 
     <!-- E-POSTA OTP AKTİVASYON BÖLÜMÜ -->
 
@@ -445,9 +412,9 @@ async function checkSession() {
             document.querySelector("#authSection .subtitle").textContent =
                 "Bu AraçX kartı daha önce aktive edilmiş. Hesabınıza ulaşmak için giriş yapın.";
 
-            const registerButton =
-                document.querySelector('#authSection button[onclick="register()"]');
-
+            const showRegisterButton = document.getElementById("showRegisterButton");
+            const registerButton = document.getElementById("registerButton");
+            if (showRegisterButton) showRegisterButton.classList.add("hidden");
             if (registerButton) registerButton.classList.add("hidden");
 
             showMessage(
@@ -459,7 +426,23 @@ async function checkSession() {
 }
 
 
+function showRegisterForm() {
+    registerFields.classList.remove("hidden"); registerButton.classList.remove("hidden"); backLoginButton.classList.remove("hidden");
+    loginButton.classList.add("hidden"); showRegisterButton.classList.add("hidden");
+    authSubtitle.textContent="Yeni AraçX hesabınızı oluşturun."; password.setAttribute("autocomplete","new-password");
+    showMessage("Ad soyad, telefon, e-posta ve şifrenizi girin.","info");
+}
+function showLoginForm() {
+    registerFields.classList.add("hidden"); registerButton.classList.add("hidden"); backLoginButton.classList.add("hidden");
+    loginButton.classList.remove("hidden"); if(stickerStatus==="stock") showRegisterButton.classList.remove("hidden");
+    authSubtitle.textContent="Etiketi hesabınıza bağlamak için giriş yapın veya yeni hesap oluşturun.";
+    password.setAttribute("autocomplete","current-password"); message.className="message"; message.textContent="";
+}
+
 async function register() {
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
 
     const email =
         document.getElementById(
@@ -472,18 +455,10 @@ async function register() {
         ).value;
 
 
-    if (
-        !email ||
-        password.length < 6
-    ) {
-
-        showMessage(
-            "Geçerli e-posta ve en az 6 karakterlik şifre girin.",
-            "error"
-        );
-
-        return;
-    }
+    if (fullName.length < 3) { showMessage("Ad soyad bilginizi girin.","error"); return; }
+    const phoneDigits = phone.replace(/\D/g,"");
+    if (!/^0?5\d{9}$/.test(phoneDigits)) { showMessage("Geçerli bir cep telefonu numarası girin. Örnek: 05XX XXX XX XX","error"); return; }
+    if (!email || password.length < 6) { showMessage("Geçerli e-posta ve en az 6 karakterlik şifre girin.","error"); return; }
 
 
     showMessage(
@@ -496,6 +471,7 @@ async function register() {
             email,
             password,
             options: {
+                data: { full_name: fullName, phone: phone },
                 emailRedirectTo:
                     window.location.origin +
                     window.location.pathname +
